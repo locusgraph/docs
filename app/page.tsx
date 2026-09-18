@@ -93,6 +93,16 @@ export default function DocsHome() {
         </div>
 
         <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-faint">
+          Sections marked <span className="text-soft">Soon</span> are not generally available yet —{" "}
+          <a
+            href="mailto:nasim@effortlesslabs.xyz?subject=Early%20access"
+            className="text-soft hover:text-foreground"
+          >
+            ask for early access
+          </a>
+          .
+        </p>
+        <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-faint">
           Docs only. Product pages live on{" "}
           <a href="https://www.locusgraph.com" className="text-soft hover:text-foreground">
             locusgraph.com

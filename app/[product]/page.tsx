@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { EarlyAccess } from "@/components/docs/early-access";
 import { treesFor } from "@/lib/site/docs-nav";
 import { isProduct, PRODUCT_INFO, PRODUCTS } from "@/lib/site/products";
 import { pageMeta } from "@/lib/site/seo";
@@ -36,13 +37,15 @@ export default async function ProductDocs({ params }: { params: Promise<{ produc
   const { product } = await params;
   if (!isProduct(product)) notFound();
 
-  const { title, blurb } = PRODUCT_INFO[product];
+  const { title, blurb, ready } = PRODUCT_INFO[product];
   const trees = treesFor(product);
 
   return (
     <>
       <h1>{title}</h1>
       <p>{blurb}</p>
+
+      {ready ? null : <EarlyAccess product={title} />}
 
       {trees.length === 0 ? (
         <p className="not-prose rounded-xl border border-line bg-surface px-5 py-4 text-sm text-soft">
