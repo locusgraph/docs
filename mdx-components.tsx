@@ -3,6 +3,18 @@ import Link from "next/link";
 import { isValidElement } from "react";
 import { Callout } from "@/components/docs/callout";
 import { CodeBlock } from "@/components/docs/code-block";
+import {
+  ConceptTree,
+  ContextGraph,
+  ExperienceVsConclusion,
+  LinkTypes,
+  MeaningMatch,
+  MemoryFlow,
+  QuickstartSteps,
+  SlugAnatomy,
+  TrustLadder,
+} from "@/components/docs/diagrams";
+import { EarlyAccess } from "@/components/docs/early-access";
 
 function textOf(node: React.ReactNode): string {
   if (node === null || node === undefined || typeof node === "boolean") return "";
@@ -41,8 +53,35 @@ function Heading({ as: Tag, children }: { as: "h2" | "h3"; children?: React.Reac
  */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
+    Callout,
+    ConceptTree,
+    EarlyAccess,
+    ContextGraph,
+    ExperienceVsConclusion,
+    LinkTypes,
+    MeaningMatch,
+    MemoryFlow,
+    QuickstartSteps,
+    SlugAnatomy,
+    TrustLadder,
     h2: ({ children }) => <Heading as="h2">{children}</Heading>,
     h3: ({ children }) => <Heading as="h3">{children}</Heading>,
+    /**
+     * Tables fill the column rather than shrinking to their content.
+     *
+     * The typeset stylesheet sets `max-width: 100%` and no width, so a table of
+     * short cells sits in a narrow box with the prose running past it. The
+     * wrapper scrolls rather than squeezing when the columns genuinely do not
+     * fit, which is the only case where shrink-to-fit was doing anything
+     * useful.
+     */
+    table: ({ children, ...props }) => (
+      <div className="not-prose my-6 overflow-x-auto">
+        <table className="w-full text-left" {...props}>
+          {children}
+        </table>
+      </div>
+    ),
     pre: ({ children, ...props }) => {
       const filename = (props as { "data-filename"?: string })["data-filename"];
       return (
@@ -61,7 +100,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           {children}
         </a>
       ),
-    Callout,
     ...components,
   };
 }
