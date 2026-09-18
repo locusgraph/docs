@@ -6,6 +6,8 @@
       "**",
       "!**/.next/**",
       "!**/node_modules/**",
+      "!**/.wrangler/**",
+      "!**/.open-next/**",
       "!components/ui/**",
       "!next-env.d.ts",
       "!**/*.css"
