@@ -1,0 +1,66 @@
+export const meta = {
+  title: "Getting started — spendgraph docs",
+  description:
+    "Which package to reach for first, by what you are trying to do: meter spend, call a provider, build a workflow, or score what came back.",
+};
+
+# Getting started
+
+Ten packages, and you almost certainly do not need all of them. Start from what you are trying to do.
+
+## I want spend on a chart
+
+[SDK quickstart](/spendgraph/sdk/quickstart). Two minutes, and the only code you write is the line that wraps your provider client.
+
+```bash
+npm install @spendgraph/sdk
+```
+
+Nothing else on this page is required to get there.
+
+## I want to call a provider
+
+[`llms`](/spendgraph/llms/overview). One shape back from any provider, zero dependencies, and no provider SDK imported — it reads replies as plain objects, so nothing about the conversation leaves your process.
+
+It also asks for usage on a streamed call, which hand-rolled streaming routinely forgets. A stream that did not request usage reports no tokens, and no tokens prices at $0.00.
+
+## I want the wording out of my code
+
+[`prompt`](/spendgraph/prompt/overview). Pull a stored prompt from the dashboard or write one in code — both hand back the same object, so nothing downstream has to know which it was given.
+
+Pair it with [`stage`](/spendgraph/stage/overview) when you want one prompt, one schema and one priced reply, with a retry showing up as a row on the bill rather than a number that vanished.
+
+## I want a model to call my code
+
+[`tools`](/spendgraph/tools/overview). Declare a tool once, offer the right few, record what was called.
+
+<Callout tone="trap" title="Declare args with `as const`">
+  Handler argument types are inferred from the declaration. Without `as const` the inference falls back to `Record<string, unknown>` — silently, with no error to tell you the types stopped meaning anything.
+</Callout>
+
+## I want multi-step work that leaves a trace
+
+Two routes, depending on how much shape you already know:
+
+- [`harness`](/spendgraph/harness/overview) — the seven shapes, ready-made. If your problem is refine, route, chain, parallel, orchestrate, loop or cascade, it is already written
+- [`graph`](/spendgraph/graph/overview) — nodes and edges you wire yourself, when it is not one of the seven
+
+Either way a run comes back as a rollout: every step, in order, priced. Hand-rolled `if`/`await` runs fine and leaves nothing behind — when step four fails at 2am, what ran and what it cost are both gone.
+
+## I want work that outlives the request
+
+[`vigil`](/spendgraph/vigil/getting-started). Call an agent that takes hours without holding a process open for it. The workflow parks, the process exits, the run picks up where it stopped.
+
+## I want to know whether the output is any good
+
+[`evals`](/spendgraph/evals/getting-started). Three moving parts, five minutes, and a report you can read.
+
+## I live in a terminal
+
+[`cli`](/spendgraph/cli/overview). `sg` drives the dashboard — write a prompt, declare a tool, mint a key, read what a project spent. A front-end over the SDK and nothing else.
+
+## Before you ship
+
+- Set `feature` and either `tenant` or `env` in [metadata](/spendgraph/concepts). Retrofitting them leaves a gap in every chart that predates the change
+- `await meter.flush()` in any serverless handler — Vercel, Lambda and Workers freeze the moment you respond, and the batched events go with them
+- Check the Pricing page for unpriced model ids. A typo in a model name surfaces there as $0 spend

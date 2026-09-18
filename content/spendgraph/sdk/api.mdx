@@ -1,0 +1,101 @@
+export const meta = {
+  title: "HTTP API — spendgraph docs",
+  description: "The ingest endpoint, cache token accounting, the stats and events reads, and CSV export.",
+};
+
+# HTTP API
+
+The SDK talks to one endpoint; everything else powers the dashboard. Errors are always `{ "error": { "code", "message" } }`.
+
+## POST /api/v1/ingest
+
+Auth is the `x-api-key` header. The body carries 1 to 100 events.
+
+```bash
+curl -X POST https://spendgraph.locusgraph.com/api/v1/ingest \
+  -H "content-type: application/json" \
+  -H "x-api-key: sg_..." \
+  -d '{
+    "events": [{
+      "model": "claude-sonnet-5",
+      "inputTokens": 3211,
+      "outputTokens": 842
+    }]
+  }'
+# -> 202 { "accepted": 1, "rejected": 0, "unpricedModels": [] }
+```
+
+Cost is computed at ingest from the newest price for the model and stored on the event in integer micro-USD. Unknown models are stored at $0 and flagged on the [Pricing](https://spendgraph.locusgraph.com/pricing) page. Events are never dropped.
+
+## Cache tokens
+
+Cached prompts bill at their own rates — a read costs roughly a tenth of normal input, a write a little more than it — so they are reported as their own fields rather than folded into `inputTokens`.
+
+```json
+"events": [{
+  "model": "claude-sonnet-5",
+  "inputTokens": 3211,
+  "outputTokens": 842,
+  "cacheReadTokens": 18004,
+  "cacheWriteTokens": 3211
+}]
+```
+
+<Callout tone="trap" title="The three counts are disjoint">
+  Providers report them separately — Anthropic's total input is `input + cache_read + cache_creation` — and spendgraph prices them the same way. Do **not** also add cache tokens into `inputTokens`: that bills the same tokens twice, at the wrong rate. Omitting them loses the spend entirely.
+</Callout>
+
+A model whose offer publishes no cache rate bills cache tokens at its input rate rather than at zero. An unknown discount should overcount, never undercount.
+
+`wrap()` reads all three counts off the provider response for you. This only matters if you are calling the API directly.
+
+## Reads
+
+These accept a signed-in GitHub session, and — for the endpoints below — the same `x-api-key` header as ingest. That is what makes a scheduled cost report possible without driving a browser.
+
+| | |
+| --- | --- |
+| `GET /api/v1/stats/summary` | totals plus the previous period |
+| `GET /api/v1/stats/timeseries` | spend and tokens over time |
+| `GET /api/v1/stats/by-model` | grouped by model |
+| `GET /api/v1/stats/by-key` | grouped by API key |
+| `GET /api/v1/stats/by-tag?key=` | spend by one metadata dimension |
+| `GET /api/v1/events` | raw events, newest first |
+| `GET /api/v1/compare` | what a workload costs on each model |
+
+`by-key` is how spend gets attributed to an environment or a service. Each row carries the key's `revoked` timestamp, so spend that arrived on a key you have since turned off stays visible rather than silently unattributed.
+
+`by-tag` takes one dimension at a time on purpose. Omit `key` and the costliest is used, with the rest listed in `keys`. Ranking `env` and `feature` together would double count — they are two cuts of the same spend.
+
+<Callout tone="warn" title="A key is pinned to its project">
+  `project=` is implied and can be omitted. Passing a *different* project returns `403 project_not_accessible` rather than quietly answering with the key's own project — a report that iterates projects with one key should fail loudly, not repeat one project's figures under every heading.
+</Callout>
+
+## Filtering and exporting events
+
+A parameter you cannot guess is a parameter you do not have, so here is the whole set `/api/v1/events` accepts. All optional, all combine freely.
+
+| | |
+| --- | --- |
+| `sort=cost` | most expensive first, instead of newest |
+| `model=` `key=` `project=` | narrow to one model, key, or project |
+| `q=` | substring match across the model name and metadata JSON |
+| `from=` `to=` | ISO timestamps |
+| `format=csv` | the same rows as a spreadsheet |
+| `cursor=` `limit=` | paging |
+
+Paging works in either sort order, but a cursor is only valid for the sort it came from; switching restarts from the first page.
+
+In CSV, each metadata key becomes its own `meta.<key>` column, so cost by feature is a pivot rather than a JSON parse.
+
+<Callout tone="trap" title="A truncated export is a wrong answer that looks right">
+  CSV is capped at 5,000 rows. Check `x-spendgraph-truncated` before totalling a column — `x-spendgraph-rows` and `x-spendgraph-next-cursor` carry on from where it stopped.
+</Callout>
+
+## Everything else
+
+`GET /api/v1/pricing` · `PUT /api/v1/pricing/:model` · `POST /api/v1/pricing/sync` · `GET|POST /api/v1/projects` · `GET|POST /api/v1/keys` · `DELETE /api/v1/keys/:id`
+
+Prices sync from LiteLLM's community file every day at 06:00 UTC, and **Sync prices** on the [Pricing](https://spendgraph.locusgraph.com/pricing) page runs it on demand. A price you set by hand always wins over the sync, so a negotiated rate survives the next refresh.
+
+Keys, projects, pricing and credentials are gated on a dashboard session and have no API-key path, deliberately: credentials holds provider keys, and keys mints API keys.

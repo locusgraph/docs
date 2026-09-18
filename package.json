@@ -1,0 +1,53 @@
+{
+  "name": "locusgraph-docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22 || >=24"
+  },
+  "dependencies": {
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.3.5",
+    "@spendgraph/cli": "^0.7.0",
+    "@spendgraph/config": "^0.8.0",
+    "@spendgraph/evals": "^0.7.0",
+    "@spendgraph/graph": "^0.7.0",
+    "@spendgraph/harness": "^0.7.0",
+    "@spendgraph/llms": "^0.7.0",
+    "@spendgraph/prompt": "^0.7.0",
+    "@spendgraph/sdk": "^0.7.0",
+    "@spendgraph/stage": "^0.7.0",
+    "@spendgraph/tools": "^0.7.0",
+    "@spendgraph/vigil": "^0.8.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.47.0",
+    "next": "16.2.12",
+    "next-themes": "^0.4.6",
+    "radix-ui": "^1.6.7",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "rehype-pretty-code": "^0.14.5",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.8",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^20.19.43",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "dev": "next dev --port 3100",
+    "build": "next build",
+    "start": "next start --port 3100",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  }
+}

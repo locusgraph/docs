@@ -1,0 +1,18 @@
+#!/bin/sh
+# Enable with: git config core.hooksPath .githooks
+
+step() {
+  printf '  %-12s' "$1"
+  if out=$(sh -c "$2" 2>&1); then
+    echo ok
+    return 0
+  fi
+  echo FAILED
+  printf '\n%s\n\n' "$out" | tail -40 >&2
+  echo "pre-push: $1 failed — fix it, or push anyway with --no-verify" >&2
+  exit 1
+}
+
+echo "pre-push: the cheap half of CI"
+step biome     "pnpm run lint"
+step typecheck "pnpm run typecheck"

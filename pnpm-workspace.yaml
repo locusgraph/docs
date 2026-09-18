@@ -1,0 +1,11 @@
+# sharp compiles a native binary on install. Next uses it for image
+# optimisation; without the build it falls back and warns at runtime.
+onlyBuiltDependencies:
+  - sharp
+
+minimumReleaseAgeExclude:
+  - '@spendgraph/config@0.8.0'
+  - '@spendgraph/vigil@0.8.0'
+
+allowBuilds:
+  sharp: set this to true or false

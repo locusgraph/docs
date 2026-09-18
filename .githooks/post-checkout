@@ -1,0 +1,9 @@
+#!/bin/sh
+# Enable with: git config core.hooksPath .githooks
+
+[ "$3" = 1 ] || exit 0
+
+git diff --name-only "$1" "$2" 2>/dev/null | grep -q '^pnpm-lock\.yaml$' &&
+  echo "post-checkout: pnpm-lock.yaml differs on this branch — run pnpm install"
+
+exit 0

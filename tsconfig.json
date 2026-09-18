@@ -1,0 +1,10 @@
+{
+  "extends": "@spendgraph/config/typescript/next.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mts", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", ".next"]
+}

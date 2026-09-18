@@ -1,0 +1,61 @@
+export const meta = {
+  title: "Concepts — spendgraph docs",
+  description:
+    "The vocabulary the spendgraph packages share: rollouts and usage, events and metadata, prompts, tools, the seven shapes, and the two kinds of credential.",
+};
+
+# Concepts
+
+The words that mean something specific across the packages, defined once so each page can use them without re-explaining.
+
+## Event
+
+One model call, reported. A model id, an input token count, an output token count, and optionally metadata and an event id. Priced at ingest.
+
+## Usage
+
+A recording with no versioned wording behind it. A custom prompt written in code has no row and no version, so what it records is usage rather than a rollout — the spend still lands, the wording is simply not versioned.
+
+## Rollout
+
+What a run hands back: every step, in order, with what each one cost. A graph run, a harness workflow and a stored prompt all produce one. It is the difference between a run that is *recorded* and one reconstructed afterwards from logs.
+
+## Metadata
+
+Up to 1KB of keys attached to an event. The **Cost by tenant** and **Cost by feature** breakdowns group on it, so without metadata spend is one undifferentiated number and the dashboard can only tell you that it went up.
+
+Worth setting on day one: `feature`, and either `tenant` or `env`.
+
+## Prompt
+
+Stored or custom. `pullPrompt` fetches one from the dashboard, `buildCustomPrompt` writes one in code, and both hand back the same `Prompt` — so `format`, `serialize`, `call` and `bind` do not care which they were given.
+
+## Tool
+
+A description and a function in one object, so a rename cannot become a runtime failure. Declared once, offered as a shortlist, and recorded when called.
+
+## The seven shapes
+
+The workflow patterns an LLM app keeps rediscovering: **refine**, **route**, **chain**, **parallel**, **orchestrate**, **loop** and **cascade**. `harness` ships each one as a graph you would otherwise hand-roll, with the pricing and the rollout already attached.
+
+## The two credentials
+
+```
+  sg_… API key      ──▶  usage · stats · events · prompts · tools
+                         read and write, in the one pinned project
+
+  session / sgc_…   ──▶  keys · projects · pricing · credentials
+                         gated on a signed-in user, server-side
+```
+
+An `sg_` key names no project of its own — the pin is the whole of its authority, and `projectId` is optional on every write it makes. Omitting it asks for the pin.
+
+Keys, projects, pricing and credentials have **no API-key path at all**, deliberately: `credentials` holds provider keys and `keys` mints API keys. Those are gated on a dashboard session, server-side.
+
+## Unpriced model
+
+A model id spendgraph has no price for. The event is still stored, at $0, flagged on the Pricing page, and returned in the ingest response as `unpricedModels`. Token counts are never thrown away for want of a price.
+
+## Meter and client
+
+Two classes in `sdk`, one capital letter apart. `SpendGraph` is the meter and never throws; `Spendgraph` is the API client and does. [The client](/spendgraph/sdk/client) and [Errors and retries](/spendgraph/sdk/errors) have the detail.

@@ -1,0 +1,112 @@
+export const meta = {
+  title: "Overview — spendgraph docs",
+  description:
+    "Everyone can build an agent. Almost nobody can say what one run cost, broken down by step, including the attempts that failed. That gap is what these ten packages close.",
+};
+
+# What a run costs
+
+An agent answers a question. Your dashboard says **$0.061**.
+
+The run actually cost **$0.094**.
+
+Underneath, it made nineteen model calls. Four were retries after a model replied with prose instead of the object it was asked for. Three were a review sending the work back. One was a person choosing "verify everything" without being told that choice cost six times the alternative.
+
+At the end you have an answer and a number. The number is wrong, and nothing in the stack can tell you by how much.
+
+## Why the usual stack cannot close it
+
+Not because anyone did anything wrong. Because of where the seams fall.
+
+**A retry hides inside the call it retries.** Wrap a model call in a retry and three attempts become one result. The two that failed leave no row anywhere — and they are the ones worth seeing, because a prompt that keeps missing its schema is a prompt worth fixing.
+
+**Cost lives in a different product.** Token counts arrive through callbacks; the priced view is a separate hosted service. The number sits one system away from the code that spent it.
+
+**Nobody prices a human's choice.** An agent that pauses to ask "how thorough should I be?" is asking someone to spend money without saying how much.
+
+## The thesis
+
+> Cost is not an observability problem you solve afterwards with a dashboard. It is a property of the call, and it belongs in the value the call returns.
+
+Put the price in the return value and the rest follows. Every layer keeps its own receipt, and the receipts add up.
+
+```
+  stage
+   ├─ pull the wording        ──►  prompt   rollout · model · price
+   ├─ send it with a schema   ──►  llms     reply · usage · latency
+   ├─ wrong shape? ask again  ──►  a second rollout, priced
+   └─ hand back ─────────────────► { data, usage, pricing }
+                                          │
+   graph                                  │
+   ┌──────────────────────────────────────┘
+   │  walks nodes · branches on fields stage guaranteed exist
+   │  stops to ask a person · resumes at the node that asked
+   └──────►  a rollout: every step, every price
+```
+
+The retry sits *outside* the thing that records the rollout. That is the whole design in one decision: a reply that came back as prose is a priced row somebody can see, not a number that quietly went up.
+
+## The receipt
+
+One question. Every layer keeping its own receipt, in the order the run walked them.
+
+| Step | What happened | In | Out | Cost |
+| --- | --- | ---: | ---: | ---: |
+| `triage` | Read the question, pick a route | 910 | 120 | $0.004 |
+| `brief` | Draft the working brief — **came back as prose, not the object** | 1,240 | 90 | **$0.005** |
+| `brief` · retry | Same wording, asked again against the schema | 1,240 | 260 | $0.006 |
+| `decompose` | Split the brief into steps the graph can walk | 1,800 | 410 | $0.009 |
+| `lookups` | Four searches through a local tool, no model call | — | — | $0.000 |
+| `review` | Check the work — **sent it back** | 6,100 | 640 | **$0.027** |
+| `review` · second pass | Check the revision, accept it | 6,100 | 720 | $0.028 |
+| `answer` | Compose the reply | 4,400 | 980 | $0.015 |
+| **Total** | **7 model calls, 1 tool step** | **21,790** | **3,220** | **$0.094** |
+
+Two of those eight rows are the interesting ones, and both are failures: a brief that missed its schema, and a review that refused the work. Each is a step with a name, a token count and a price — not a retry folded back into the call that triggered it.
+
+<Callout tone="warn" title="$0.032 of this is invisible on any other stack">
+  Thirty-four percent of the bill, in the two bolded rows. Wrap that brief call in a retry and its first attempt disappears; put the review inside the node it reviews and the send-back disappears with it. What is left is one number that went up, with nothing to say which step did it.
+</Callout>
+
+Every row carries its own rollout id, so `brief` and `brief · retry` are separately addressable — that is what makes "this prompt misses its schema one time in five" a query rather than a hunch.
+
+## Ten packages on one foundation
+
+Each layer keeps a receipt. Take any one of them on its own.
+
+| Package | What it is for |
+| --- | --- |
+| [`sdk`](/spendgraph/sdk/quickstart) | The API, the meter, and the wire types the others share |
+| [`prompt`](/spendgraph/prompt/overview) | Stored and custom prompts, rendering, rollouts |
+| [`llms`](/spendgraph/llms/overview) | Calling any provider, one shape back |
+| [`tools`](/spendgraph/tools/overview) | Declaring a tool, offering a shortlist, recording a turn |
+| [`stage`](/spendgraph/stage/overview) | One prompt, one schema, one priced reply |
+| [`graph`](/spendgraph/graph/overview) | Nodes, edges, and a run that comes back as a rollout |
+| [`harness`](/spendgraph/harness/overview) | The seven workflow shapes, each recorded as a priced rollout |
+| [`vigil`](/spendgraph/vigil/getting-started) | Parking a run on an agent that takes hours, and resuming it |
+| [`evals`](/spendgraph/evals/getting-started) | Scoring what came back |
+| [`cli`](/spendgraph/cli/overview) | `sg`, driving the dashboard from a terminal |
+
+### One socket
+
+**`sdk` is the only one that talks to the app.** It owns the whole `/api/v1` surface plus the wire types the others share, and `prompt`, `harness` and `llms` all depend on it rather than opening a socket themselves. Base URL, auth, retries, backoff and error shapes are decided once, in one place, instead of five times slightly differently.
+
+`llms` never imports a provider SDK at all — it reads replies as plain objects, so any client with the right shape works and no vendor gets a package of its own.
+
+### Compiled, not discovered
+
+A graph is checked before it runs. A node whose edges are all conditional is **refused at compile time** rather than ending quietly and reporting success.
+
+> A graph that ends early and reports success is a wrong answer wearing a green tick.
+
+And when a run stops to ask a person, it resumes **at the node that asked** — so the branch that needed the answer actually sees it.
+
+<Callout tone="trap" title="`as const` on a tool declaration is not optional">
+  `tools` and `graph` infer a handler's argument types from the args it declares. Without `as const`, inference falls back to `Record<string, unknown>` silently — no error, just types that stopped meaning anything.
+</Callout>
+
+## Where to go next
+
+- New here — [Getting started](/spendgraph/getting-started) picks a path
+- Want the vocabulary first — [Concepts](/spendgraph/concepts)
+- Just want spend on a chart — [SDK quickstart](/spendgraph/sdk/quickstart), two minutes

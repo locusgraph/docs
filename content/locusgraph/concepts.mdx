@@ -1,0 +1,25 @@
+export const meta = {
+  title: "Concepts — LocusGraph docs",
+  description: "The vocabulary the rest of the LocusGraph documentation assumes.",
+};
+
+# Concepts
+
+The words that mean something specific here, so the rest of the docs can use them without
+re-explaining each time.
+
+## Graph
+
+The structure the products read from and write to. Everything else in this documentation eventually
+describes something that reads a graph or writes one.
+
+## Product
+
+One of the things LocusGraph ships. A product owns four public surfaces and no more: a marketing
+page on `www`, an articles collection on `www`, an app on its own subdomain, and a section of these
+docs. Nothing else is a public URL.
+
+## Section
+
+One product's documentation, rooted at `/{product}` on this host. A section owns its own sidebar,
+its own reading order, and its own pages.

@@ -1,0 +1,27 @@
+#!/bin/sh
+# Enable with: git config core.hooksPath .githooks
+
+[ -z "$2" ] || exit 0
+
+staged=$(git diff --cached --name-only)
+[ -n "$staged" ] || exit 0
+
+scope=$(printf '%s\n' "$staged" |
+  awk -F/ '{ if ($1 == "packages" && NF > 1) print $2; else if (NF > 1) print $1; else print "repo" }' |
+  sort -u)
+
+[ "$(printf '%s\n' "$scope" | wc -l)" -eq 1 ] || scope=repo
+[ "$scope" = repo ] || [ -d "packages/$scope" ] || [ -d "$scope" ] || scope=repo
+
+type=
+printf '%s\n' "$staged" | grep -qv '\.md$' || type=docs
+[ -n "$type" ] || printf '%s\n' "$staged" | grep -qv 'test' || type=test
+
+{
+  printf '%s(%s): \n' "$type" "$scope"
+  echo "# one line, no body, no trailers"
+  echo "# types: feat fix chore docs refactor test build ci perf style revert"
+  echo "# scope: $scope, from the folders you staged"
+  cat "$1"
+} > "$1.new"
+mv "$1.new" "$1"

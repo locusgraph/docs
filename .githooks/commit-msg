@@ -1,0 +1,47 @@
+#!/bin/sh
+# Enable with: git config core.hooksPath .githooks
+
+TYPES='feat|fix|chore|docs|refactor|test|build|ci|perf|style|revert'
+MAX=100
+
+written=$(sed '/^# *-* >8 -*/,$d' "$1" | grep -v '^#')
+subject=$(printf '%s\n' "$written" | sed '/^[[:space:]]*$/d' | head -1)
+body=$(printf '%s\n' "$written" | sed '/^[[:space:]]*$/d' | tail -n +2)
+
+case "$subject" in
+  "Merge "*|"Revert "*|"fixup! "*|"squash! "*|"amend! "*) exit 0 ;;
+esac
+
+fail() {
+  echo "commit-msg: $1" >&2
+  echo "  subject: $subject" >&2
+  echo "  wanted:  type(folder): what it does" >&2
+  exit 1
+}
+
+[ -n "$subject" ] || fail "the subject line is empty"
+
+if printf '%s\n' "$body" | grep -qi '^co-authored-by:'; then
+  fail "no co-author trailer — a commit is authored by whoever ran git commit"
+fi
+
+[ -z "$body" ] || fail "one line only — say it in the subject or split the commit"
+
+echo "$subject" | grep -Eq "^($TYPES)\([a-z0-9._-]+\)!?: .+" ||
+  fail "no type(folder): prefix — type is one of $(echo "$TYPES" | tr "|" " ")"
+
+scope=$(echo "$subject" | sed -E 's/^[a-z]+\(([^)]+)\).*/\1/')
+if [ "$scope" != repo ] && [ ! -d "packages/$scope" ] && [ ! -d "$scope" ]; then
+  fail "'$scope' is not a folder in this repo — use a directory name, or 'repo' for repo-wide work"
+fi
+
+text=$(echo "$subject" | sed -E 's/^[a-z]+\([^)]+\)!?: //')
+
+case "$text" in
+  [A-Z]*) fail "start the description lowercase" ;;
+  *.) fail "no trailing period — the description is not a sentence" ;;
+esac
+
+if [ "${#subject}" -gt "$MAX" ]; then
+  fail "subject is ${#subject} characters, over the $MAX this repo holds to"
+fi

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
+  "extends": ["@spendgraph/config/biome/base.json", "@spendgraph/config/biome/next.json"],
+  "files": {
+    "includes": [
+      "**",
+      "!**/.next/**",
+      "!**/node_modules/**",
+      "!components/ui/**",
+      "!next-env.d.ts",
+      "!**/*.css"
+    ]
+  }
+}
