@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Forward references — LocusGraph docs",
+  title: "Forward references | LocusGraph docs",
   description:
     "Linking to something before it exists, finding the links still waiting, and pointing them at the memory that finally fulfils them.",
 };
@@ -83,11 +83,11 @@ await client.resolve({ context_id: "vendor:agreement", locus_id: items[0].locus_
 Or from `facts[].locus` on a [deep recall](/locusgraph/recall/deep-recall).
 
 <Callout tone="note" title="Unresolved links are not errors">
-  Nothing is broken while a reference waits, and nothing throws. Sweep the overview periodically —
+  Nothing is broken while a reference waits, and nothing throws. Sweep the overview periodically: 
   it is a work queue, not an error log.
 </Callout>
 
 ## Next
 
-- **[Browse](/locusgraph/contexts/browsing)** — checking whether the target arrived under another name
-- **[Reading a result](/locusgraph/recall/results)** — where `locus_id` comes from
+- **[Browse](/locusgraph/contexts/browsing)**: checking whether the target arrived under another name
+- **[Reading a result](/locusgraph/recall/results)**: where `locus_id` comes from

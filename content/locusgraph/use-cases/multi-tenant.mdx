@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Multi-tenant — LocusGraph docs",
+  title: "Multi-tenant | LocusGraph docs",
   description:
     "One graph per customer, why the graph is the isolation boundary rather than a filter, and how to manage graphs at scale.",
 };
@@ -10,7 +10,7 @@ You are building for many customers, and none of them may ever see another's mem
 
 ## The graph is the wall
 
-A graph is an isolated memory space. A search in one graph cannot return a memory from another — not ranked lower, not filtered out afterwards. It cannot reach it.
+A graph is an isolated memory space. A search in one graph cannot return a memory from another, not ranked lower, not filtered out afterwards. It cannot reach it.
 
 ```
    graph: acme          graph: globex
@@ -35,7 +35,7 @@ const graph = await client.createGraph("Acme Corp", "Shared engineering memory")
 // → { graph_id, name, description, owner_agent_id, created_at }
 ```
 
-Do it when the customer signs up, not lazily on first write — a graph that appears on demand is a graph nobody audited.
+Do it when the customer signs up, not lazily on first write, a graph that appears on demand is a graph nobody audited.
 
 ## Keys that cannot wander
 
@@ -50,7 +50,7 @@ Mint one scoped token per tenant and hand your request path nothing else. See [A
 
 ## How many graphs is too many
 
-One per customer is the common shape. One per user *within* a customer is also reasonable when memories are genuinely personal and never shared — but then team knowledge has nowhere to live, so most products end up with both:
+One per customer is the common shape. One per user *within* a customer is also reasonable when memories are genuinely personal and never shared, but then team knowledge has nowhere to live, so most products end up with both:
 
 ```
    acme            the shared graph — conventions, policies, systems

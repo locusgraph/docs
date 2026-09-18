@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Concepts — spendgraph docs",
+  title: "Concepts | spendgraph docs",
   description:
     "The vocabulary the spendgraph packages share: rollouts and usage, events and metadata, prompts, tools, the seven shapes, and the two kinds of credential.",
 };
@@ -14,7 +14,7 @@ One model call, reported. A model id, an input token count, an output token coun
 
 ## Usage
 
-A recording with no versioned wording behind it. A custom prompt written in code has no row and no version, so what it records is usage rather than a rollout — the spend still lands, the wording is simply not versioned.
+A recording with no versioned wording behind it. A custom prompt written in code has no row and no version, so what it records is usage rather than a rollout, the spend still lands, the wording is simply not versioned.
 
 ## Rollout
 
@@ -28,7 +28,7 @@ Worth setting on day one: `feature`, and either `tenant` or `env`.
 
 ## Prompt
 
-Stored or custom. `pullPrompt` fetches one from the dashboard, `buildCustomPrompt` writes one in code, and both hand back the same `Prompt` — so `format`, `serialize`, `call` and `bind` do not care which they were given.
+Stored or custom. `pullPrompt` fetches one from the dashboard, `buildCustomPrompt` writes one in code, and both hand back the same `Prompt`, so `format`, `serialize`, `call` and `bind` do not care which they were given.
 
 ## Tool
 
@@ -48,7 +48,7 @@ The workflow patterns an LLM app keeps rediscovering: **refine**, **route**, **c
                          gated on a signed-in user, server-side
 ```
 
-An `sg_` key names no project of its own — the pin is the whole of its authority, and `projectId` is optional on every write it makes. Omitting it asks for the pin.
+An `sg_` key names no project of its own: the pin is the whole of its authority, and `projectId` is optional on every write it makes. Omitting it asks for the pin.
 
 Keys, projects, pricing and credentials have **no API-key path at all**, deliberately: `credentials` holds provider keys and `keys` mints API keys. Those are gated on a dashboard session, server-side.
 

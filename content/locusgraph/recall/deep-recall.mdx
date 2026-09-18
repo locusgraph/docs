@@ -1,12 +1,12 @@
 export const meta = {
-  title: "Deep recall — LocusGraph docs",
+  title: "Deep recall | LocusGraph docs",
   description:
     "One call for questions a single search cannot answer: an answer in prose, the evidence behind it, and what the call cost.",
 };
 
 # Deep recall
 
-Some questions do not have an answer sitting in one memory. *"What did we decide about churn, and why?"* needs the decision, the reasoning, and whatever was true at the time — three memories in three contexts.
+Some questions do not have an answer sitting in one memory. *"What did we decide about churn, and why?"* needs the decision, the reasoning, and whatever was true at the time, three memories in three contexts.
 
 `retrieveMemories` returns the best matches. `deepRecall` goes looking, then answers.
 
@@ -17,7 +17,7 @@ const { summary, facts, coverage } = await client.deepRecall({
 ```
 
 <Callout tone="note" title="The field is `question`, not `query`">
-  And it wants one focused question — not a conversation, not three questions joined by "and also".
+  And it wants one focused question, not a conversation, not three questions joined by "and also".
   A sharp question walks a sharp path.
 </Callout>
 
@@ -58,15 +58,15 @@ await client.deepRecall({
 }
 ```
 
-`locus` and `contexts` are both reusable — one to fetch or delete the memory, the other as `contextIds` in a follow-up call.
+`locus` and `contexts` are both reusable, one to fetch or delete the memory, the other as `contextIds` in a follow-up call.
 
 ### Three fields that tell you how much to trust the answer
 
 | Field | Read it as |
 | --- | --- |
-| `coverage` | `"full"` — the walk finished. `"partial"` — it was cut short |
+| `coverage` | `"full"`, the walk finished. `"partial"`, it was cut short |
 | `fallback` | `true` means the walk failed and these facts came from a plain search instead |
-| `rounds_used` | How many exploration rounds it took, `0`–`3` |
+| `rounds_used` | How many exploration rounds it took, `0` to `3` |
 
 <Callout tone="trap" title="Check `coverage` and `fallback` before trusting the summary">
   A `partial` answer is built on an incomplete walk, and `fallback: true` means you did not get a
@@ -74,11 +74,11 @@ await client.deepRecall({
   sharper `contextIds`.
 </Callout>
 
-`summary` is **absent** when the synthesis pass failed. `facts` will still be there — write the branch that uses them.
+`summary` is **absent** when the synthesis pass failed. `facts` will still be there. Write the branch that uses them.
 
 ## What it costs
 
-`usage` is returned on every call: LLM calls, tokens both ways, and the dollar cost. Unlike a search, this is not a cheap lookup — several model calls happen inside one request.
+`usage` is returned on every call: LLM calls, tokens both ways, and the dollar cost. Unlike a search, this is not a cheap lookup: several model calls happen inside one request.
 
 It shares the **20 per minute** bucket with search. Reach for it when a single query genuinely cannot answer the question, not as a better default.
 
@@ -91,5 +91,5 @@ It shares the **20 per minute** bucket with search. Reach for it when a single q
 
 ## Next
 
-- **[Search memories](/locusgraph/recall/search)** — the cheaper call
-- **[Contexts](/locusgraph/contexts/overview)** — the structure the walk moves through
+- **[Search memories](/locusgraph/recall/search)**: the cheaper call
+- **[Contexts](/locusgraph/contexts/overview)**: the structure the walk moves through

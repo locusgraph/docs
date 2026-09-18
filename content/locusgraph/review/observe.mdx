@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Send an observation — LocusGraph docs",
+  title: "Send an observation | LocusGraph docs",
   description:
     "Offer something for review instead of storing it outright: what observe takes, how it differs from a write, and its narrower source ladder.",
 };
@@ -50,7 +50,7 @@ You are not saying *"file this under `policy:deployments` as a constraint"*. You
 
 <Callout tone="trap" title="The write ladder's names are rejected here">
   `user`, `assistant`, `system`, `document` and `derived` are valid on `storeEvent` and **refused**
-  by `observe`. The nearest equivalent for a conversation is `turn` — and it expects both sides,
+  by `observe`. The nearest equivalent for a conversation is `turn`, and it expects both sides,
   labelled, in one payload.
 </Callout>
 
@@ -68,7 +68,7 @@ Not just the user's line. What the assistant said back is half of what happened,
 { observed: true, observation_id: "obs_…" }
 ```
 
-Accepted for processing — that is all it promises. No memory exists yet, and one may never exist: some observations are kept, some are dropped, some end up waiting for a person.
+Accepted for processing: that is all it promises. No memory exists yet, and one may never exist: some observations are kept, some are dropped, some end up waiting for a person.
 
 <Callout tone="note" title="Do not await a memory here">
   `observe` returns as soon as the observation is taken. Nothing in the response tells you what
@@ -77,11 +77,11 @@ Accepted for processing — that is all it promises. No memory exists yet, and o
 
 ## When to use which
 
-**`storeEvent`** when it has already been decided — a form submission, a tool result you trust, a fact your own systems treat as true.
+**`storeEvent`** when it has already been decided, a form submission, a tool result you trust, a fact your own systems treat as true.
 
 **`observe`** when the graph is shared and the claim is soft. Everything an agent thinks it noticed about a team's codebase belongs here.
 
 ## Next
 
-- **[The inbox](/locusgraph/review/inbox)** — what came back needing a person
-- **[Approve or reject](/locusgraph/review/decisions)** — acting on a finding
+- **[The inbox](/locusgraph/review/inbox)**: what came back needing a person
+- **[Approve or reject](/locusgraph/review/decisions)**: acting on a finding

@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Approve or reject — LocusGraph docs",
+  title: "Approve or reject | LocusGraph docs",
   description:
     "Acting on a finding: approving it, editing it first, rejecting it, and what each outcome leaves behind.",
 };
@@ -35,7 +35,7 @@ await client.approveFinding("fnd_…", {
 // status: "edited_promoted"
 ```
 
-The outcome is a separate status — `edited_promoted`, not `promoted` — so a reviewer correcting most of what arrives is visible rather than buried.
+The outcome is a separate status, `edited_promoted`, not `promoted`, so a reviewer correcting most of what arrives is visible rather than buried.
 
 <Callout tone="note" title="Edit rather than reject-and-rewrite">
   Rejecting a finding and storing your own version with `storeEvent` gets the same memory into the
@@ -49,7 +49,7 @@ const { status } = await client.rejectFinding("fnd_…");
 // status: "rejected"
 ```
 
-Nothing is stored. The finding stays in the record as rejected — it does not vanish, and it will not come back to the inbox.
+Nothing is stored. The finding stays in the record as rejected: it does not vanish, and it will not come back to the inbox.
 
 ## The statuses
 
@@ -62,7 +62,7 @@ Nothing is stored. The finding stays in the record as rejected — it does not v
 
 ## Reversals
 
-A finding with a non-empty `contradicts` supersedes something already in the graph. Approving it is not additive — it changes what the graph will say next time it is asked.
+A finding with a non-empty `contradicts` supersedes something already in the graph. Approving it is not additive: it changes what the graph will say next time it is asked.
 
 Read the statement and the contexts it contradicts together before deciding. Rejecting a true reversal leaves the graph confidently wrong, which is worse than the gap that rejecting a new fact leaves.
 
@@ -82,9 +82,9 @@ for (const finding of findings) {
 }
 ```
 
-Deciding is a `write`-bucket call — 120 per minute — so clearing a backlog is not constrained the way searching is. See [Limits](/locusgraph/client/limits).
+Deciding is a `write`-bucket call, 120 per minute, so clearing a backlog is not constrained the way searching is. See [Limits](/locusgraph/client/limits).
 
 ## Next
 
-- **[The inbox](/locusgraph/review/inbox)** — what you are deciding on
-- **[Team knowledge](/locusgraph/use-cases/team-knowledge)** — the whole loop, wired up
+- **[The inbox](/locusgraph/review/inbox)**: what you are deciding on
+- **[Team knowledge](/locusgraph/use-cases/team-knowledge)**: the whole loop, wired up

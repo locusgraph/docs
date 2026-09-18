@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Integrations — spendgraph docs",
+  title: "Integrations | spendgraph docs",
   description: "LangChain, LangGraph and the Vercel AI SDK, each in one line. Built in, no extra dependencies.",
 };
 
@@ -30,7 +30,7 @@ const llm = new ChatAnthropic({
 
 ## LangGraph
 
-The same handler. LangGraph forwards callbacks to every node, so one line tracks every model call inside the graph — agents and tools included.
+The same handler. LangGraph forwards callbacks to every node, so one line tracks every model call inside the graph: agents and tools included.
 
 ```ts
 const graph = workflow.compile();
@@ -39,7 +39,7 @@ await graph.invoke(state, { callbacks: [spendGraphHandler(meter)] });
 
 ## Vercel AI SDK
 
-There is no client to wrap here — you call functions, not methods — so you hand it the result instead. Both v4 and v5 usage shapes are handled.
+There is no client to wrap here, you call functions, not methods, so you hand it the result instead. Both v4 and v5 usage shapes are handled.
 
 ```ts
 import { trackAiResult } from "@spendgraph/sdk/ai";
@@ -63,7 +63,7 @@ trackAiResult(meter, result, {
 });
 ```
 
-Pass `model` when you know it. The id is otherwise read off the result, and a shape that does not carry one is tracked as `unknown` — the token counts are kept rather than dropped, but nothing prices an id that is not in the catalog, so those calls show up as `unpriced`.
+Pass `model` when you know it. The id is otherwise read off the result, and a shape that does not carry one is tracked as `unknown`: the token counts are kept rather than dropped, but nothing prices an id that is not in the catalog, so those calls show up as `unpriced`.
 
 <Callout tone="trap" title="Flush in route handlers">
   The AI SDK is mostly used on serverless runtimes, which freeze the moment the response is sent. `await meter.flush()` before returning, or the buffered event goes with them.

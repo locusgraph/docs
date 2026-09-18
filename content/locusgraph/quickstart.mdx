@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Quickstart — LocusGraph docs",
+  title: "Quickstart | LocusGraph docs",
   description:
     "Store your first memory and search it back, in ten lines. Install the client, point it at a graph, write something, ask for it in different words.",
 };
@@ -48,7 +48,7 @@ await client.storeEvent({
 
 Three things are going on in that call:
 
-- **`event_kind`** says what sort of memory this is. `fact` is the everyday one — see [Event kinds](/locusgraph/remember/event-kinds)
+- **`event_kind`** says what sort of memory this is. `fact` is the everyday one: see [Event kinds](/locusgraph/remember/event-kinds)
 - **`payload.data`** is the memory itself, in plain language. Write it the way you would say it
 - **The context** is derived for you when you do not name one. Name it explicitly with `context_id` once you care where things are filed
 
@@ -62,10 +62,10 @@ const { memories } = await client.retrieveMemories({
 
 <MeaningMatch />
 
-That is the whole point. The question and the memory have nothing in common lexically — not *theme*, not *like*, not *prefers*. They come back together because they mean the same thing.
+That is the whole point. The question and the memory have nothing in common lexically, not *theme*, not *like*, not *prefers*. They come back together because they mean the same thing.
 
 `memories` is **rendered text**, ready to drop into a prompt. Ask for structured results instead
-with `format: "json"`, and you get an `items` array with scores, contexts and ids on each one —
+with `format: "json"`, and you get an `items` array with scores, contexts and ids on each one: 
 [Reading a result](/locusgraph/recall/results) walks both shapes.
 
 ## The whole thing
@@ -92,8 +92,8 @@ const { memories } = await client.retrieveMemories({
 
 ## Next
 
-- **[Concepts](/locusgraph/concepts)** — graphs, contexts, memories, and the two stamps on every write
-- **[Store an event](/locusgraph/remember/store)** — every field `storeEvent` accepts
-- **[Search memories](/locusgraph/recall/search)** — narrowing a query, and how many to take
+- **[Concepts](/locusgraph/concepts)**: graphs, contexts, memories, and the two stamps on every write
+- **[Store an event](/locusgraph/remember/store)**: every field `storeEvent` accepts
+- **[Search memories](/locusgraph/recall/search)**: narrowing a query, and how many to take
 
 <EarlyAccess />

@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Conversation history — LocusGraph docs",
+  title: "Conversation history | LocusGraph docs",
   description:
     "Carry what was said into the next conversation without replaying the transcript: store the takeaways, not the messages.",
 };
@@ -22,7 +22,7 @@ Every one of those is a message about a thing rather than the thing. Six months 
 
 ## What to store
 
-At the end of a turn — or a session — write what changed.
+At the end of a turn, or a session, write what changed.
 
 ```typescript
 await client.storeEvent({
@@ -34,7 +34,7 @@ await client.storeEvent({
 });
 ```
 
-One turn rarely produces more than one or two of these. Most turns produce none, and that is the point — a conversation where nothing was settled has nothing to remember.
+One turn rarely produces more than one or two of these. Most turns produce none, and that is the point: a conversation where nothing was settled has nothing to remember.
 
 <Callout tone="note" title="Kinds carry the difference">
   `fact` for something now true, `decision` for something chosen, `constraint` for a rule you must
@@ -57,7 +57,7 @@ await client.storeEventsBatch(
 );
 ```
 
-Each item is admitted on its own — one rejection does not take the others down. If you need all-or-nothing, that is [a transaction](/locusgraph/remember/batch).
+Each item is admitted on its own: one rejection does not take the others down. If you need all-or-nothing, that is [a transaction](/locusgraph/remember/batch).
 
 ## Reading it back at the start of a turn
 

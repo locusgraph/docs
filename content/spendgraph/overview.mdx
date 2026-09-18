@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Overview — spendgraph docs",
+  title: "Overview | spendgraph docs",
   description:
     "Everyone can build an agent. Almost nobody can say what one run cost, broken down by step, including the attempts that failed. That gap is what these ten packages close.",
 };
@@ -18,7 +18,7 @@ At the end you have an answer and a number. The number is wrong, and nothing in 
 
 Not because anyone did anything wrong. Because of where the seams fall.
 
-**A retry hides inside the call it retries.** Wrap a model call in a retry and three attempts become one result. The two that failed leave no row anywhere — and they are the ones worth seeing, because a prompt that keeps missing its schema is a prompt worth fixing.
+**A retry hides inside the call it retries.** Wrap a model call in a retry and three attempts become one result. The two that failed leave no row anywhere, and they are the ones worth seeing, because a prompt that keeps missing its schema is a prompt worth fixing.
 
 **Cost lives in a different product.** Token counts arrive through callbacks; the priced view is a separate hosted service. The number sits one system away from the code that spent it.
 
@@ -53,22 +53,22 @@ One question. Every layer keeping its own receipt, in the order the run walked t
 | Step | What happened | In | Out | Cost |
 | --- | --- | ---: | ---: | ---: |
 | `triage` | Read the question, pick a route | 910 | 120 | $0.004 |
-| `brief` | Draft the working brief — **came back as prose, not the object** | 1,240 | 90 | **$0.005** |
+| `brief` | Draft the working brief: **came back as prose, not the object** | 1,240 | 90 | **$0.005** |
 | `brief` · retry | Same wording, asked again against the schema | 1,240 | 260 | $0.006 |
 | `decompose` | Split the brief into steps the graph can walk | 1,800 | 410 | $0.009 |
-| `lookups` | Four searches through a local tool, no model call | — | — | $0.000 |
-| `review` | Check the work — **sent it back** | 6,100 | 640 | **$0.027** |
+| `lookups` | Four searches through a local tool, no model call | - |: | $0.000 |
+| `review` | Check the work: **sent it back** | 6,100 | 640 | **$0.027** |
 | `review` · second pass | Check the revision, accept it | 6,100 | 720 | $0.028 |
 | `answer` | Compose the reply | 4,400 | 980 | $0.015 |
 | **Total** | **7 model calls, 1 tool step** | **21,790** | **3,220** | **$0.094** |
 
-Two of those eight rows are the interesting ones, and both are failures: a brief that missed its schema, and a review that refused the work. Each is a step with a name, a token count and a price — not a retry folded back into the call that triggered it.
+Two of those eight rows are the interesting ones, and both are failures: a brief that missed its schema, and a review that refused the work. Each is a step with a name, a token count and a price, not a retry folded back into the call that triggered it.
 
 <Callout tone="warn" title="$0.032 of this is invisible on any other stack">
   Thirty-four percent of the bill, in the two bolded rows. Wrap that brief call in a retry and its first attempt disappears; put the review inside the node it reviews and the send-back disappears with it. What is left is one number that went up, with nothing to say which step did it.
 </Callout>
 
-Every row carries its own rollout id, so `brief` and `brief · retry` are separately addressable — that is what makes "this prompt misses its schema one time in five" a query rather than a hunch.
+Every row carries its own rollout id, so `brief` and `brief · retry` are separately addressable: that is what makes "this prompt misses its schema one time in five" a query rather than a hunch.
 
 ## Ten packages on one foundation
 
@@ -91,7 +91,7 @@ Each layer keeps a receipt. Take any one of them on its own.
 
 **`sdk` is the only one that talks to the app.** It owns the whole `/api/v1` surface plus the wire types the others share, and `prompt`, `harness` and `llms` all depend on it rather than opening a socket themselves. Base URL, auth, retries, backoff and error shapes are decided once, in one place, instead of five times slightly differently.
 
-`llms` never imports a provider SDK at all — it reads replies as plain objects, so any client with the right shape works and no vendor gets a package of its own.
+`llms` never imports a provider SDK at all: it reads replies as plain objects, so any client with the right shape works and no vendor gets a package of its own.
 
 ### Compiled, not discovered
 
@@ -99,14 +99,14 @@ A graph is checked before it runs. A node whose edges are all conditional is **r
 
 > A graph that ends early and reports success is a wrong answer wearing a green tick.
 
-And when a run stops to ask a person, it resumes **at the node that asked** — so the branch that needed the answer actually sees it.
+And when a run stops to ask a person, it resumes **at the node that asked**, so the branch that needed the answer actually sees it.
 
 <Callout tone="trap" title="`as const` on a tool declaration is not optional">
-  `tools` and `graph` infer a handler's argument types from the args it declares. Without `as const`, inference falls back to `Record<string, unknown>` silently — no error, just types that stopped meaning anything.
+  `tools` and `graph` infer a handler's argument types from the args it declares. Without `as const`, inference falls back to `Record<string, unknown>` silently, no error, just types that stopped meaning anything.
 </Callout>
 
 ## Where to go next
 
-- New here — [Getting started](/spendgraph/getting-started) picks a path
-- Want the vocabulary first — [Concepts](/spendgraph/concepts)
-- Just want spend on a chart — [SDK quickstart](/spendgraph/sdk/quickstart), two minutes
+- New here: [Getting started](/spendgraph/getting-started) picks a path
+- Want the vocabulary first: [Concepts](/spendgraph/concepts)
+- Just want spend on a chart: [SDK quickstart](/spendgraph/sdk/quickstart), two minutes

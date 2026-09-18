@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Query options — LocusGraph docs",
+  title: "Query options | LocusGraph docs",
   description:
     "Every option retrieveMemories accepts: what narrows a search, what widens it, and how to change the shape of what comes back.",
 };
@@ -36,17 +36,17 @@ More candidates, better recall on questions about a known thing.
 | --- | --- |
 | `boostContextIds` | **Additive.** Memories linked to these join the pool alongside the search hits |
 | `coverageContextIds` | Additive, plus a reserved share of the window spread across those contexts' timeline |
-| `coverageGroupPrefix` | How coverage spreads its picks — a context-id prefix of yours, e.g. `"session:"`. Unset means by calendar day |
+| `coverageGroupPrefix` | How coverage spreads its picks, a context-id prefix of yours, e.g. `"session:"`. Unset means by calendar day |
 | `expandDepth` | How many levels of links to follow. Default `1`; use `2` for grandchildren |
 
 <Callout tone="trap" title="`contextIds` restricts, `boostContextIds` widens">
   They look alike and do opposite things. Pass `contextIds: ["person:alice"]` and nothing outside
   Alice's context can come back. Pass `boostContextIds: ["person:alice"]` and her memories join
-  whatever the search already found. Reach for boost when the question is *about* a known entity —
+  whatever the search already found. Reach for boost when the question is *about* a known entity: 
   it surfaces her facts even when the wording misses them.
 </Callout>
 
-**Coverage** is for list-everything questions — *"what has this customer told us?"* — where the answers are scattered across many sessions and the top few by relevance would all come from the same afternoon.
+**Coverage** is for list-everything questions, *"what has this customer told us?"*, where the answers are scattered across many sessions and the top few by relevance would all come from the same afternoon.
 
 ## Reshaping
 
@@ -84,5 +84,5 @@ const { items } = await client.retrieveMemories({
 
 ## Next
 
-- **[Reading a result](/locusgraph/recall/results)** — the fields you just asked for
-- **[Deep recall](/locusgraph/recall/deep-recall)** — when narrowing and widening both fall short
+- **[Reading a result](/locusgraph/recall/results)**: the fields you just asked for
+- **[Deep recall](/locusgraph/recall/deep-recall)**: when narrowing and widening both fall short

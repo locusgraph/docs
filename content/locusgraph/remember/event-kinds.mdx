@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Event kinds — LocusGraph docs",
+  title: "Event kinds | LocusGraph docs",
   description:
     "The kinds you can stamp on a write, what each group means, and which ones are stored but kept out of search.",
 };
@@ -13,13 +13,13 @@ export const meta = {
 | Group | Kinds | What it means |
 | --- | --- | --- |
 | **Knowledge** | `fact` · `knowledge` · `observation` · `learned` · `feedback` | Something now true |
-| **Rules** | `constraint` · `rule` · `constraint_violation` | Something that must hold — or a time it did not |
+| **Rules** | `constraint` · `rule` · `constraint_violation` | Something that must hold, or a time it did not |
 | **Actions** | `action` · `task` · `operation` · `execution` · `completed` | Something that was done |
 | **Decisions** | `decision` · `choice` · `selection` · `determination` | Something that was chosen |
 | **Routine** | `routine` · `heartbeat` · `status` | Ordinary operation |
 | **Noise** | `noise` · `debug` · `log` | Kept, but never returned by a search |
 
-Within a group the kinds are synonyms — `fact`, `knowledge` and `learned` behave identically. Pick the one that reads best at the call site and stay consistent.
+Within a group the kinds are synonyms: `fact`, `knowledge` and `learned` behave identically. Pick the one that reads best at the call site and stay consistent.
 
 ## Choosing one
 
@@ -43,7 +43,7 @@ event_kind: "constraint_violation"
                             payload: { data: "a backfill violated the unique index and rolled back the chain" }
 ```
 
-Reading them back, the kind tells you what you are looking at. A `constraint` that conflicts with a `fact` is not two opinions — one is a rule and one is an observation.
+Reading them back, the kind tells you what you are looking at. A `constraint` that conflicts with a `fact` is not two opinions: one is a rule and one is an observation.
 
 ## Noise is stored, not discarded
 
@@ -53,7 +53,7 @@ That is the honest place for a heartbeat you might want to audit and never want 
 
 <Callout tone="trap" title="Filtered is a successful write">
   Nothing throws. If you stamp something `log` and later wonder why searches never find it, the
-  kind is the reason — not the query.
+  kind is the reason, not the query.
 </Callout>
 
 ## Unknown kinds
@@ -64,5 +64,5 @@ Stay inside the table unless you have a reason not to.
 
 ## Next
 
-- **[Sources](/locusgraph/remember/sources)** — the other stamp on every write
-- **[Store an event](/locusgraph/remember/store)** — the full request
+- **[Sources](/locusgraph/remember/sources)**: the other stamp on every write
+- **[Store an event](/locusgraph/remember/store)**: the full request

@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Contexts and memories — LocusGraph docs",
+  title: "Contexts and memories | LocusGraph docs",
   description:
     "What a context is, how to name one, and the calls that read a context and the memories filed under it.",
 };
@@ -16,7 +16,7 @@ The slug is the filing location, so two spellings are two drawers. Decide once:
 
 | Do | Do not |
 | --- | --- |
-| `preference:theme` | `preference:dark_mode` — that is the answer, not the question |
+| `preference:theme` | `preference:dark_mode`: that is the answer, not the question |
 | `person:alice` | `person:Alice_Smith_2026` |
 | `project:billing_ui` | `project:billingUI` |
 
@@ -34,7 +34,7 @@ Or by its two parts:
 await client.getContextByName("alice", "acme");
 ```
 
-Both return the context's metadata and its latest memory. Both **throw** when nothing is there — `"Context not found"` — unlike a search, which returns empty.
+Both return the context's metadata and its latest memory. Both **throw** when nothing is there, `"Context not found"`, unlike a search, which returns empty.
 
 Several at once:
 
@@ -60,7 +60,7 @@ const { contexts, not_found } = await client.batchGetContext(
 }
 ```
 
-`reference_count` is how many memories are enrolled in it — a rough measure of how much the graph knows about this thing.
+`reference_count` is how many memories are enrolled in it, a rough measure of how much the graph knows about this thing.
 
 ## Memories around a context
 
@@ -73,7 +73,7 @@ const related = await client.getRelatedMemories({
 });
 ```
 
-This searches the memories of **linked** contexts. `includeSelf` defaults to `false`, so the context's own memories are excluded unless you ask for them — which surprises people the first time.
+This searches the memories of **linked** contexts. `includeSelf` defaults to `false`, so the context's own memories are excluded unless you ask for them, which surprises people the first time.
 
 ## Deleting one
 
@@ -89,6 +89,6 @@ This removes the context, its links, **and any memory it was the last thread hol
 
 ## Next
 
-- **[Link and unlink](/locusgraph/contexts/linking)** — connecting contexts
-- **[Browse](/locusgraph/contexts/browsing)** — listing and searching them
-- **[Forward references](/locusgraph/contexts/resolving)** — naming something before it exists
+- **[Link and unlink](/locusgraph/contexts/linking)**: connecting contexts
+- **[Browse](/locusgraph/contexts/browsing)**: listing and searching them
+- **[Forward references](/locusgraph/contexts/resolving)**: naming something before it exists

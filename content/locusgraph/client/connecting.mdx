@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Connecting — LocusGraph docs",
+  title: "Connecting | LocusGraph docs",
   description:
     "The three configuration options, the environment variables behind them, and how a graph is resolved on each call.",
 };
@@ -19,8 +19,8 @@ const client = new LocusGraphClient({
 | Option | Environment variable | Default |
 | --- | --- | --- |
 | `serverUrl` | `LOCUSGRAPH_SERVER_URL` | `https://api.locusgraph.com` |
-| `agentSecret` | `LOCUSGRAPH_AGENT_SECRET` | none — required |
-| `graphId` | — | none — resolved per call |
+| `agentSecret` | `LOCUSGRAPH_AGENT_SECRET` | none: required |
+| `graphId` | - | none: resolved per call |
 
 With the environment set, the constructor takes nothing at all:
 
@@ -30,7 +30,7 @@ const client = new LocusGraphClient();
 
 ## The server URL
 
-The client talks to a **region server** directly. That is not the dashboard host and not a proxy — point it at the region your graphs live in.
+The client talks to a **region server** directly. That is not the dashboard host and not a proxy: point it at the region your graphs live in.
 
 ## The agent secret
 
@@ -67,12 +67,12 @@ Graph ID is required. Pass graphId in options or set graphId in client config.
 ```
 
 <Callout tone="note" title="One client, many graphs">
-  A single client can serve every tenant — pass `graphId` per call. Set a default only when the
+  A single client can serve every tenant: pass `graphId` per call. Set a default only when the
   process genuinely serves one graph, so a forgotten argument fails loudly instead of silently
   reading the wrong one.
 </Callout>
 
 ## Next
 
-- **[Errors](/locusgraph/client/errors)** — what throws, and what is worth retrying
-- **[Limits](/locusgraph/client/limits)** — caps and rates to design around
+- **[Errors](/locusgraph/client/errors)**: what throws, and what is worth retrying
+- **[Limits](/locusgraph/client/limits)**: caps and rates to design around

@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Types — LocusGraph docs",
+  title: "Types | LocusGraph docs",
   description:
     "Every request and response is typed and exported from the package root, with a naming pattern you can predict.",
 };
@@ -58,7 +58,7 @@ function buildQuery(question: string): ContextQuery {
 
 <Callout tone="note" title="The envelope is already off">
   The API wraps responses in `{ success, data }`. The client unwraps it, so a `…Response` type
-  describes what you actually receive — not the envelope around it. You never write `res.data`.
+  describes what you actually receive, not the envelope around it. You never write `res.data`.
 </Callout>
 
 ## Pagination
@@ -71,10 +71,10 @@ await client.listContextsByType("acme", "preference", { page: 0, page_size: 50 }
 
 <Callout tone="trap" title="`page` is zero-indexed">
   The first page is `0`, not `1`, everywhere in the API. Asking for page 1 quietly gives you the
-  second page of results — no error, just a gap at the top of your list.
+  second page of results, no error, just a gap at the top of your list.
 </Callout>
 
 ## Next
 
-- **[Limits](/locusgraph/client/limits)** — what a page may be sized to, and the other caps
-- **[Store an event](/locusgraph/remember/store)** — the request type, field by field
+- **[Limits](/locusgraph/client/limits)**: what a page may be sized to, and the other caps
+- **[Store an event](/locusgraph/remember/store)**: the request type, field by field

@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Documents — LocusGraph docs",
+  title: "Documents | LocusGraph docs",
   description:
     "Ingest a file once and recall from it later, and how that differs from the chunk-and-embed pipeline you may be replacing.",
 };
@@ -12,7 +12,7 @@ You have a runbook, a spec, a contract. You want your app to answer from it mont
 
 The familiar pipeline splits a document into chunks, embeds each one, and returns the nearest few. It works, and it has a known failure: a chunk is a slice of a page, not a thing that was learned. Half a sentence about rate limits comes back with the other half in a chunk that did not score.
 
-Ingesting into LocusGraph produces memories instead — statements the document makes, filed under contexts. The unit is the fact, not the fragment.
+Ingesting into LocusGraph produces memories instead: statements the document makes, filed under contexts. The unit is the fact, not the fragment.
 
 ```
    chunking        document ──► 400-token slices ──► nearest slices

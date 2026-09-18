@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Access and transfer — LocusGraph docs",
+  title: "Access and transfer | LocusGraph docs",
   description:
     "The three permission levels, granting and revoking them, and handing a graph to a new owner.",
 };
@@ -37,7 +37,7 @@ Granting again with a different permission changes it. There is no separate upda
 <Callout tone="trap" title="You cannot lower your own access">
   Changing your own permission to anything but `owner` is refused: *"Cannot change your own
   permission. Use another owner to modify your access."* It stops a graph being orphaned by one
-  careless call — there is no one left who can grant it back.
+  careless call: there is no one left who can grant it back.
 </Callout>
 
 ## Revoking
@@ -47,7 +47,7 @@ curl -X DELETE https://api.locusgraph.com/v1/graphs/permissions/$GRAPH_ID/$ACCOU
   -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET"
 ```
 
-Immediate. Keys that account minted are a separate matter — revoke those too, under [API keys](/locusgraph/graphs/keys).
+Immediate. Keys that account minted are a separate matter: revoke those too, under [API keys](/locusgraph/graphs/keys).
 
 ## Transfer
 
@@ -75,5 +75,5 @@ Do not hand an application an owner permission because it was easier than mintin
 
 ## Next
 
-- **[Settings](/locusgraph/graphs/settings)** — what an owner can change
-- **[Multi-tenant](/locusgraph/use-cases/multi-tenant)** — where the boundary belongs
+- **[Settings](/locusgraph/graphs/settings)**: what an owner can change
+- **[Multi-tenant](/locusgraph/use-cases/multi-tenant)**: where the boundary belongs

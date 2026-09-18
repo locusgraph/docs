@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Support and SLAs — LocusGraph docs",
+  title: "Support and SLAs | LocusGraph docs",
   description:
     "What the platform tells you about its own behaviour, the limits you can design against, and how to reach a person.",
 };
@@ -10,11 +10,11 @@ export const meta = {
 
 Before an agreement is involved, several things are observable rather than promised.
 
-**Limits are published.** Payload cap, batch ceilings and every rate bucket are on one page, with the numbers — see [Limits](/locusgraph/client/limits). You can design against them without asking anyone.
+**Limits are published.** Payload cap, batch ceilings and every rate bucket are on one page, with the numbers. See [Limits](/locusgraph/client/limits). You can design against them without asking anyone.
 
 **Failures are legible.** Every call throws on failure with the status and the server's body, and the split is clean: `4xx` means the request was wrong, `429` and `5xx` mean the moment was wrong. Only the second group is worth retrying. See [Errors](/locusgraph/client/errors).
 
-**Model-backed calls report their own cost.** [Deep recall](/locusgraph/recall/deep-recall) returns `usage` on every call — LLM calls, tokens both ways, and dollars — and a `coverage` field saying whether the walk finished. You are not inferring spend from a monthly invoice.
+**Model-backed calls report their own cost.** [Deep recall](/locusgraph/recall/deep-recall) returns `usage` on every call, LLM calls, tokens both ways, and dollars, and a `coverage` field saying whether the walk finished. You are not inferring spend from a monthly invoice.
 
 **Degraded answers announce themselves.** `coverage: "partial"` and `fallback: true` say the answer came from less than a full walk. A system that returned the same shape either way would be harder to operate.
 
@@ -31,7 +31,7 @@ If these ceilings do not fit your volume, that is a conversation rather than a b
 
 ## What is not on this page
 
-Uptime commitments, response times, escalation paths, dedicated capacity and contractual terms are not published here. They are agreed, not documented — and a docs page claiming an SLA that your contract does not say is worse than no page.
+Uptime commitments, response times, escalation paths, dedicated capacity and contractual terms are not published here. They are agreed, not documented, and a docs page claiming an SLA that your contract does not say is worse than no page.
 
 ## Reaching a person
 
@@ -51,5 +51,5 @@ For a deep recall that answered badly, include `coverage`, `rounds_used`, `fallb
 
 ## Next
 
-- **[Limits](/locusgraph/client/limits)** — every ceiling in one place
-- **[Security](/locusgraph/enterprise/security)** — what holds when something goes wrong
+- **[Limits](/locusgraph/client/limits)**: every ceiling in one place
+- **[Security](/locusgraph/enterprise/security)**: what holds when something goes wrong

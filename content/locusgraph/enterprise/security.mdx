@@ -1,12 +1,12 @@
 export const meta = {
-  title: "Security — LocusGraph docs",
+  title: "Security | LocusGraph docs",
   description:
     "How memories are isolated, what a credential can reach, what is written to the audit trail, and the failure modes the design refuses.",
 };
 
 # Security
 
-What holds when something goes wrong — not a list of promises.
+What holds when something goes wrong, not a list of promises.
 
 ## Isolation is structural
 
@@ -25,7 +25,7 @@ That matters because the alternative is a wall made of application code. Tag mem
 Two rules stop a credential widening itself, both enforced when a key is minted:
 
 - A key cannot carry a capability the credential minting it does not already hold
-- A graph-scoped credential can only mint keys for its own graph — *"This credential can only issue a key scoped to its own graph"*
+- A graph-scoped credential can only mint keys for its own graph: *"This credential can only issue a key scoped to its own graph"*
 
 So a leaked tenant key cannot be escalated. The worst it does is reproduce itself, and revoking the original revokes the reason it existed.
 
@@ -49,7 +49,7 @@ Ownership has a matching guard: you cannot lower your own permission, so a graph
 
 ## The audit trail
 
-Authentication and account events are written to an audit log — the event type, who acted, what was acted on, and when.
+Authentication and account events are written to an audit log, the event type, who acted, what was acted on, and when.
 
 It is written **best effort**: a failed audit write is logged loudly and never fails the request that produced it. The event has already happened, and refusing the request afterwards would not unmake it.
 
@@ -67,5 +67,5 @@ Certifications, penetration test reports, data processing agreements and subproc
 
 ## Next
 
-- **[Data residency](/locusgraph/enterprise/data-residency)** — where memories are stored
-- **[SSO and access](/locusgraph/enterprise/sso)** — who signs in, and how
+- **[Data residency](/locusgraph/enterprise/data-residency)**: where memories are stored
+- **[SSO and access](/locusgraph/enterprise/sso)**: who signs in, and how

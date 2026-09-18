@@ -1,5 +1,5 @@
 export const meta = {
-  title: "HTTP API — spendgraph docs",
+  title: "HTTP API | spendgraph docs",
   description: "The ingest endpoint, cache token accounting, the stats and events reads, and CSV export.",
 };
 
@@ -29,7 +29,7 @@ Cost is computed at ingest from the newest price for the model and stored on the
 
 ## Cache tokens
 
-Cached prompts bill at their own rates — a read costs roughly a tenth of normal input, a write a little more than it — so they are reported as their own fields rather than folded into `inputTokens`.
+Cached prompts bill at their own rates: a read costs roughly a tenth of normal input, a write a little more than it, so they are reported as their own fields rather than folded into `inputTokens`.
 
 ```json
 "events": [{
@@ -42,7 +42,7 @@ Cached prompts bill at their own rates — a read costs roughly a tenth of norma
 ```
 
 <Callout tone="trap" title="The three counts are disjoint">
-  Providers report them separately — Anthropic's total input is `input + cache_read + cache_creation` — and spendgraph prices them the same way. Do **not** also add cache tokens into `inputTokens`: that bills the same tokens twice, at the wrong rate. Omitting them loses the spend entirely.
+  Providers report them separately, Anthropic's total input is `input + cache_read + cache_creation`, and spendgraph prices them the same way. Do **not** also add cache tokens into `inputTokens`: that bills the same tokens twice, at the wrong rate. Omitting them loses the spend entirely.
 </Callout>
 
 A model whose offer publishes no cache rate bills cache tokens at its input rate rather than at zero. An unknown discount should overcount, never undercount.
@@ -51,7 +51,7 @@ A model whose offer publishes no cache rate bills cache tokens at its input rate
 
 ## Reads
 
-These accept a signed-in GitHub session, and — for the endpoints below — the same `x-api-key` header as ingest. That is what makes a scheduled cost report possible without driving a browser.
+These accept a signed-in GitHub session, and, for the endpoints below, the same `x-api-key` header as ingest. That is what makes a scheduled cost report possible without driving a browser.
 
 | | |
 | --- | --- |
@@ -65,10 +65,10 @@ These accept a signed-in GitHub session, and — for the endpoints below — the
 
 `by-key` is how spend gets attributed to an environment or a service. Each row carries the key's `revoked` timestamp, so spend that arrived on a key you have since turned off stays visible rather than silently unattributed.
 
-`by-tag` takes one dimension at a time on purpose. Omit `key` and the costliest is used, with the rest listed in `keys`. Ranking `env` and `feature` together would double count — they are two cuts of the same spend.
+`by-tag` takes one dimension at a time on purpose. Omit `key` and the costliest is used, with the rest listed in `keys`. Ranking `env` and `feature` together would double count: they are two cuts of the same spend.
 
 <Callout tone="warn" title="A key is pinned to its project">
-  `project=` is implied and can be omitted. Passing a *different* project returns `403 project_not_accessible` rather than quietly answering with the key's own project — a report that iterates projects with one key should fail loudly, not repeat one project's figures under every heading.
+  `project=` is implied and can be omitted. Passing a *different* project returns `403 project_not_accessible` rather than quietly answering with the key's own project, a report that iterates projects with one key should fail loudly, not repeat one project's figures under every heading.
 </Callout>
 
 ## Filtering and exporting events
@@ -89,7 +89,7 @@ Paging works in either sort order, but a cursor is only valid for the sort it ca
 In CSV, each metadata key becomes its own `meta.<key>` column, so cost by feature is a pivot rather than a JSON parse.
 
 <Callout tone="trap" title="A truncated export is a wrong answer that looks right">
-  CSV is capped at 5,000 rows. Check `x-spendgraph-truncated` before totalling a column — `x-spendgraph-rows` and `x-spendgraph-next-cursor` carry on from where it stopped.
+  CSV is capped at 5,000 rows. Check `x-spendgraph-truncated` before totalling a column: `x-spendgraph-rows` and `x-spendgraph-next-cursor` carry on from where it stopped.
 </Callout>
 
 ## Everything else

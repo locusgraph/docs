@@ -1,5 +1,5 @@
 export const meta = {
-  title: "SSO and access — LocusGraph docs",
+  title: "SSO and access | LocusGraph docs",
   description:
     "How people sign in, how programs authenticate, the three permission levels, and where the line between the two belongs.",
 };
@@ -10,7 +10,7 @@ Two different questions, answered differently: how a **person** gets in, and how
 
 ## People sign in
 
-Sign-in is OAuth. Social login is supported today, and LocusGraph is itself an **OAuth 2.1 issuer** — authorization code with PKCE, refresh tokens, and client credentials for machine callers.
+Sign-in is OAuth. Social login is supported today, and LocusGraph is itself an **OAuth 2.1 issuer**: authorization code with PKCE, refresh tokens, and client credentials for machine callers.
 
 That matters for an enterprise rollout: your own application can sit in front of LocusGraph and issue credentials through a standard flow, rather than distributing long-lived secrets by hand.
 
@@ -21,7 +21,7 @@ That matters for an enterprise rollout: your own application can sit in front of
 
 ## Programs authenticate with a key
 
-An agent secret is a bearer token. It has no session, no refresh, and no user behind it — it is the credential your service holds.
+An agent secret is a bearer token. It has no session, no refresh, and no user behind it: it is the credential your service holds.
 
 ```typescript
 const client = new LocusGraphClient({
@@ -68,12 +68,12 @@ Granting again with a different value changes it. Revoking is immediate. See [Ac
 Three things, and missing any one leaves a door open:
 
 1. Revoke the account's permission on each graph
-2. Revoke the keys that account minted — they do not expire with the person
+2. Revoke the keys that account minted: they do not expire with the person
 3. Transfer ownership of any graph they owned, or it has no administrator
 
 <EarlyAccess product="LocusGraph Enterprise" />
 
 ## Next
 
-- **[Security](/locusgraph/enterprise/security)** — what a credential can reach
-- **[Support and SLAs](/locusgraph/enterprise/support)** — who to call
+- **[Security](/locusgraph/enterprise/security)**: what a credential can reach
+- **[Support and SLAs](/locusgraph/enterprise/support)**: who to call

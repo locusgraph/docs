@@ -1,7 +1,7 @@
 export const meta = {
-  title: "Limits — LocusGraph docs",
+  title: "Limits | LocusGraph docs",
   description:
-    "Payload caps, batch ceilings, page sizes and rate limits — every number you need to design around, in one place.",
+    "Payload caps, batch ceilings, page sizes and rate limits: every number you need to design around, in one place.",
 };
 
 # Limits
@@ -12,7 +12,7 @@ Every ceiling a caller can hit, collected here so you are not discovering them o
 
 A single memory's payload is capped at **64 KB**.
 
-That is measured in **bytes, not characters**. A payload of emoji or non-Latin text reaches the cap in far fewer characters than an English one — `"日本語"` is three characters and nine bytes.
+That is measured in **bytes, not characters**. A payload of emoji or non-Latin text reaches the cap in far fewer characters than an English one: `"日本語"` is three characters and nine bytes.
 
 Over the cap, the write is refused. It is not truncated, so nothing is silently half-stored.
 
@@ -28,11 +28,11 @@ Over the cap, the write is refused. It is not truncated, so nothing is silently 
 | `storeEventsBatch` | **1000** events per request |
 | `transaction` | The same, and all of them commit or none do |
 
-Past 1000, split the work. The two calls differ in guarantee, not in size — see [Batch and transactions](/locusgraph/remember/batch).
+Past 1000, split the work. The two calls differ in guarantee, not in size. See [Batch and transactions](/locusgraph/remember/batch).
 
 ## Pagination
 
-Reads that return lists take `page` and `page_size`. `page` is **zero-indexed** — the first page is `0`.
+Reads that return lists take `page` and `page_size`. `page` is **zero-indexed**: the first page is `0`.
 
 ```typescript
 await client.listContextsByType("acme", "preference", { page: 0, page_size: 50 });
@@ -49,15 +49,15 @@ Four buckets, counted per minute:
 | `write` | **120/min** | `storeEvent`, `storeEventsBatch`, `transaction`, `observe` |
 | `read` | **300/min** | Everything else |
 
-Searching is the tight one, and deliberately so — a recall is not a cheap lookup. Design around it:
+Searching is the tight one, and deliberately so: a recall is not a cheap lookup. Design around it:
 
 - **Search once per turn, not once per question.** One well-phrased query returns what several narrow ones would
 - **Writes are cheap by comparison.** 120/min, and a batch of 1000 is one request against it
-- **Reads that address a context by name** — `getContext`, `listContextsByType` — sit in the 300/min bucket, so walking a known structure is not constrained the way searching is
+- **Reads that address a context by name**: `getContext`, `listContextsByType`: sit in the 300/min bucket, so walking a known structure is not constrained the way searching is
 
-Over the limit you get `429`. That one **is** worth retrying, after a pause — see [Errors](/locusgraph/client/errors).
+Over the limit you get `429`. That one **is** worth retrying, after a pause. See [Errors](/locusgraph/client/errors).
 
 ## Next
 
-- **[Errors](/locusgraph/client/errors)** — the statuses these limits produce
-- **[Batch and transactions](/locusgraph/remember/batch)** — moving work under the write ceiling
+- **[Errors](/locusgraph/client/errors)**: the statuses these limits produce
+- **[Batch and transactions](/locusgraph/remember/batch)**: moving work under the write ceiling

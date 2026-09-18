@@ -1,5 +1,5 @@
 export const meta = {
-  title: "API keys — LocusGraph docs",
+  title: "API keys | LocusGraph docs",
   description:
     "Minting a key, scoping it to one graph, the capabilities it carries, and the rule that stops a key from widening itself.",
 };
@@ -56,7 +56,7 @@ curl https://api.locusgraph.com/v1/keys -H "Authorization: Bearer $SECRET"
 curl -X DELETE https://api.locusgraph.com/v1/keys/$KEY_ID -H "Authorization: Bearer $SECRET"
 ```
 
-Each entry carries its name, `graph_id` and scopes — which is why `name` is worth filling in. Revocation is immediate.
+Each entry carries its name, `graph_id` and scopes, which is why `name` is worth filling in. Revocation is immediate.
 
 ## Handling one
 
@@ -70,5 +70,5 @@ const client = new LocusGraphClient({ graphId: tenant.graphId });
 
 ## Next
 
-- **[Access and transfer](/locusgraph/graphs/access)** — granting people, rather than programs
-- **[Connecting](/locusgraph/client/connecting)** — where the key goes
+- **[Access and transfer](/locusgraph/graphs/access)**: granting people, rather than programs
+- **[Connecting](/locusgraph/client/connecting)**: where the key goes

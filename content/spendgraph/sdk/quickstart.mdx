@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Quickstart — spendgraph docs",
+  title: "Quickstart | spendgraph docs",
   description: "Wire spendgraph into an app in two minutes: mint a key, wrap your provider client, watch spend appear.",
 };
 
@@ -9,7 +9,7 @@ Two minutes, and the only code you write is the line that wraps your client.
 
 ## 1. Get a key
 
-Create a project under [Projects](https://spendgraph.locusgraph.com/projects), then mint an API key under [API keys](https://spendgraph.locusgraph.com/keys) — both live under **Setup** in the dashboard sidebar.
+Create a project under [Projects](https://spendgraph.locusgraph.com/projects), then mint an API key under [API keys](https://spendgraph.locusgraph.com/keys), both live under **Setup** in the dashboard sidebar.
 
 <Callout tone="warn" title="Shown once">
   The plaintext key appears on screen a single time and is never recoverable. Put it in your secret store before you close the tab.
@@ -41,7 +41,7 @@ const msg = await anthropic.messages.create({
 });
 ```
 
-That is the whole integration. Use the client exactly as before — usage is read off each reply and reported for you. Spend appears on the dashboard within seconds.
+That is the whole integration. Use the client exactly as before: usage is read off each reply and reported for you. Spend appears on the dashboard within seconds.
 
 ## What it will not do to you
 
@@ -50,9 +50,9 @@ The SDK is fire-and-forget by design. It never throws into your code, never bloc
 That last one is a deliberate trade. A metering library that takes your app down when the meter is having a bad day has failed at something more important than metering.
 
 <Callout tone="trap" title="`wrap()` reads usage off the reply, so a stream has to ask for it">
-  A streamed call that did not request usage reports no tokens, and no tokens prices at $0.00 — a hole in the dashboard that looks like a saving. If you stream, make sure the request asks for usage; `@spendgraph/llms` does it for you.
+  A streamed call that did not request usage reports no tokens, and no tokens prices at $0.00, a hole in the dashboard that looks like a saving. If you stream, make sure the request asks for usage; `@spendgraph/llms` does it for you.
 </Callout>
 
 ## Next
 
-Anthropic and OpenAI clients work with `wrap()`. Anything else — Gemini, Bedrock, a framework, another language — reports through [`track()`](/spendgraph/sdk/tracking) or a plain HTTP POST. If it can tell you its token counts, spendgraph can price it.
+Anthropic and OpenAI clients work with `wrap()`. Anything else, Gemini, Bedrock, a framework, another language, reports through [`track()`](/spendgraph/sdk/tracking) or a plain HTTP POST. If it can tell you its token counts, spendgraph can price it.

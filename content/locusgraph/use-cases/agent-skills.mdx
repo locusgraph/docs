@@ -1,18 +1,18 @@
 export const meta = {
-  title: "Agent skills — LocusGraph docs",
+  title: "Agent skills | LocusGraph docs",
   description:
     "Give an agent a memory of what worked and what failed, so the second attempt at a problem is not identical to the first.",
 };
 
 # Agent skills
 
-An agent that cannot remember its own failures repeats them. Not occasionally — every single time, because nothing about the next run is different from the last.
+An agent that cannot remember its own failures repeats them. Not occasionally: every single time, because nothing about the next run is different from the last.
 
 What you want is narrow and specific: *this approach, on this kind of task, did not work, and here is what did.*
 
 ## What to store
 
-After a run, write the outcome — not the run.
+After a run, write the outcome, not the run.
 
 ```typescript
 await client.storeEvent({
@@ -39,7 +39,7 @@ await client.storeEvent({
 ```
 
 <Callout tone="note" title="The tool source is doing real work here">
-  The agent did not infer this — a test run, a failed deploy or a type error proved it. That sits
+  The agent did not infer this, a test run, a failed deploy or a type error proved it. That sits
   well above `assistant` on the [trust ladder](/locusgraph/remember/sources), and it is what makes
   the memory outweigh a later guess to the contrary.
 </Callout>
@@ -70,7 +70,7 @@ Put what returns into the planning prompt. The agent now starts the task knowing
 
 ## When one search is not enough
 
-Some questions need more than one lookup — "why does this deploy keep failing" touches migrations, the deploy pipeline and whatever changed recently.
+Some questions need more than one lookup: "why does this deploy keep failing" touches migrations, the deploy pipeline and whatever changed recently.
 
 ```typescript
 const { summary, facts } = await client.deepRecall({

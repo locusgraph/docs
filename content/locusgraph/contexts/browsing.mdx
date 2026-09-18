@@ -1,12 +1,12 @@
 export const meta = {
-  title: "Browse — LocusGraph docs",
+  title: "Browse | LocusGraph docs",
   description:
     "Listing context types, listing contexts within a type, searching them by name, and walking the relationships between them.",
 };
 
 # Browse
 
-Searching finds memories. Browsing finds **contexts** — useful when you are building a UI over the graph, or checking what your naming has actually produced.
+Searching finds memories. Browsing finds **contexts**: useful when you are building a UI over the graph, or checking what your naming has actually produced.
 
 ## What types exist
 
@@ -34,7 +34,7 @@ const { contexts } = await client.listContextsByType("preference", "acme", {
 ```
 
 <Callout tone="trap" title="`page` starts at 0">
-  Everywhere in the API. Asking for page `1` silently hands you the second page — no error, just a
+  Everywhere in the API. Asking for page `1` silently hands you the second page, no error, just a
   missing first row in your list.
 </Callout>
 
@@ -54,7 +54,7 @@ const results = await client.searchContexts("alice", "acme", {
 | `context_type` | Restrict to one type |
 | `min_count` | Only contexts with at least this many memories |
 | `include` | `"relationships"` folds each match's links into the response |
-| `format` | How those relationships render — `"json"` (default), `"mindmap"`, `"toon"` |
+| `format` | How those relationships render: `"json"` (default), `"mindmap"`, `"toon"` |
 | `page`, `page_size` | Pagination |
 
 `min_count` is the useful one for cleanup: contexts with a single memory are often typos or one-offs.
@@ -87,9 +87,9 @@ const graph = await client.getContextGraph({
 const everything = await client.getFullContextGraph({ graphId: "acme" });
 ```
 
-One is the neighbourhood around a context; the other is every node and edge. The second grows with the graph — reach for it to draw a picture, not inside a request path.
+One is the neighbourhood around a context; the other is every node and edge. The second grows with the graph. Reach for it to draw a picture, not inside a request path.
 
 ## Next
 
-- **[Link and unlink](/locusgraph/contexts/linking)** — making the edges you are walking
-- **[Forward references](/locusgraph/contexts/resolving)** — links that point at nothing yet
+- **[Link and unlink](/locusgraph/contexts/linking)**: making the edges you are walking
+- **[Forward references](/locusgraph/contexts/resolving)**: links that point at nothing yet

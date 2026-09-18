@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Store an event — LocusGraph docs",
+  title: "Store an event | LocusGraph docs",
   description:
     "Every field storeEvent accepts, what comes back, and why a successful write can still be filtered.",
 };
@@ -23,10 +23,10 @@ const result = await client.storeEvent({
 | Field | Required | What it is |
 | --- | --- | --- |
 | `graph_id` | Yes | The graph to write into |
-| `event_kind` | Yes | What sort of memory this is — [Event kinds](/locusgraph/remember/event-kinds) |
+| `event_kind` | Yes | What sort of memory this is: [Event kinds](/locusgraph/remember/event-kinds) |
 | `payload` | Yes | The memory itself. Any JSON |
 | `context_id` | No | The primary context, as `type:slug` |
-| `source` | No | Where it came from — [Sources](/locusgraph/remember/sources) |
+| `source` | No | Where it came from: [Sources](/locusgraph/remember/sources) |
 | `extends` | No | Context ids this is a more specific detail of |
 | `related_to` | No | Context ids this is laterally associated with |
 | `reinforces` | No | Context ids whose memories this strengthens |
@@ -78,7 +78,7 @@ await client.storeEvent({
 
 ### `status: "filtered"` is not an error
 
-A filtered write **succeeded**. The memory was accepted and stored — it is simply kept out of ranking, so a search will not return it.
+A filtered write **succeeded**. The memory was accepted and stored: it is simply kept out of ranking, so a search will not return it.
 
 That is what happens to the Noise kinds: `noise`, `debug`, `log`. You get an id back, the row exists, nothing throws.
 
@@ -93,10 +93,10 @@ The context you get back is the one the server actually stored, which may differ
 
 ## Writing more than one
 
-Three at a time is still three calls. Use [batch or a transaction](/locusgraph/remember/batch) instead — up to 1000 per request.
+Three at a time is still three calls. Use [batch or a transaction](/locusgraph/remember/batch) instead: up to 1000 per request.
 
 ## Next
 
-- **[Event kinds](/locusgraph/remember/event-kinds)** — all 22, and what each group means
-- **[Sources](/locusgraph/remember/sources)** — the trust ladder, and the aliases
-- **[Batch and transactions](/locusgraph/remember/batch)** — many writes, two guarantees
+- **[Event kinds](/locusgraph/remember/event-kinds)**: all 22, and what each group means
+- **[Sources](/locusgraph/remember/sources)**: the trust ladder, and the aliases
+- **[Batch and transactions](/locusgraph/remember/batch)**: many writes, two guarantees

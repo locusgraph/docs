@@ -1,7 +1,7 @@
 export const meta = {
-  title: "Concepts — LocusGraph docs",
+  title: "Concepts | LocusGraph docs",
   description:
-    "Five words the rest of these docs use precisely: graph, context, memory, event kind and source — and the links that connect one context to another.",
+    "Five words the rest of these docs use precisely: graph, context, memory, event kind and source, and the links that connect one context to another.",
 };
 
 # Concepts
@@ -14,7 +14,7 @@ Five words, and the API stops being a list of methods.
 
 An isolated memory space, addressed by an id. Nothing in one graph is visible from another.
 
-One per user, one per workspace, one per project — whichever is your unit of separation. If two tenants must never see each other's memories, they get two graphs.
+One per user, one per workspace, one per project: whichever is your unit of separation. If two tenants must never see each other's memories, they get two graphs.
 
 ## Context
 
@@ -25,7 +25,7 @@ A named anchor, written `type:slug`:
 The context is the stable handle. Memories come and go beneath it; the name stays put, which is what lets you address the same idea next week.
 
 <Callout tone="trap" title="The slug is the filing location">
-  `preference:dark_mode` and `preference:darkMode` are two different drawers, each half full. Keep slugs short and canonical, and decide the spelling once — nothing downstream will tell you the same idea landed in two places.
+  `preference:dark_mode` and `preference:darkMode` are two different drawers, each half full. Keep slugs short and canonical, and decide the spelling once: nothing downstream will tell you the same idea landed in two places.
 </Callout>
 
 ## Memory
@@ -34,8 +34,8 @@ Also called a **locus**. One thing that was learned, stored under one or more co
 
 You **store and search memories**. You **address them by context**. The relationship runs both ways:
 
-- One context holds many memories — the same preference stated three times is three memories, and the repetition is signal
-- One memory can sit under several contexts — what Alice said about the billing UI belongs to both `user:alice` and `project:billing_ui`
+- One context holds many memories: the same preference stated three times is three memories, and the repetition is signal
+- One memory can sit under several contexts: what Alice said about the billing UI belongs to both `user:alice` and `project:billing_ui`
 
 ## Event kind
 
@@ -54,7 +54,7 @@ What sort of memory this is, stamped when you write it. It decides how the memor
 
 ## Source
 
-Where a memory came from. Every write is stamped with one, and the stamp is a trust ladder — the higher the source, the more weight the memory carries when two memories disagree.
+Where a memory came from. Every write is stamped with one, and the stamp is a trust ladder, the higher the source, the more weight the memory carries when two memories disagree.
 
 <TrustLadder />
 
@@ -70,6 +70,6 @@ A write can connect its context to others. Four relationships, each carrying a d
 
 ## Next
 
-- **[Quickstart](/locusgraph/quickstart)** — store a memory and search it back
-- **[Store an event](/locusgraph/remember/store)** — every field a write accepts
-- **[Contexts](/locusgraph/contexts/overview)** — naming, linking and browsing them
+- **[Quickstart](/locusgraph/quickstart)**: store a memory and search it back
+- **[Store an event](/locusgraph/remember/store)**: every field a write accepts
+- **[Contexts](/locusgraph/contexts/overview)**: naming, linking and browsing them

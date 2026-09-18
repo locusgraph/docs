@@ -1,5 +1,5 @@
 export const meta = {
-  title: "Search memories — LocusGraph docs",
+  title: "Search memories | LocusGraph docs",
   description:
     "Ask a question in your own words and get back the memories that answer it, rendered for a prompt or as structured items.",
 };
@@ -12,7 +12,7 @@ const { memories } = await client.retrieveMemories({
 });
 ```
 
-One required field. Everything else narrows, widens or reshapes the result — see [Query options](/locusgraph/recall/options).
+One required field. Everything else narrows, widens or reshapes the result. See [Query options](/locusgraph/recall/options).
 
 ## Write the question, not keywords
 
@@ -50,13 +50,13 @@ const { items } = await client.retrieveMemories({
 
 <Callout tone="trap" title="`memories` and `items` are never both present">
   `format: "markdown"` (the default) and `"toon"` fill `memories` and omit `items`. `"json"` fills
-  `items` and omits `memories` entirely. Both are optional on the type — narrow on the one your
+  `items` and omits `memories` entirely. Both are optional on the type: narrow on the one your
   `format` asked for, or you will be reading `undefined`.
 </Callout>
 
 ## Nothing matched
 
-An empty result is not an error. `items_found` is `0` and `memories` is empty — nothing throws.
+An empty result is not an error. `items_found` is `0` and `memories` is empty, nothing throws.
 
 That differs from addressing a context by name, which throws when it is not there. See [Errors](/locusgraph/client/errors).
 
@@ -70,10 +70,10 @@ await client.retrieveMemories({ query: "…", graphId: "acme" });
 
 ## Cost
 
-Searching sits in the tightest rate bucket — **20 per minute**, shared with deep recall. One well-phrased query beats three narrow ones, and not only for the quota. See [Limits](/locusgraph/client/limits).
+Searching sits in the tightest rate bucket: **20 per minute**, shared with deep recall. One well-phrased query beats three narrow ones, and not only for the quota. See [Limits](/locusgraph/client/limits).
 
 ## Next
 
-- **[Query options](/locusgraph/recall/options)** — narrowing, widening and reshaping
-- **[Reading a result](/locusgraph/recall/results)** — every field on an item
-- **[Deep recall](/locusgraph/recall/deep-recall)** — when one search cannot answer it
+- **[Query options](/locusgraph/recall/options)**: narrowing, widening and reshaping
+- **[Reading a result](/locusgraph/recall/results)**: every field on an item
+- **[Deep recall](/locusgraph/recall/deep-recall)**: when one search cannot answer it
