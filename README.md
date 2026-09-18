@@ -1,108 +1,125 @@
-<p align="center">
-  <img src="./public/banner.svg" alt="spendgraph — know what every token costs" width="100%">
-</p>
+# LocusGraph Docs
 
-<p align="center">
-  <a href="https://spendgraph.locusgraph.com/docs"><strong>Docs</strong></a> ·
-  <a href="https://spendgraph.locusgraph.com/docs/sdk/quickstart">Quickstart</a> ·
-  <a href="https://www.npmjs.com/org/spendgraph">npm</a>
-</p>
+The documentation host for every LocusGraph product, served from one Next.js app
+at `doc.locusgraph.com`.
 
----
+Marketing pages and articles are not here — those live on `www.locusgraph.com`,
+and each product signs its users in on its own subdomain. A page on this host is
+documentation or it does not belong on this host.
 
-Report the tokens an LLM call consumed and spendgraph prices them, stores the
-cost in integer micro-USD, and shows you where the money went. Counts only —
-no prompt or response text leaves your app.
+## Running it
 
-Above that sit eight more packages for building the app that spends the money:
-prompts, model calls, tools, graphs, workflows and evals, each usable on its
-own.
-
-```ts
-import Anthropic from "@anthropic-ai/sdk";
-import { SpendGraph } from "@spendgraph/sdk";
-
-const meter = new SpendGraph({ apiKey: process.env.SPENDGRAPH_API_KEY, baseUrl });
-const anthropic = meter.wrap(new Anthropic());
+```bash
+pnpm install
+pnpm dev          # http://localhost:3100
 ```
 
-That is the whole integration. Usage is read off each reply and reported for
-you; spend appears on the dashboard within seconds.
-
-## Docs
-
-| | |
+| Script | What it does |
 | --- | --- |
-| [SDK](https://spendgraph.locusgraph.com/docs/sdk/quickstart) | Report what your app spends on models, and read it back |
-| [Prompts](https://spendgraph.locusgraph.com/docs/prompt/overview) | Pull a stored prompt or write one in code, and record what it cost |
-| [LLMs](https://spendgraph.locusgraph.com/docs/llms/overview) | Call any provider, get one shape back |
-| [Tools](https://spendgraph.locusgraph.com/docs/tools/overview) | Declare a tool once, offer the right few |
-| [Graph](https://spendgraph.locusgraph.com/docs/graph/overview) | Wire nodes into a graph, run it, get a rollout |
-| [Harness](https://spendgraph.locusgraph.com/docs/harness/overview) | The seven shapes an LLM app takes |
-| [Evals](https://spendgraph.locusgraph.com/docs/evals/getting-started) | Score model output, and tell a real change from noise |
-| [CLI](https://spendgraph.locusgraph.com/docs/cli/overview) | Drive the dashboard from a terminal |
+| `pnpm dev` | Next dev server on port 3100 |
+| `pnpm build` | Production build |
+| `pnpm start` | Serve the build on port 3100 |
+| `pnpm lint` | `biome check .` |
+| `pnpm typecheck` | `tsc --noEmit` |
 
-## Packages
+Enable the hooks once per clone:
 
-| | |
-| --- | --- |
-| [`@spendgraph/sdk`](./packages/sdk) | the API, and the wire types the others share |
-| [`@spendgraph/prompt`](./packages/prompt) | stored and custom prompts, rendering, rollouts |
-| [`@spendgraph/llms`](./packages/llms) | reading a provider reply, driving a provider client |
-| [`@spendgraph/tools`](./packages/tools) | declaring tools, selecting a shortlist, recording a turn |
-| [`@spendgraph/graph`](./packages/graph) | nodes, edges, and a run that comes back as a rollout |
-| [`@spendgraph/harness`](./packages/harness) | the seven workflows, and `streamed()` to watch one run |
-| [`@spendgraph/stage`](./packages/stage) | one prompt, one schema, one priced reply |
-| [`@spendgraph/evals`](./packages/evals) | scoring rollouts |
-| [`@spendgraph/vigil`](./packages/vigil) | parking a run on an agent that takes hours, and resuming it |
-| [`@spendgraph/workflows`](./packages/workflows) | ready-made workflows assembled from the rest |
-| [`@spendgraph/cli`](./packages/cli) | `sg`, driving the dashboard from a terminal |
-
-## How the money works
-
-Every cost is an **integer in micro-USD** (µ$1 = $0.000001), so sums stay exact
-and no float ever rounds a bill.
-
-Events are priced at ingest from a catalogue that syncs daily from
-[LiteLLM's community pricing file](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)
-— thousands of models across 100+ providers. A price you set by hand always
-wins over the sync. Cache reads and writes bill at their own rates, and a model
-with no published cache rate bills them at its input rate rather than at zero.
-
-A model spendgraph has never seen is stored at $0 and flagged, never dropped.
-
-## Local development
-
-```sh
-npm install
-npm run db:migrate:local
-npm run dev
+```bash
+git config core.hooksPath .githooks
 ```
 
-Sign-in needs a GitHub OAuth app — set `AUTH_GITHUB_ID` and
-`AUTH_GITHUB_SECRET` in `.env.local` with callback
-`http://localhost:3000/api/auth/callback/github`.
+`pre-push` runs lint and typecheck before anything leaves the machine.
 
-```sh
-npm test          # vitest
-npm run lint:biome # biome, must be clean
-npm run fix       # biome, safe autofixes and import order
+## URL shape
+
+The docs host is shared, so the product is the first path segment. Two sections
+are free to both document a page called `overview`, and the route resolves one
+before the other.
+
 ```
+/                            the index, listing every section
+/{product}                   one section's docs root
+/{product}/{...slug}         a page
+```
+
+`{product}` is the same lowercase-kebab slug the product uses everywhere else:
+`locusgraph`, `spendgraph`, `brainstorm`, `locus-skill`.
+
+## Where the pages come from
+
+Two sources, both resolved through `lib/site/docs-manifest.ts`:
+
+1. **Published packages.** Most Spendgraph pages are `.mdx` files inside
+   `@spendgraph/<pkg>/docs/`, written beside the code they describe and shipped
+   with the package. This host renders whichever version is installed.
+2. **Local content.** `content/<product>/**.mdx`, for pages that belong to no
+   package — a section overview, or a page that used to be an app route.
+
+Every page exports the summary the route turns into metadata:
+
+```mdx
+export const meta = {
+  title: "Overview — spendgraph docs",
+  description: "One sentence, used for the description and the social card.",
+};
+
+# Overview
+```
+
+## Adding a page
+
+Three edits, in this order:
+
+1. Write the `.mdx` — in the package it documents, or under `content/<product>/`
+2. Register it in `lib/site/docs-manifest.ts` under that product's key
+3. Add it to the product's tree in `lib/site/docs-nav.ts`
+
+The nav is the reading order, and it is what the previous/next footer links
+walk. A page missing from step 3 is reachable only by typing its URL; a nav
+entry missing from step 2 is a dead link. Nothing checks this automatically yet
+— see `TODO.md`.
 
 ## Layout
 
 ```
-app/            landing, /docs, the dashboard, /api/v1
-lib/            db, cost engine, pricing sync, auth
-drizzle/        schema and migrations
-packages/       the nine published packages
-tests/          the root suite, grouped by what it exercises
-cloudflare/     a folder per worker — the app's entrypoint, and both wrangler configs
+app/
+  page.tsx                   host index — the section cards
+  layout.tsx                 root layout, fonts, theme provider, metadataBase
+  icon.svg                   favicon, the LocusGraph mark on a dark tile
+  [product]/
+    layout.tsx               the docs shell: sidebar, header, outline
+    page.tsx                 a section's docs root
+    [...slug]/page.tsx       one page, resolved through the manifest
+components/
+  docs/                      sidebar, header, group nav, outline, callout, code
+  site/                      marks, product marks, site chrome, theme switch
+  ui/                        shadcn primitives
+content/                     pages that belong to no package
+lib/site/
+  products.ts                the sections, their names, and whether they are ready
+  docs-nav.ts                the sidebar, per section
+  docs-manifest.ts           every page, and how to load it
+  seo.ts                     canonical, Open Graph and Twitter tags
 ```
 
-One Next.js app on a single Cloudflare Worker with a D1 database, serving four
-surfaces: the landing page, public docs, the dashboard, and the REST API.
+## Shared configuration
 
-## License
+Biome, TypeScript, PostCSS and the CSS tokens all come from
+`@spendgraph/config` — the same package the products extend, so the docs look
+like the dashboards rather than approximating them.
 
-Apache-2.0. Built by [Effortless Labs](https://www.effortlesslabs.xyz).
+`next.config.ts` lists every `@spendgraph/*` package in `transpilePackages`.
+Without it the MDX loader does not reach a page inside `node_modules`, and each
+one fails with `Unknown module type`.
+
+## Sections
+
+| Section | Pages | Listed on the index |
+| --- | --- | --- |
+| Spendgraph | 73 | Yes |
+| LocusGraph | 3 | No — `ready: false` |
+| BrainStorm | 0 | No — `ready: false` |
+| Locus Skill | 0 | No — `ready: false` |
+
+`ready` lives in `lib/site/products.ts`. Routes exist either way; the flag only
+decides whether the host index offers the card as a link.
