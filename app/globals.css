@@ -1,3 +1,81 @@
 @import "tailwindcss";
 @import "@spendgraph/config/css/theme.css";
 @import "@spendgraph/config/css/typeset.css";
+
+/*
+ * One accent per section.
+ *
+ * Values are taken from each product's own marketing page, so a reader moving
+ * from the site to the docs meets the same colour.
+ *
+ * Only the three signal tokens are redefined — `--s1`, `--s2`, `--s3`. Every
+ * structural token (background, surface, foreground, border, the button pair)
+ * stays exactly as the shared theme sets it, so the two sections remain
+ * recognisably the same host and nothing outside these three values can shift.
+ *
+ * Scoped to `[data-section]`, which the product layout sets. The host index,
+ * the 404 and anything else outside a section inherit the default untouched.
+ *
+ * Each block is written twice because the dark palette is a separate set of
+ * values in `theme.css`, not a filter over the light one.
+ */
+
+[data-section="locusgraph"] {
+  /* www.locusgraph.com is near-monochrome with one azure accent, rgb(0,153,255).
+     Darkened here because the brand value is 2.9:1 on white — fine for a large
+     headline on their site, too weak for a body link on ours. */
+  --s1: #0077cc;
+  --s2: #2d567d;
+  --s3: #8cc9ff;
+}
+
+.dark [data-section="locusgraph"] {
+  /* The brand azure itself, which is what it was drawn for — a dark background. */
+  --s1: #0099ff;
+  --s2: #8cc9ff;
+  --s3: #2d567d;
+}
+
+[data-section="spendgraph"] {
+  /* www.locusgraph.com/spendgraph is indigo throughout: rgb(93,103,233) across
+     the page, rgb(46,49,220) on the headline. Both are used exactly. */
+  --s1: #2e31dc;
+  --s2: #5d67e9;
+  --s3: #95a3ed;
+}
+
+.dark [data-section="spendgraph"] {
+  --s1: #7f8bff;
+  --s2: #aeb9ff;
+  --s3: #5d67e9;
+}
+
+/*
+ * Where the accent actually shows.
+ *
+ * `--s1` was only ever rendered by the host index hero and the LocusGraph
+ * diagrams, so recolouring the token alone left most pages identical. These
+ * three rules put it on something every page has: prose links, the active
+ * sidebar item, and the active group in the header.
+ *
+ * Heading anchors are excluded. Every heading wraps its text in a link for the
+ * `#` permalink, so colouring links blind turns every `h2` on the site into an
+ * accent — a much louder change than the one being asked for.
+ *
+ * All three are scoped to `[data-section]`, so the host index and the 404 keep
+ * the plain treatment. The typeset link rule uses `:where()` and has zero
+ * specificity, so this wins without `!important` and without editing the
+ * shared stylesheet.
+ */
+
+[data-section] .typeset a:not(:is(h1, h2, h3, h4, h5, h6) a) {
+  color: var(--s1);
+}
+
+[data-section] [data-sidebar="menu-button"][data-active="true"] {
+  color: var(--s1);
+}
+
+[data-section] nav a[aria-current="page"] {
+  color: var(--s1);
+}

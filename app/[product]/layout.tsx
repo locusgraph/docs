@@ -14,10 +14,22 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
  * `data-docs-scroll` marks the scrolling element, because the page scrolls
  * inside the inset rather than on the window — which is what the table of
  * contents has to watch to know where the reader is.
+ *
+ * `data-section` carries the product, and is the only hook the per-section
+ * accent in `globals.css` needs. Nothing reads it in JavaScript, so a section
+ * with no accent of its own simply keeps the default.
  */
-export default function ProductLayout({ children }: { children: React.ReactNode }) {
+export default async function ProductLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ product: string }>;
+}) {
+  const { product } = await params;
+
   return (
-    <SidebarProvider>
+    <SidebarProvider data-section={product}>
       <DocsSidebar />
       <SidebarInset className="h-svh overflow-hidden md:h-[calc(100svh-1rem)]">
         <DocsHeader />
