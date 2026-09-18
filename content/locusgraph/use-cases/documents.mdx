@@ -1,0 +1,71 @@
+export const meta = {
+  title: "Documents — LocusGraph docs",
+  description:
+    "Ingest a file once and recall from it later, and how that differs from the chunk-and-embed pipeline you may be replacing.",
+};
+
+# Documents
+
+You have a runbook, a spec, a contract. You want your app to answer from it months later without you pasting it into every prompt.
+
+## How this differs from chunking
+
+The familiar pipeline splits a document into chunks, embeds each one, and returns the nearest few. It works, and it has a known failure: a chunk is a slice of a page, not a thing that was learned. Half a sentence about rate limits comes back with the other half in a chunk that did not score.
+
+Ingesting into LocusGraph produces memories instead — statements the document makes, filed under contexts. The unit is the fact, not the fragment.
+
+```
+   chunking        document ──► 400-token slices ──► nearest slices
+   ingesting       document ──► statements       ──► the ones that answer
+```
+
+## Sending a document
+
+Ingest runs over HTTP:
+
+```bash
+curl -X POST https://api.locusgraph.com/v1/ingest/my-graph \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{ "source": "runbook.md", "content": "..." }'
+```
+
+<Callout tone="warn" title="Not in the SDK yet">
+  `@locusgraph/client` exposes no `ingest` method. Every other page in this group is SDK-first;
+  this one is the exception until ingest lands there.
+</Callout>
+
+Large documents do not finish inside the request. You get a job back, and poll it:
+
+```bash
+curl https://api.locusgraph.com/v1/ingest/jobs/$JOB_ID \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET"
+```
+
+## Reading from it
+
+Nothing special. The memories a document produced are memories:
+
+```typescript
+const { memories } = await client.retrieveMemories({
+  query: "what do we do when the queue backs up?",
+});
+```
+
+They carry `source: "document"`, which sits above what a model inferred and below something a person verified. When the runbook and the assistant disagree, the runbook wins; when the runbook and an operator disagree, the operator does.
+
+## Keeping it current
+
+A document that is superseded should not keep answering. Store the replacement with `contradicts` pointing at the context the old one wrote to, or drop the context outright:
+
+```typescript
+await client.forgetContext({
+  graphId: "my-graph",
+  contextType: "runbook",
+  contextName: "queue_backpressure",
+});
+```
+
+## Reference
+
+[Sources](/locusgraph/remember/sources) · [Search memories](/locusgraph/recall/search) · [Contexts](/locusgraph/contexts/overview)

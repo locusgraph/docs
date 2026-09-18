@@ -1,0 +1,55 @@
+export const meta = {
+  title: "Settings — LocusGraph docs",
+  description:
+    "What you can change on a graph after it exists, how to archive one instead of deleting it, and why purge is disabled.",
+};
+
+# Settings
+
+Four fields, changed with a `PATCH`. Only an owner may change them.
+
+```bash
+curl -X PATCH https://api.locusgraph.com/v1/graphs/$GRAPH_ID/settings \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "Acme Corp (EU)", "archived": false }'
+```
+
+| Field | Type | What it does |
+| --- | --- | --- |
+| `name` | string | The human-readable name |
+| `description` | string | Free text |
+| `auto_delete_enabled` | boolean | Whether the graph prunes itself over time |
+| `archived` | boolean | Takes the graph out of active use |
+
+Send only the fields you are changing. Anything omitted is left alone.
+
+<Callout tone="warn" title="Not in the SDK">
+  `@locusgraph/client` has no settings method. This one is HTTP until it lands there.
+</Callout>
+
+## Archive rather than delete
+
+There is no delete. `POST /v1/graphs/{id}/purge` exists and is **disabled**, and says so:
+
+```
+Graph purge is disabled to prevent data loss.
+Archive the graph instead: PATCH /v1/graphs/{graph_id}/settings {"archived": true}
+```
+
+That is deliberate. A graph is months of accumulated memory, and the operation that destroys all of it in one call should not be one keystroke away from the one that renames it.
+
+```bash
+-d '{ "archived": true }'
+```
+
+Archiving is reversible. Send `false` and it comes back.
+
+## Ownership is required
+
+A `read` or `write` grant is not enough — changing settings returns `403` with *"Only an owner can change graph settings"*. See [Access and transfer](/locusgraph/graphs/access).
+
+## Next
+
+- **[Access and transfer](/locusgraph/graphs/access)** — who is an owner, and how that moves
+- **[API keys](/locusgraph/graphs/keys)** — scoping a token to one graph

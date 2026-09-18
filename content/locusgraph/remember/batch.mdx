@@ -1,0 +1,107 @@
+export const meta = {
+  title: "Batch and transactions — LocusGraph docs",
+  description:
+    "Two ways to write many memories at once, split by guarantee: a batch reports each item on its own, a transaction applies all of them or none.",
+};
+
+# Batch and transactions
+
+Two calls, and the difference is not size. Both take up to 1000 items. The difference is what happens when one of them is wrong.
+
+```
+   storeEventsBatch    each item succeeds or fails on its own
+                       you get a result per item
+
+   transaction         all of them apply, or none do
+                       one bad operation returns 400 and writes nothing
+```
+
+## Batch
+
+```typescript
+const result = await client.storeEventsBatch(
+  [
+    { event_kind: "fact", context_id: "org:acme", payload: { data: "Acme is a payments company" } },
+    { event_kind: "fact", context_id: "person:alice", extends: ["org:acme"], payload: { data: "Alice joined Acme" } },
+  ],
+  "acme",
+);
+```
+
+Items are `storeEvent` requests **without** `graph_id` — the batch shares one graph.
+
+They are processed **in order**, which is why the example puts `org:acme` before the memory that extends it. A parent written later in the same batch is a parent that did not exist when the child was stored.
+
+### What comes back
+
+```typescript
+{
+  stored: 2,
+  filtered: 0,
+  failed: 0,
+  results: [
+    { status: "recorded", event_id: "loc_…", relevance: "high" },
+    { status: "recorded", event_id: "loc_…", relevance: "medium" },
+  ],
+}
+```
+
+`results` is in request order, so `results[3]` is your fourth event. An item that failed carries `status: "error"` and an `error` message instead of an id.
+
+<Callout tone="trap" title="A batch that fails partway still returns 200">
+  Nothing throws when three of your thousand events are rejected. Check `failed`, and check it
+  every time — the alternative is discovering a month later that a tenth of your writes never
+  landed.
+</Callout>
+
+## Transaction
+
+```typescript
+const result = await client.transaction(
+  [
+    { op: "store", event_kind: "fact", context_id: "org:acme", payload: { data: "…" } },
+    { op: "unlink", from_context_id: "person:alice", to_context_id: "org:initech", link_type: "extends" },
+    { op: "delete", context_id: "project:cancelled" },
+  ],
+  "acme",
+);
+```
+
+`op` defaults to `store`, so an ordinary event item is already a valid operation.
+
+### Three operations
+
+| `op` | What it does |
+| --- | --- |
+| `store` | Writes a memory. Same fields as a batch item |
+| `unlink` | Removes one link between two contexts, by type |
+| `delete` | Removes a context, and any memory it was the last thread holding |
+
+### What comes back
+
+```typescript
+{ applied: 3, stored: 1, filtered: 0, results: [ … ] }
+```
+
+There is **no `failed` count**, and that is the point. A rejected operation returns `400` naming its index, and nothing at all is written — not the operations before it, not the ones after.
+
+## Choosing between them
+
+**Use a batch** when the items are independent. A session that produced six unrelated memories should not lose five because the sixth was malformed.
+
+**Use a transaction** when the items only make sense together — retiring a context and re-filing its memories, or moving a link and writing the memory that explains why.
+
+<Callout tone="note" title="Neither is idempotent">
+  There is no caller-supplied key, so sending the same batch twice stores everything twice.
+  Repetition is signal in this system, so duplicates are not corrupting — but if a retry after an
+  ambiguous timeout must not double-write, a transaction at least fails as one unit.
+</Callout>
+
+## Limits
+
+1000 items per request, either call. Past that, split the work — and if the split must not be observed half-applied, it should not have been split.
+
+## Next
+
+- **[Store an event](/locusgraph/remember/store)** — the shape each item takes
+- **[Limits](/locusgraph/client/limits)** — the ceilings and the rate buckets

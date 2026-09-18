@@ -1,0 +1,95 @@
+export const meta = {
+  title: "Errors — LocusGraph docs",
+  description:
+    "What the client throws, what each status means, and which failures are worth trying again.",
+};
+
+# Errors
+
+Every method throws on failure. Nothing returns an error object, and nothing fails silently — a call that returns has succeeded.
+
+```typescript
+try {
+  const { memories } = await client.retrieveMemories({ query: "…" });
+} catch (err) {
+  console.error(err.message);
+}
+```
+
+## The shape
+
+A failed request throws an `Error` carrying the status, the status text and the server's body:
+
+```
+Request failed: 429 Too Many Requests - {"error":"rate limit exceeded"}
+```
+
+Two calls fail before any request is made, when the client has not been given enough to work with:
+
+```
+Agent secret is required. Set LOCUSGRAPH_AGENT_SECRET or pass agentSecret in config.
+Graph ID is required. Pass graphId in options or set graphId in client config.
+```
+
+Both are configuration mistakes, not runtime conditions. They will not fix themselves on a retry.
+
+## Reading a single context
+
+Reads that address one context by name throw a plain message rather than a status line when nothing is there:
+
+```typescript
+try {
+  await client.getContext({ context_id: "missing:thing" });
+} catch (err) {
+  console.error(err.message); // "Context not found"
+}
+```
+
+<Callout tone="trap" title="A missing context is not an empty result">
+  `getContext` throws; `retrieveMemories` returns an empty list. One is "you asked for a thing that
+  does not exist", the other is "nothing matched". Do not wrap the search in a try/catch expecting
+  the first behaviour.
+</Callout>
+
+## What each status means
+
+| Status | What happened | Retry? |
+| --- | --- | --- |
+| `400` | The request was malformed, or named a field that does not exist | No — fix the call |
+| `401` | No secret, or a secret the server does not accept | No |
+| `403` | The secret is valid but does not reach that graph | No — check the token's scope |
+| `404` | The graph, context or locus is not there | No |
+| `413` | The payload is over the size cap | No — see [Limits](/locusgraph/client/limits) |
+| `429` | Rate limited | Yes, after a pause |
+| `5xx` | The server failed | Yes, with backoff |
+
+The line is simple: **4xx means the request was wrong, 5xx and 429 mean the moment was wrong.** Only the second group is worth sending again.
+
+## Retrying
+
+The client does not retry for you. That is deliberate — a write and a read want different policies, and a library guessing wrong is worse than a caller choosing.
+
+```typescript
+async function withRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
+  for (let i = 0; ; i++) {
+    try {
+      return await call();
+    } catch (err) {
+      const status = Number(String(err).match(/failed: (\d+)/)?.[1]);
+      const worth = status === 429 || (status >= 500 && status < 600);
+      if (!worth || i >= attempts - 1) throw err;
+      await new Promise((r) => setTimeout(r, 2 ** i * 500));
+    }
+  }
+}
+```
+
+Retrying a write is not free of consequence: there is no caller-supplied idempotency key, so a
+retry that succeeds after a timeout you never saw stores the memory twice. Two identical memories
+are not fatal — repetition is signal here — but if exactness matters, use a
+[transaction](/locusgraph/remember/batch), which is rejected whole or applied whole.
+
+## Next
+
+- **[Limits](/locusgraph/client/limits)** — the caps behind `413` and `429`
+- **[Types](/locusgraph/client/types)** — the shapes a successful call returns

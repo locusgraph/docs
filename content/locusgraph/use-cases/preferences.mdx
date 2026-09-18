@@ -1,0 +1,81 @@
+export const meta = {
+  title: "User preferences — LocusGraph docs",
+  description:
+    "Remember what someone likes so it survives the end of the session: what to store, what to name it, and how to read it back before you answer.",
+};
+
+# User preferences
+
+The smallest useful thing you can build with LocusGraph, and the one that shows the shape of everything else.
+
+Alice says she prefers dark mode. Three days later she asks for a settings page. Your app should already know.
+
+## What to store
+
+One memory per thing she told you. Plainly, in her terms.
+
+```typescript
+await client.storeEvent({
+  graph_id: "alice",
+  event_kind: "fact",
+  context_id: "preference:theme",
+  source: "user",
+  payload: { data: "prefers dark mode" },
+});
+```
+
+Four decisions are packed into that call:
+
+| Field | Why this value |
+| --- | --- |
+| `graph_id` | One graph per user, so nothing leaks between people |
+| `event_kind: "fact"` | A stable statement about the world, not an action or a decision |
+| `context_id: "preference:theme"` | The drawer. Note it is `theme`, not `dark_mode` |
+| `source: "user"` | She said it. That outranks anything your model infers later |
+
+<Callout tone="trap" title="Name the question, not the answer">
+  `preference:theme` holds every answer she ever gives about themes. `preference:dark_mode` holds
+  exactly one, and when she switches to light you have two contexts disagreeing instead of one
+  context with a newer memory in it.
+</Callout>
+
+## What to read back
+
+Before you answer, ask in the words of the task in front of you.
+
+```typescript
+const { memories } = await client.retrieveMemories({
+  query: "what theme and layout does this user want?",
+});
+```
+
+You are not looking anything up by key. The query is the question your feature is trying to answer, and memories that bear on it come back ranked.
+
+<ContextGraph />
+
+## When she changes her mind
+
+Store the new preference and mark what it replaces.
+
+```typescript
+await client.storeEvent({
+  graph_id: "alice",
+  event_kind: "fact",
+  context_id: "preference:theme",
+  source: "user",
+  contradicts: ["preference:theme"],
+  payload: { data: "switched to light mode for daytime work" },
+});
+```
+
+`contradicts` is the difference between superseding a memory and merely outnumbering it. Without it you have two memories that disagree and nothing saying which came later.
+
+## Where this goes next
+
+- Preferences that only apply to one project → give the project its own context and `related_to` it
+- Things your model guessed rather than heard → stamp `source: "assistant"` and consider sending them through [Review](/locusgraph/review/observe) instead
+- More than one user in one graph → [Multi-tenant](/locusgraph/use-cases/multi-tenant) covers where the boundary belongs
+
+## Reference
+
+[Store an event](/locusgraph/remember/store) · [Sources](/locusgraph/remember/sources) · [Search memories](/locusgraph/recall/search)

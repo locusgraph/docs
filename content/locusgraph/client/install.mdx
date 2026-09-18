@@ -1,0 +1,59 @@
+export const meta = {
+  title: "Install — LocusGraph docs",
+  description:
+    "Add @locusgraph/client to a project, make one call, and know what the package gives you.",
+};
+
+# Install
+
+```bash
+npm install @locusgraph/client
+```
+
+One package. It ships the client, every request and response type, and nothing else — no provider SDK, no framework, no peer dependencies to reconcile.
+
+## Your first call
+
+```typescript
+import { LocusGraphClient } from "@locusgraph/client";
+
+const client = new LocusGraphClient({
+  agentSecret: process.env.LOCUSGRAPH_AGENT_SECRET,
+  graphId: "my-graph",
+});
+
+await client.storeEvent({
+  graph_id: "my-graph",
+  event_kind: "fact",
+  payload: { data: "the user prefers dark mode" },
+});
+```
+
+`serverUrl` is optional — it defaults to `https://api.locusgraph.com`. [Connecting](/locusgraph/client/connecting) covers pointing it somewhere else.
+
+## What you get
+
+```typescript
+import {
+  LocusGraphClient,
+  type ContextQuery,
+  type StoreEventResponse,
+} from "@locusgraph/client";
+```
+
+The class and the types come from the package root. There are no deep imports to learn — see [Types](/locusgraph/client/types).
+
+## Requirements
+
+The client is built on `fetch`, so it runs anywhere `fetch` is global: Node 18 and later, Bun, Deno, Cloudflare Workers, and the edge runtimes built on them.
+
+<Callout tone="warn" title="Server-side only">
+  The client authenticates with a bearer secret. Anything holding one is a trusted environment —
+  a server, a worker, a job. Putting it in a browser bundle hands every visitor your token.
+</Callout>
+
+## Next
+
+- **[Connecting](/locusgraph/client/connecting)** — the three options, and where they come from
+- **[Store an event](/locusgraph/remember/store)** — every field a write accepts
+- **[Search memories](/locusgraph/recall/search)** — reading it back

@@ -19,10 +19,16 @@ export interface DocsTree {
   sections: DocsSection[];
 }
 
+/**
+ * LocusGraph's own pages, above the groups.
+ *
+ * Untitled on purpose: the sidebar header already names the section, so a group
+ * label reading "LocusGraph" directly beneath it says the same word twice.
+ */
 const LOCUSGRAPH: DocsTree = {
-  title: "LocusGraph",
+  title: "",
   href: "/locusgraph/overview",
-  blurb: "The graph the products are built on.",
+  blurb: "A memory that lasts, for the things your app learns.",
   sections: [
     {
       title: "Start here",
@@ -30,22 +36,17 @@ const LOCUSGRAPH: DocsTree = {
         {
           title: "Overview",
           href: "/locusgraph/overview",
-          blurb: "What LocusGraph is, and how these docs are laid out",
+          blurb: "What LocusGraph stores, and what it gives back",
         },
         {
-          title: "Getting started",
-          href: "/locusgraph/getting-started",
-          blurb: "Where to begin, depending on why you are here",
+          title: "Quickstart",
+          href: "/locusgraph/quickstart",
+          blurb: "Store a memory and search it back, in ten lines",
         },
-      ],
-    },
-    {
-      title: "Reference",
-      items: [
         {
           title: "Concepts",
           href: "/locusgraph/concepts",
-          blurb: "The vocabulary the rest of the docs assumes",
+          blurb: "Graphs, contexts, memories and event kinds",
         },
       ],
     },
@@ -53,12 +54,346 @@ const LOCUSGRAPH: DocsTree = {
 };
 
 /**
- * The pages that describe spendgraph itself rather than one package.
+ * What people actually build with it.
  *
- * Its title is empty on purpose: the sidebar already names the section in its
- * header, so a group label reading "Spendgraph" directly beneath it says the
- * same word twice.
+ * Placed before the reference because a reader deciding whether this fits their
+ * problem should not have to learn the API first to find out. Each page is a
+ * wiring guide — which calls, in what order, and what to name things — and
+ * links into the reference for the detail.
  */
+const LG_USE_CASES: DocsTree = {
+  title: "Use cases",
+  href: "/locusgraph/use-cases/preferences",
+  blurb: "Wiring guides for the shapes this gets used in most.",
+  sections: [
+    {
+      title: "Remembering people",
+      items: [
+        {
+          title: "User preferences",
+          href: "/locusgraph/use-cases/preferences",
+          blurb: "What someone likes, surviving the end of the session",
+        },
+        {
+          title: "Conversation history",
+          href: "/locusgraph/use-cases/conversations",
+          blurb: "Carrying what was said into the next conversation",
+        },
+      ],
+    },
+    {
+      title: "Remembering work",
+      items: [
+        {
+          title: "Agent skills",
+          href: "/locusgraph/use-cases/agent-skills",
+          blurb: "What worked, what failed, and what not to try again",
+        },
+        {
+          title: "Team knowledge",
+          href: "/locusgraph/use-cases/team-knowledge",
+          blurb: "A shared graph, with a human deciding what is kept",
+        },
+        {
+          title: "Documents",
+          href: "/locusgraph/use-cases/documents",
+          blurb: "Ingesting a file, and recalling from it later",
+        },
+      ],
+    },
+    {
+      title: "Shape of your app",
+      items: [
+        {
+          title: "Multi-tenant",
+          href: "/locusgraph/use-cases/multi-tenant",
+          blurb: "One graph per customer, and where the boundary sits",
+        },
+      ],
+    },
+  ],
+};
+
+/**
+ * The groups below are the interface, and only the interface.
+ *
+ * Each page answers three questions and stops: what you send, what comes back,
+ * and what can go wrong. How a result was ranked, what a finding was judged
+ * against, when a memory decays — none of that is a caller's business, and all
+ * of it is the product. The engine's own README documents the mechanisms; this
+ * host documents the contract.
+ */
+const LG_CLIENT: DocsTree = {
+  title: "Client",
+  href: "/locusgraph/client/install",
+  blurb: "Installing the SDK, connecting it, and what it throws.",
+  sections: [
+    {
+      title: "Setting up",
+      items: [
+        {
+          title: "Install",
+          href: "/locusgraph/client/install",
+          blurb: "@locusgraph/client, and your first call",
+        },
+        {
+          title: "Connecting",
+          href: "/locusgraph/client/connecting",
+          blurb: "Server URL, agent secret, and the graph you pin to",
+        },
+      ],
+    },
+    {
+      title: "Reference",
+      items: [
+        {
+          title: "Errors",
+          href: "/locusgraph/client/errors",
+          blurb: "What throws, what retries, and what never will",
+        },
+        {
+          title: "Types",
+          href: "/locusgraph/client/types",
+          blurb: "Every shape the client exports",
+        },
+        {
+          title: "Limits",
+          href: "/locusgraph/client/limits",
+          blurb: "Payload caps, batch ceilings and rate limits, in one place",
+        },
+      ],
+    },
+  ],
+};
+
+const LG_REMEMBER: DocsTree = {
+  title: "Remember",
+  href: "/locusgraph/remember/store",
+  blurb: "Writing what your app learns, one event or a thousand.",
+  sections: [
+    {
+      title: "Writing",
+      items: [
+        {
+          title: "Store an event",
+          href: "/locusgraph/remember/store",
+          blurb: "One call, and what it needs from you",
+        },
+        {
+          title: "Event kinds",
+          href: "/locusgraph/remember/event-kinds",
+          blurb: "The kinds you can send, and what each one means",
+        },
+        {
+          title: "Sources",
+          href: "/locusgraph/remember/sources",
+          blurb: "Where a memory came from, and how far it is trusted",
+        },
+      ],
+    },
+    {
+      title: "Writing more at once",
+      items: [
+        {
+          title: "Batch and transactions",
+          href: "/locusgraph/remember/batch",
+          blurb: "Many events per call, and the one that is all-or-nothing",
+        },
+      ],
+    },
+  ],
+};
+
+const LG_RECALL: DocsTree = {
+  title: "Recall",
+  href: "/locusgraph/recall/search",
+  blurb: "Searching memory by meaning, and reading what comes back.",
+  sections: [
+    {
+      title: "Searching",
+      items: [
+        {
+          title: "Search memories",
+          href: "/locusgraph/recall/search",
+          blurb: "Ask in your own words, get ranked memories",
+        },
+        {
+          title: "Query options",
+          href: "/locusgraph/recall/options",
+          blurb: "Narrowing a search, and how many to take",
+        },
+        {
+          title: "Reading a result",
+          href: "/locusgraph/recall/results",
+          blurb: "Every field on a returned memory",
+        },
+      ],
+    },
+    {
+      title: "Going deeper",
+      items: [
+        {
+          title: "Deep recall",
+          href: "/locusgraph/recall/deep-recall",
+          blurb: "One call for questions a single search cannot answer",
+        },
+      ],
+    },
+  ],
+};
+
+const LG_CONTEXTS: DocsTree = {
+  title: "Contexts",
+  href: "/locusgraph/contexts/overview",
+  blurb: "Grouping memories, and the links between those groups.",
+  sections: [
+    {
+      title: "Organising",
+      items: [
+        {
+          title: "Contexts and memories",
+          href: "/locusgraph/contexts/overview",
+          blurb: "What a context is, and what belongs in one",
+        },
+        {
+          title: "Link and unlink",
+          href: "/locusgraph/contexts/linking",
+          blurb: "Relating one context to another",
+        },
+        {
+          title: "Browse",
+          href: "/locusgraph/contexts/browsing",
+          blurb: "Listing contexts, and walking their relationships",
+        },
+      ],
+    },
+    {
+      title: "Loose ends",
+      items: [
+        {
+          title: "Forward references",
+          href: "/locusgraph/contexts/resolving",
+          blurb: "Naming something before it exists, and resolving it later",
+        },
+      ],
+    },
+  ],
+};
+
+const LG_REVIEW: DocsTree = {
+  title: "Review",
+  href: "/locusgraph/review/observe",
+  blurb: "Proposing memories, and deciding which ones are kept.",
+  sections: [
+    {
+      title: "Proposing",
+      items: [
+        {
+          title: "Send an observation",
+          href: "/locusgraph/review/observe",
+          blurb: "Offer something for review rather than storing it outright",
+        },
+      ],
+    },
+    {
+      title: "Deciding",
+      items: [
+        {
+          title: "The inbox",
+          href: "/locusgraph/review/inbox",
+          blurb: "What is waiting on a person, and why it is there",
+        },
+        {
+          title: "Approve or reject",
+          href: "/locusgraph/review/decisions",
+          blurb: "Acting on a finding, and what happens next",
+        },
+      ],
+    },
+  ],
+};
+
+const LG_ENTERPRISE: DocsTree = {
+  title: "Enterprise",
+  href: "/locusgraph/enterprise/security",
+  blurb: "Running LocusGraph at company scale.",
+  sections: [
+    {
+      title: "Trust",
+      items: [
+        {
+          title: "Security",
+          href: "/locusgraph/enterprise/security",
+          blurb: "Isolation, credentials, and what the design refuses",
+        },
+        {
+          title: "Data residency",
+          href: "/locusgraph/enterprise/data-residency",
+          blurb: "Where memories live, and what leaves on a model call",
+        },
+      ],
+    },
+    {
+      title: "Operating it",
+      items: [
+        {
+          title: "SSO and access",
+          href: "/locusgraph/enterprise/sso",
+          blurb: "How people sign in, and how programs authenticate",
+        },
+        {
+          title: "Deployment",
+          href: "/locusgraph/enterprise/deployment",
+          blurb: "Managed, or on your own infrastructure",
+        },
+        {
+          title: "Support and SLAs",
+          href: "/locusgraph/enterprise/support",
+          blurb: "What the platform tells you, and how to reach a person",
+        },
+      ],
+    },
+  ],
+};
+
+const LG_GRAPHS: DocsTree = {
+  title: "Graphs",
+  href: "/locusgraph/graphs/create",
+  blurb: "The container everything is stored in, and who can reach it.",
+  sections: [
+    {
+      title: "Managing a graph",
+      items: [
+        {
+          title: "Create a graph",
+          href: "/locusgraph/graphs/create",
+          blurb: "Making one, and listing the ones you have",
+        },
+        {
+          title: "Settings",
+          href: "/locusgraph/graphs/settings",
+          blurb: "What you can change after it exists",
+        },
+      ],
+    },
+    {
+      title: "Access",
+      items: [
+        {
+          title: "API keys",
+          href: "/locusgraph/graphs/keys",
+          blurb: "Minting a key, and what one key reaches",
+        },
+        {
+          title: "Access and transfer",
+          href: "/locusgraph/graphs/access",
+          blurb: "Sharing a graph, and handing it over",
+        },
+      ],
+    },
+  ],
+};
+
 const SPENDGRAPH: DocsTree = {
   title: "",
   href: "/spendgraph/overview",
@@ -655,7 +990,17 @@ const SPENDGRAPH_TREES: DocsTree[] = [
  * also what the previous/next footer links walk.
  */
 export const NAV: Record<Product, DocsTree[]> = {
-  locusgraph: [LOCUSGRAPH],
+  locusgraph: [
+    LOCUSGRAPH,
+    LG_USE_CASES,
+    LG_CLIENT,
+    LG_REMEMBER,
+    LG_RECALL,
+    LG_CONTEXTS,
+    LG_REVIEW,
+    LG_GRAPHS,
+    LG_ENTERPRISE,
+  ],
   spendgraph: SPENDGRAPH_TREES,
   brainstorm: [],
   "locus-skill": [],

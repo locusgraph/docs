@@ -1,0 +1,74 @@
+export const meta = {
+  title: "Data residency — LocusGraph docs",
+  description:
+    "Region servers, what a graph holds, what leaves the system on a model call, and what to do when data may not cross a border.",
+};
+
+# Data residency
+
+## The client talks to a region
+
+The SDK connects to a **region server** directly — not a proxy, not the dashboard host:
+
+```typescript
+const client = new LocusGraphClient({
+  serverUrl: "https://api.locusgraph.com",
+});
+```
+
+The region you point at is where your graphs live. Pointing at a different one is a configuration change, not a migration — the graphs do not follow.
+
+## What a graph holds
+
+Everything written to it: the memory text, its contexts, the links between them, and the provenance stamped on each write. A memory is stored as you sent it — [pure experience](/locusgraph/overview), not a summary of it.
+
+## What leaves on a model call
+
+Two operations reach a language model:
+
+| Operation | What is sent |
+| --- | --- |
+| [Deep recall](/locusgraph/recall/deep-recall) | The question, and the memories the walk retrieves |
+| Ingest | The document being ingested |
+
+An ordinary [search](/locusgraph/recall/search) does not. Neither does any write, read or context operation.
+
+That is the boundary to reason about when the question is *"does our data leave the region"* — and deep recall reports its own `usage` per call, so the traffic is measurable rather than inferred.
+
+<Callout tone="note" title="You can build without the model-backed calls">
+  Store, search, browse and link cover most integrations. If deep recall and ingest are not
+  acceptable in your environment, the rest of the API still is.
+</Callout>
+
+## Separation between customers
+
+One graph per customer, and no query crosses a graph. See [Security](/locusgraph/enterprise/security) for why that is structural rather than a filter, and [Multi-tenant](/locusgraph/use-cases/multi-tenant) for how to wire it.
+
+## Deleting on request
+
+Two levels:
+
+```typescript
+// one context, and any memory it was the last thread holding
+await client.forgetContext({ graphId, contextType: "person", contextName: "alice" });
+
+// one memory
+await client.deleteLocus(locusId, graphId);
+```
+
+For an entire customer, archive the graph. Hard deletion of a whole graph is not a self-serve operation — see [Security](/locusgraph/enterprise/security).
+
+## When data may not leave your network
+
+A dedicated instance puts your graphs on infrastructure that is yours alone, in a region you
+choose, still operated by us — see [Deployment](/locusgraph/enterprise/deployment).
+
+Deployments inside your own network are arranged under agreement rather than self-serve. Start a
+conversation with the policy driving the requirement and the environment you would run it in.
+
+<EarlyAccess product="LocusGraph Enterprise" />
+
+## Next
+
+- **[Deployment](/locusgraph/enterprise/deployment)** — managed, or your own infrastructure
+- **[Security](/locusgraph/enterprise/security)** — isolation and credentials

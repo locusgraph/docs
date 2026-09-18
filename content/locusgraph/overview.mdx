@@ -1,28 +1,64 @@
 export const meta = {
   title: "Overview — LocusGraph docs",
   description:
-    "What LocusGraph is, which products sit on it, and how this documentation is laid out.",
+    "Your app learns something in one conversation and forgets it by the next. LocusGraph is the memory it keeps: store what it learns, search it back by meaning, act on it later.",
 };
 
-# Overview
+# A memory that outlives the conversation
 
-LocusGraph is the graph the products are built on. Spendgraph, BrainStorm and Locus Skill each sit
-on top of it and document themselves in their own section of this host.
+Your assistant learns that Alice prefers dark mode. Three days later she asks it to build a settings page, and it ships one in white.
 
-## How this host is laid out
+Nothing broke. The model did exactly what models do — it read the messages in front of it and answered. The problem is everything that was not in front of it.
 
-Every section of the docs follows the same three-level shape:
+The usual patch is to stuff more into the prompt. That works until the history is longer than the window, and then you are choosing what to forget on every single call, with no idea what any of it was worth.
 
-| Level | URL | What it holds |
-| --- | --- | --- |
-| Host | `doc.locusgraph.com` | The index, listing every section |
-| Section | `/locusgraph` | One product's docs root |
-| Page | `/locusgraph/overview` | A single chapter |
+## What LocusGraph is
 
-Marketing pages are not here. They live on `www.locusgraph.com`, and each product signs its users in
-on its own subdomain. A page on this host is documentation or it does not belong on this host.
+A store your app writes to when it learns something, and reads from when it needs to remember.
 
-## What is written down so far
+What goes in is **experience** — one thing that happened, stated plainly, first-hand. Not a
+summary of a conversation. Not a chunk of a document. Not the model's own output folded back in.
 
-This section is being filled in. Pages appear in the sidebar as they are written, and the sidebar is
-the reading order — there is no hidden page that only search can reach.
+<ExperienceVsConclusion />
+
+The left column is what happened. The right is what something *made of* what happened — and once
+you store that, you have stored an opinion with no way back to the evidence. Three months later
+nobody can tell whether "design-conscious" came from one offhand remark or twenty.
+
+Keep the memory pure and the conclusions stay yours to draw, fresh, with the evidence still
+attached. A model reading five plain memories will infer the pattern when it needs it; a model
+reading last quarter's inference cannot recover the five.
+
+<MemoryFlow />
+
+You never write the query that finds it. You ask in the words you have, and memories that *mean* the same thing come back — even when they share no words with the question.
+
+## What makes it a graph
+
+Memories are not a flat pile. Each one is filed under a **context** — a stable name like `preference:dark_mode` or `user:alice` — and contexts connect to each other.
+
+<ContextGraph />
+
+So a question about Alice can reach what she prefers, and a question about the billing UI can reach who asked for it. One context holds many memories; one memory can sit under several contexts.
+
+<Callout tone="note" title="Contexts are the handle, memories are the content">
+  You **store and search memories**. You **address them by context**. Keep a context slug short and canonical — the same idea should always land in the same place, or you have two half-filled drawers instead of one full one.
+</Callout>
+
+## What you can do with it
+
+| You want to | LocusGraph gives you |
+| --- | --- |
+| Save what your app just learned | [Store an event](/locusgraph/remember/store) |
+| Find it later, in your own words | [Search memories](/locusgraph/recall/search) |
+| Answer something one search cannot | [Deep recall](/locusgraph/recall/deep-recall) |
+| Organise what relates to what | [Contexts](/locusgraph/contexts/overview) |
+| Keep a human in the loop | [Review](/locusgraph/review/observe) |
+| Separate one tenant from another | [Graphs](/locusgraph/graphs/create) |
+
+## Where to go next
+
+- **[Quickstart](/locusgraph/quickstart)** — store a memory and search it back, in ten lines
+- **[Concepts](/locusgraph/concepts)** — the five words the rest of the docs use precisely
+
+<EarlyAccess />

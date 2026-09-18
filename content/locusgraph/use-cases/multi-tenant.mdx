@@ -1,0 +1,65 @@
+export const meta = {
+  title: "Multi-tenant — LocusGraph docs",
+  description:
+    "One graph per customer, why the graph is the isolation boundary rather than a filter, and how to manage graphs at scale.",
+};
+
+# Multi-tenant
+
+You are building for many customers, and none of them may ever see another's memories. The question is where the wall goes.
+
+## The graph is the wall
+
+A graph is an isolated memory space. A search in one graph cannot return a memory from another — not ranked lower, not filtered out afterwards. It cannot reach it.
+
+```
+   graph: acme          graph: globex
+   ───────────          ─────────────
+   policy:deploys       policy:deploys        same context name,
+   user:alice           user:alice            different graphs,
+   project:billing      project:billing       no relationship
+```
+
+Context names may repeat freely across graphs. They are addresses within a graph, not global identifiers.
+
+<Callout tone="trap" title="Do not put tenants in one graph and filter">
+  Tagging memories with `tenant` metadata and filtering the results is a wall made of application
+  code. One missed filter is a cross-tenant leak. The graph boundary does not depend on you
+  remembering anything.
+</Callout>
+
+## Creating one per customer
+
+```typescript
+const graph = await client.createGraph("Acme Corp", "Shared engineering memory");
+// → { graph_id, name, description, owner_agent_id, created_at }
+```
+
+Do it when the customer signs up, not lazily on first write — a graph that appears on demand is a graph nobody audited.
+
+## Keys that cannot wander
+
+An agent secret is either unscoped or pinned to a single graph. A **graph-scoped** token can only reach the graph it was minted for, which means a bug in your tenant-routing code fails as an auth error rather than as a leak.
+
+| Token | Reaches | Use it for |
+| --- | --- | --- |
+| Unscoped | Every graph, and can create graphs | Your control plane |
+| Graph-scoped | One graph | Anything serving a request for one customer |
+
+Mint one scoped token per tenant and hand your request path nothing else. See [API keys](/locusgraph/graphs/keys).
+
+## How many graphs is too many
+
+One per customer is the common shape. One per user *within* a customer is also reasonable when memories are genuinely personal and never shared — but then team knowledge has nowhere to live, so most products end up with both:
+
+```
+   acme            the shared graph — conventions, policies, systems
+   acme:alice      one person's preferences and history
+   acme:bob
+```
+
+Your app decides which to read from. A question about how the team deploys goes to the shared graph; a question about what Alice prefers goes to hers.
+
+## Reference
+
+[Create a graph](/locusgraph/graphs/create) · [API keys](/locusgraph/graphs/keys) · [Access and transfer](/locusgraph/graphs/access)

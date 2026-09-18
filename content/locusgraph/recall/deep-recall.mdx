@@ -1,0 +1,95 @@
+export const meta = {
+  title: "Deep recall — LocusGraph docs",
+  description:
+    "One call for questions a single search cannot answer: an answer in prose, the evidence behind it, and what the call cost.",
+};
+
+# Deep recall
+
+Some questions do not have an answer sitting in one memory. *"What did we decide about churn, and why?"* needs the decision, the reasoning, and whatever was true at the time — three memories in three contexts.
+
+`retrieveMemories` returns the best matches. `deepRecall` goes looking, then answers.
+
+```typescript
+const { summary, facts, coverage } = await client.deepRecall({
+  question: "What did we decide about churn, and why?",
+});
+```
+
+<Callout tone="note" title="The field is `question`, not `query`">
+  And it wants one focused question — not a conversation, not three questions joined by "and also".
+  A sharp question walks a sharp path.
+</Callout>
+
+## Starting it somewhere
+
+```typescript
+await client.deepRecall({
+  question: "What did we decide about churn, and why?",
+  contextIds: ["session:retention_research"],
+});
+```
+
+`contextIds` is **a hint, not a filter**. It says where to begin; the walk goes wherever the graph leads. That is the opposite of `contextIds` on a search, which restricts.
+
+## What comes back
+
+```typescript
+{
+  summary: "…",                          // the answer, in prose
+  facts: [ … ],                          // the evidence behind it
+  contexts_walked: ["session:retention_research", "metric:churn"],
+  coverage: "full",                      // or "partial"
+  rounds_used: 2,                        // 0–3
+  fallback: false,
+  usage: { llm_calls: 3, prompt_tokens: 4100, completion_tokens: 380, cost_usd: 0.012 },
+}
+```
+
+### Each fact is citable
+
+```typescript
+{
+  text: "churn rose 4 points after the pricing change",
+  source: "verified",
+  locus: "loc_…",
+  contexts: ["metric:churn"],
+  score: 0.88,
+}
+```
+
+`locus` and `contexts` are both reusable — one to fetch or delete the memory, the other as `contextIds` in a follow-up call.
+
+### Three fields that tell you how much to trust the answer
+
+| Field | Read it as |
+| --- | --- |
+| `coverage` | `"full"` — the walk finished. `"partial"` — it was cut short |
+| `fallback` | `true` means the walk failed and these facts came from a plain search instead |
+| `rounds_used` | How many exploration rounds it took, `0`–`3` |
+
+<Callout tone="trap" title="Check `coverage` and `fallback` before trusting the summary">
+  A `partial` answer is built on an incomplete walk, and `fallback: true` means you did not get a
+  walk at all. Both still return a `summary` and both still cost you. On `partial`, re-ask with
+  sharper `contextIds`.
+</Callout>
+
+`summary` is **absent** when the synthesis pass failed. `facts` will still be there — write the branch that uses them.
+
+## What it costs
+
+`usage` is returned on every call: LLM calls, tokens both ways, and the dollar cost. Unlike a search, this is not a cheap lookup — several model calls happen inside one request.
+
+It shares the **20 per minute** bucket with search. Reach for it when a single query genuinely cannot answer the question, not as a better default.
+
+## Choosing between them
+
+| Use | When |
+| --- | --- |
+| `retrieveMemories` | The answer is in a memory. You want context for a prompt |
+| `deepRecall` | The answer spans linked contexts, and you want it written out with citations |
+
+## Next
+
+- **[Search memories](/locusgraph/recall/search)** — the cheaper call
+- **[Contexts](/locusgraph/contexts/overview)** — the structure the walk moves through

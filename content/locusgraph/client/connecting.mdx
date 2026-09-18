@@ -1,0 +1,78 @@
+export const meta = {
+  title: "Connecting — LocusGraph docs",
+  description:
+    "The three configuration options, the environment variables behind them, and how a graph is resolved on each call.",
+};
+
+# Connecting
+
+Three options, and every one of them has a sensible fallback.
+
+```typescript
+const client = new LocusGraphClient({
+  serverUrl: "https://api.locusgraph.com",
+  agentSecret: process.env.LOCUSGRAPH_AGENT_SECRET,
+  graphId: "my-graph",
+});
+```
+
+| Option | Environment variable | Default |
+| --- | --- | --- |
+| `serverUrl` | `LOCUSGRAPH_SERVER_URL` | `https://api.locusgraph.com` |
+| `agentSecret` | `LOCUSGRAPH_AGENT_SECRET` | none — required |
+| `graphId` | — | none — resolved per call |
+
+With the environment set, the constructor takes nothing at all:
+
+```typescript
+const client = new LocusGraphClient();
+```
+
+## The server URL
+
+The client talks to a **region server** directly. That is not the dashboard host and not a proxy — point it at the region your graphs live in.
+
+## The agent secret
+
+A bearer token, sent on every request. Two kinds, and the difference matters:
+
+| Token | Reaches |
+| --- | --- |
+| **Unscoped** | Every graph on the account, and can create graphs |
+| **Graph-scoped** | The one graph it was minted for |
+
+Prefer the scoped one everywhere a request is served for a single customer. A routing bug then fails as an auth error rather than as a cross-tenant read. [API keys](/locusgraph/graphs/keys) covers minting them.
+
+A call made without a secret throws before it reaches the network:
+
+```
+Agent secret is required. Set LOCUSGRAPH_AGENT_SECRET or pass agentSecret in config.
+```
+
+## Which graph a call uses
+
+Resolved in order: the graph named on the call, then the client's default.
+
+```typescript
+const client = new LocusGraphClient({ graphId: "acme" });
+
+await client.retrieveMemories({ query: "…" });                  // acme
+await client.retrieveMemories({ query: "…", graphId: "globex" }); // globex
+```
+
+If neither is set, the call throws rather than guessing:
+
+```
+Graph ID is required. Pass graphId in options or set graphId in client config.
+```
+
+<Callout tone="note" title="One client, many graphs">
+  A single client can serve every tenant — pass `graphId` per call. Set a default only when the
+  process genuinely serves one graph, so a forgotten argument fails loudly instead of silently
+  reading the wrong one.
+</Callout>
+
+## Next
+
+- **[Errors](/locusgraph/client/errors)** — what throws, and what is worth retrying
+- **[Limits](/locusgraph/client/limits)** — caps and rates to design around

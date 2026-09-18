@@ -1,0 +1,85 @@
+export const meta = {
+  title: "Agent skills — LocusGraph docs",
+  description:
+    "Give an agent a memory of what worked and what failed, so the second attempt at a problem is not identical to the first.",
+};
+
+# Agent skills
+
+An agent that cannot remember its own failures repeats them. Not occasionally — every single time, because nothing about the next run is different from the last.
+
+What you want is narrow and specific: *this approach, on this kind of task, did not work, and here is what did.*
+
+## What to store
+
+After a run, write the outcome — not the run.
+
+```typescript
+await client.storeEvent({
+  graph_id: "agent-workspace",
+  event_kind: "learned",
+  context_id: "skill:react_components",
+  source: "tool",
+  payload: {
+    data: "inline object props cause re-renders; wrap in useMemo or hoist the object",
+  },
+});
+```
+
+A failure is worth as much as a success, and often more:
+
+```typescript
+await client.storeEvent({
+  graph_id: "agent-workspace",
+  event_kind: "constraint_violation",
+  context_id: "skill:migrations",
+  source: "tool",
+  payload: { data: "a backfill that can violate a constraint takes every later migration down" },
+});
+```
+
+<Callout tone="note" title="The tool source is doing real work here">
+  The agent did not infer this — a test run, a failed deploy or a type error proved it. That sits
+  well above `assistant` on the [trust ladder](/locusgraph/remember/sources), and it is what makes
+  the memory outweigh a later guess to the contrary.
+</Callout>
+
+## Naming a skill
+
+One context per skill, named for the work rather than the technology:
+
+```
+  skill:react_components
+  skill:migrations
+  skill:api_error_handling
+```
+
+Every lesson about the same kind of work lands in the same drawer. The tenth lesson about migrations reinforces the first nine instead of starting a tenth pile.
+
+## Reading before acting
+
+Ask before the agent plans, not after it fails.
+
+```typescript
+const { memories } = await client.retrieveMemories({
+  query: "writing a database migration with a backfill",
+});
+```
+
+Put what returns into the planning prompt. The agent now starts the task knowing what went wrong the last three times.
+
+## When one search is not enough
+
+Some questions need more than one lookup — "why does this deploy keep failing" touches migrations, the deploy pipeline and whatever changed recently.
+
+```typescript
+const { summary, facts } = await client.deepRecall({
+  question: "why do our deploys keep failing on the migration step?",
+});
+```
+
+[Deep recall](/locusgraph/recall/deep-recall) makes several passes and hands back an answer assembled from them. It costs more than a search, so reach for it when a single query genuinely cannot answer the question.
+
+## Reference
+
+[Store an event](/locusgraph/remember/store) · [Sources](/locusgraph/remember/sources) · [Deep recall](/locusgraph/recall/deep-recall)

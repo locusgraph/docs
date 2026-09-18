@@ -1,0 +1,72 @@
+export const meta = {
+  title: "Team knowledge — LocusGraph docs",
+  description:
+    "A shared graph where a person decides what is kept: propose with observe, review the inbox, approve what belongs.",
+};
+
+# Team knowledge
+
+A personal graph can take anything, because the cost of a wrong memory is one person's confusion. A shared one cannot. A bad memory in a team's graph is repeated to everyone, with the authority of having been written down.
+
+So writes that affect everybody go through review.
+
+## Propose rather than store
+
+```typescript
+await client.observe({
+  graphId: "acme-engineering",
+  source: "tool",
+  payload: "the release checklist says no deploys after 3pm on Friday",
+});
+```
+
+`observe` is **not** the same shape as `storeEvent`. You do not name a context or an event kind —
+you hand over what was seen and the graph decides what, if anything, it means. Nothing is committed
+yet. What may come back later is a **finding**: something the graph might learn, waiting on a
+decision.
+
+Its `source` ladder is narrower than the one on a write — `policy`, `verified`, `tool` or `turn`,
+and nothing else. See [Send an observation](/locusgraph/review/observe).
+
+```
+   storeEvent   ──►  in the graph, immediately
+   observe      ──►  a finding, waiting on a person
+```
+
+## Review the inbox
+
+```typescript
+const { findings } = await client.awarenessInbox("acme-engineering");
+```
+
+Each finding carries what was proposed and where it came from. Some proposals never reach the inbox — they are kept or dropped without asking — and the inbox is what genuinely needs a human.
+
+## Decide
+
+```typescript
+await client.approveFinding(finding.id);   // it becomes a memory
+await client.rejectFinding(finding.id);    // it does not
+```
+
+Approval is the moment it becomes real. Everything the team asks afterwards can reach it.
+
+<Callout tone="note" title="Two doors, one graph">
+  Use both. An agent's own observations about a shared codebase go through `observe`. Something a
+  person typed into a form, or a fact your own systems already treat as true, can go straight in
+  with `storeEvent` — it has already been decided by someone.
+</Callout>
+
+## What a team graph looks like
+
+```
+  policy:deployments      what we will and will not do
+  convention:api_design   how we do things here
+  system:billing          how a part of the product works
+  incident:2026_03_outage what happened, and what it taught us
+```
+
+Contexts named for the subject, not the person. `user:alice` belongs in Alice's graph; `convention:api_design` belongs to everyone.
+
+## Reference
+
+[Send an observation](/locusgraph/review/observe) · [The inbox](/locusgraph/review/inbox) · [Approve or reject](/locusgraph/review/decisions)

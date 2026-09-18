@@ -1,0 +1,94 @@
+export const meta = {
+  title: "Contexts and memories — LocusGraph docs",
+  description:
+    "What a context is, how to name one, and the calls that read a context and the memories filed under it.",
+};
+
+# Contexts and memories
+
+A context is a named anchor, written `type:slug`. Memories are filed under it. The memories change; the name does not.
+
+<SlugAnatomy />
+
+## Naming one
+
+The slug is the filing location, so two spellings are two drawers. Decide once:
+
+| Do | Do not |
+| --- | --- |
+| `preference:theme` | `preference:dark_mode` — that is the answer, not the question |
+| `person:alice` | `person:Alice_Smith_2026` |
+| `project:billing_ui` | `project:billingUI` |
+
+A context comes into being when something is written to it. There is no create call.
+
+## Reading one
+
+```typescript
+const result = await client.getContext({ context_id: "person:alice" });
+```
+
+Or by its two parts:
+
+```typescript
+await client.getContextByName("alice", "acme");
+```
+
+Both return the context's metadata and its latest memory. Both **throw** when nothing is there — `"Context not found"` — unlike a search, which returns empty.
+
+Several at once:
+
+```typescript
+const { contexts, not_found } = await client.batchGetContext(
+  ["person:alice", "person:bob", "person:nobody"],
+  "acme",
+);
+```
+
+`not_found` lists the ids that missed, so one absent context does not fail the call.
+
+## What a context carries
+
+```typescript
+{
+  context_id: "person:alice",
+  context_type: "person",
+  context_name: "alice",
+  created_at: 1789726800,
+  updated_at: 1789730400,
+  reference_count: 12,
+}
+```
+
+`reference_count` is how many memories are enrolled in it — a rough measure of how much the graph knows about this thing.
+
+## Memories around a context
+
+```typescript
+const related = await client.getRelatedMemories({
+  contextType: "project",
+  contextName: "billing_ui",
+  query: "what has been decided here?",
+  includeSelf: true,
+});
+```
+
+This searches the memories of **linked** contexts. `includeSelf` defaults to `false`, so the context's own memories are excluded unless you ask for them — which surprises people the first time.
+
+## Deleting one
+
+```typescript
+await client.forgetContext({
+  graphId: "acme",
+  contextType: "project",
+  contextName: "cancelled",
+});
+```
+
+This removes the context, its links, **and any memory it was the last thread holding**. A memory enrolled in two contexts survives losing one of them.
+
+## Next
+
+- **[Link and unlink](/locusgraph/contexts/linking)** — connecting contexts
+- **[Browse](/locusgraph/contexts/browsing)** — listing and searching them
+- **[Forward references](/locusgraph/contexts/resolving)** — naming something before it exists

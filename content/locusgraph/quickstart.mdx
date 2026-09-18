@@ -1,0 +1,99 @@
+export const meta = {
+  title: "Quickstart — LocusGraph docs",
+  description:
+    "Store your first memory and search it back, in ten lines. Install the client, point it at a graph, write something, ask for it in different words.",
+};
+
+# Quickstart
+
+Ten lines, and the second half of them is the part that matters: you will ask for something using words you never stored.
+
+<QuickstartSteps />
+
+## 1. Install
+
+```bash
+npm install @locusgraph/client
+```
+
+## 2. Connect
+
+The client talks to a **region server** directly, and authenticates with an agent secret.
+
+```typescript
+import { LocusGraphClient } from "@locusgraph/client";
+
+const client = new LocusGraphClient({
+  serverUrl: process.env.LOCUSGRAPH_SERVER_URL,   // default: https://api.locusgraph.com
+  agentSecret: process.env.LOCUSGRAPH_AGENT_SECRET,
+  graphId: process.env.LOCUSGRAPH_GRAPH_ID,       // optional default graph
+});
+```
+
+`graphId` here is a default. Any call can name its own, and a call with no graph to resolve throws rather than guessing.
+
+<Callout tone="warn" title="The agent secret is a bearer token">
+  It goes in your secret store, never in client-side code. An unscoped token can create graphs; a graph-scoped one is confined to the single graph it was minted for. Prefer the narrow one.
+</Callout>
+
+## 3. Remember something
+
+```typescript
+await client.storeEvent({
+  graph_id: "my-graph",
+  event_kind: "fact",
+  payload: { data: "the user prefers dark mode" },
+});
+```
+
+Three things are going on in that call:
+
+- **`event_kind`** says what sort of memory this is. `fact` is the everyday one — see [Event kinds](/locusgraph/remember/event-kinds)
+- **`payload.data`** is the memory itself, in plain language. Write it the way you would say it
+- **The context** is derived for you when you do not name one. Name it explicitly with `context_id` once you care where things are filed
+
+## 4. Recall it
+
+```typescript
+const { memories } = await client.retrieveMemories({
+  query: "what theme do they like?",
+});
+```
+
+<MeaningMatch />
+
+That is the whole point. The question and the memory have nothing in common lexically — not *theme*, not *like*, not *prefers*. They come back together because they mean the same thing.
+
+`memories` is **rendered text**, ready to drop into a prompt. Ask for structured results instead
+with `format: "json"`, and you get an `items` array with scores, contexts and ids on each one —
+[Reading a result](/locusgraph/recall/results) walks both shapes.
+
+## The whole thing
+
+```typescript
+import { LocusGraphClient } from "@locusgraph/client";
+
+const client = new LocusGraphClient({
+  serverUrl: process.env.LOCUSGRAPH_SERVER_URL,
+  agentSecret: process.env.LOCUSGRAPH_AGENT_SECRET,
+  graphId: "my-graph",
+});
+
+await client.storeEvent({
+  graph_id: "my-graph",
+  event_kind: "fact",
+  payload: { data: "the user prefers dark mode" },
+});
+
+const { memories } = await client.retrieveMemories({
+  query: "what theme do they like?",
+});
+```
+
+## Next
+
+- **[Concepts](/locusgraph/concepts)** — graphs, contexts, memories, and the two stamps on every write
+- **[Store an event](/locusgraph/remember/store)** — every field `storeEvent` accepts
+- **[Search memories](/locusgraph/recall/search)** — narrowing a query, and how many to take
+
+<EarlyAccess />

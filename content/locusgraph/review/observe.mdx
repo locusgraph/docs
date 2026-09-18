@@ -1,0 +1,87 @@
+export const meta = {
+  title: "Send an observation — LocusGraph docs",
+  description:
+    "Offer something for review instead of storing it outright: what observe takes, how it differs from a write, and its narrower source ladder.",
+};
+
+# Send an observation
+
+`storeEvent` puts a memory in the graph. `observe` offers one up.
+
+```typescript
+const { observed, observation_id } = await client.observe({
+  graphId: "acme",
+  source: "turn",
+  payload: "user: we should never deploy on Fridays\nassistant: noted, I'll avoid it",
+});
+```
+
+## It is not a write with a flag
+
+The shapes are genuinely different:
+
+| | `storeEvent` | `observe` |
+| --- | --- | --- |
+| You name the context | Yes | No |
+| You name the event kind | Yes | No |
+| Result | A memory, immediately | An observation id |
+| Source values | Eight | Four |
+
+You are not saying *"file this under `policy:deployments` as a constraint"*. You are saying *"this happened"*, and letting the graph decide whether it means anything and where it belongs.
+
+## The request
+
+| Field | Required | What it is |
+| --- | --- | --- |
+| `source` | Yes | One of `policy`, `verified`, `tool`, `turn` |
+| `payload` | Yes | A string, or any JSON object. Max 64 KB |
+| `graphId` | No | Falls back to the client default |
+| `stream` | No | A name to keep concurrent workflows apart |
+| `observedAt` | No | When it happened, epoch seconds |
+
+### The four sources
+
+| Source | What it means |
+| --- | --- |
+| `policy` | An organizational mandate |
+| `verified` | A machine-checked fact |
+| `tool` | Tool or model output |
+| `turn` | A full user + assistant exchange, merged by you with speaker labels |
+
+<Callout tone="trap" title="The write ladder's names are rejected here">
+  `user`, `assistant`, `system`, `document` and `derived` are valid on `storeEvent` and **refused**
+  by `observe`. The nearest equivalent for a conversation is `turn` — and it expects both sides,
+  labelled, in one payload.
+</Callout>
+
+### `turn` wants the whole exchange
+
+```typescript
+payload: "user: we should never deploy on Fridays\nassistant: noted, I'll avoid it"
+```
+
+Not just the user's line. What the assistant said back is half of what happened, and a claim is read differently when you can see whether it was accepted or argued with.
+
+## The response
+
+```typescript
+{ observed: true, observation_id: "obs_…" }
+```
+
+Accepted for processing — that is all it promises. No memory exists yet, and one may never exist: some observations are kept, some are dropped, some end up waiting for a person.
+
+<Callout tone="note" title="Do not await a memory here">
+  `observe` returns as soon as the observation is taken. Nothing in the response tells you what
+  became of it. Check [the inbox](/locusgraph/review/inbox) for what needs a decision.
+</Callout>
+
+## When to use which
+
+**`storeEvent`** when it has already been decided — a form submission, a tool result you trust, a fact your own systems treat as true.
+
+**`observe`** when the graph is shared and the claim is soft. Everything an agent thinks it noticed about a team's codebase belongs here.
+
+## Next
+
+- **[The inbox](/locusgraph/review/inbox)** — what came back needing a person
+- **[Approve or reject](/locusgraph/review/decisions)** — acting on a finding

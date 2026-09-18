@@ -1,0 +1,74 @@
+export const meta = {
+  title: "API keys — LocusGraph docs",
+  description:
+    "Minting a key, scoping it to one graph, the capabilities it carries, and the rule that stops a key from widening itself.",
+};
+
+# API keys
+
+A key is what the client authenticates with. The decision that matters is how far it reaches.
+
+```bash
+curl -X POST https://api.locusgraph.com/v1/keys \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{ "name": "acme-production", "graph_id": "…", "scopes": ["graph.read", "graph.write"] }'
+```
+
+| Field | What it does |
+| --- | --- |
+| `name` | Yours, for recognising it later |
+| `graph_id` | Pins the key to one graph. Omit for an unscoped key |
+| `scopes` | What the key may do |
+| `expires_at` | When it stops working |
+
+<Callout tone="warn" title="Not in the SDK">
+  Key management is HTTP only. `@locusgraph/client` consumes a key; it does not mint one.
+</Callout>
+
+## Scoped or unscoped
+
+| | Reaches | Give it to |
+| --- | --- | --- |
+| **Graph-scoped** | One graph | Anything serving a request for one customer |
+| **Unscoped** | Every graph, and can create them | Your control plane, and nothing else |
+
+Pin every key you can. A routing bug with a scoped key fails as `403`; the same bug with an unscoped key reads another tenant's memories and returns `200`.
+
+## A key can never widen itself
+
+Two rules, both enforced at mint time:
+
+**It cannot exceed your scopes.** Minting a key with a capability the calling credential does not hold is refused.
+
+**A scoped credential can only mint for its own graph:**
+
+```
+This credential can only issue a key scoped to its own graph
+```
+
+So a leaked tenant key cannot be turned into a broader one. The worst it can do is reproduce itself.
+
+## Listing and revoking
+
+```bash
+curl https://api.locusgraph.com/v1/keys -H "Authorization: Bearer $SECRET"
+curl -X DELETE https://api.locusgraph.com/v1/keys/$KEY_ID -H "Authorization: Bearer $SECRET"
+```
+
+Each entry carries its name, `graph_id` and scopes — which is why `name` is worth filling in. Revocation is immediate.
+
+## Handling one
+
+The plaintext key is shown **once**. Put it in your secret store before you close the response.
+
+The client reads `LOCUSGRAPH_AGENT_SECRET` from the environment, so nothing has to appear in code:
+
+```typescript
+const client = new LocusGraphClient({ graphId: tenant.graphId });
+```
+
+## Next
+
+- **[Access and transfer](/locusgraph/graphs/access)** — granting people, rather than programs
+- **[Connecting](/locusgraph/client/connecting)** — where the key goes

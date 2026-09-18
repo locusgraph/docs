@@ -1,0 +1,102 @@
+export const meta = {
+  title: "Store an event — LocusGraph docs",
+  description:
+    "Every field storeEvent accepts, what comes back, and why a successful write can still be filtered.",
+};
+
+# Store an event
+
+One call writes one memory.
+
+```typescript
+const result = await client.storeEvent({
+  graph_id: "acme",
+  event_kind: "fact",
+  context_id: "person:alice",
+  source: "user",
+  payload: { data: "Alice joined Acme" },
+});
+```
+
+## The request
+
+| Field | Required | What it is |
+| --- | --- | --- |
+| `graph_id` | Yes | The graph to write into |
+| `event_kind` | Yes | What sort of memory this is — [Event kinds](/locusgraph/remember/event-kinds) |
+| `payload` | Yes | The memory itself. Any JSON |
+| `context_id` | No | The primary context, as `type:slug` |
+| `source` | No | Where it came from — [Sources](/locusgraph/remember/sources) |
+| `extends` | No | Context ids this is a more specific detail of |
+| `related_to` | No | Context ids this is laterally associated with |
+| `reinforces` | No | Context ids whose memories this strengthens |
+| `contradicts` | No | Context ids whose memories this supersedes |
+| `timestamp` | No | Unix timestamp, as a string. Defaults to now |
+
+### payload
+
+Arbitrary JSON. The server imposes no structure, so this is valid:
+
+```typescript
+payload: { data: "Alice joined Acme" }
+payload: { data: "use useMemo for object props", good_example: "…", bad_example: "…" }
+payload: { data: { role: "engineer", started: "2026-03-01" } }
+```
+
+`{ data: … }` is the convention, and the one everything else assumes. Reach past it when a memory genuinely carries structure worth keeping.
+
+### The four link fields
+
+Each takes an **array of context ids**, not a single string:
+
+```typescript
+await client.storeEvent({
+  graph_id: "acme",
+  event_kind: "fact",
+  context_id: "person:alice",
+  extends: ["org:acme"],
+  related_to: ["project:billing_ui"],
+  payload: { data: "Alice joined Acme" },
+});
+```
+
+<Callout tone="note" title="Top-level links win">
+  Link fields at the top level take precedence over anything inferred from `payload.data`. Say it
+  explicitly and you are not relying on inference.
+</Callout>
+
+## The response
+
+```typescript
+{
+  event_id: "loc_…",           // the stored memory's id
+  status: "recorded",          // or "filtered"
+  relevance: "high",           // high · medium · low
+  context_id: "person:alice",  // the normalized context, when you sent one
+}
+```
+
+### `status: "filtered"` is not an error
+
+A filtered write **succeeded**. The memory was accepted and stored — it is simply kept out of ranking, so a search will not return it.
+
+That is what happens to the Noise kinds: `noise`, `debug`, `log`. You get an id back, the row exists, nothing throws.
+
+<Callout tone="trap" title="Check `status`, not just the absence of a throw">
+  If you store a `fact` and get `filtered`, something about that write is not what you expected. A
+  call that does not throw has been accepted; it has not necessarily been made findable.
+</Callout>
+
+### `context_id` comes back normalized
+
+The context you get back is the one the server actually stored, which may differ from what you sent. Use the returned value if you are going to reference it.
+
+## Writing more than one
+
+Three at a time is still three calls. Use [batch or a transaction](/locusgraph/remember/batch) instead — up to 1000 per request.
+
+## Next
+
+- **[Event kinds](/locusgraph/remember/event-kinds)** — all 22, and what each group means
+- **[Sources](/locusgraph/remember/sources)** — the trust ladder, and the aliases
+- **[Batch and transactions](/locusgraph/remember/batch)** — many writes, two guarantees

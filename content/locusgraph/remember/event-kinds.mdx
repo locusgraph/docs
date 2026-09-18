@@ -1,0 +1,68 @@
+export const meta = {
+  title: "Event kinds — LocusGraph docs",
+  description:
+    "The kinds you can stamp on a write, what each group means, and which ones are stored but kept out of search.",
+};
+
+# Event kinds
+
+`event_kind` says what sort of memory you are writing. It is required, and it is the difference between a preference you may revisit and a rule you may not cross.
+
+## The kinds
+
+| Group | Kinds | What it means |
+| --- | --- | --- |
+| **Knowledge** | `fact` · `knowledge` · `observation` · `learned` · `feedback` | Something now true |
+| **Rules** | `constraint` · `rule` · `constraint_violation` | Something that must hold — or a time it did not |
+| **Actions** | `action` · `task` · `operation` · `execution` · `completed` | Something that was done |
+| **Decisions** | `decision` · `choice` · `selection` · `determination` | Something that was chosen |
+| **Routine** | `routine` · `heartbeat` · `status` | Ordinary operation |
+| **Noise** | `noise` · `debug` · `log` | Kept, but never returned by a search |
+
+Within a group the kinds are synonyms — `fact`, `knowledge` and `learned` behave identically. Pick the one that reads best at the call site and stay consistent.
+
+## Choosing one
+
+Most writes are `fact`. The others earn their place when the distinction changes what you do with the memory later:
+
+```typescript
+// now true
+event_kind: "fact"          payload: { data: "the user works in Berlin" }
+
+// must hold
+event_kind: "constraint"    payload: { data: "never email customers after 6pm local" }
+
+// was chosen
+event_kind: "decision"      payload: { data: "we went with Postgres over DynamoDB" }
+
+// was done
+event_kind: "action"        payload: { data: "migrated the billing tables on 2026-03-01" }
+
+// did not hold
+event_kind: "constraint_violation"
+                            payload: { data: "a backfill violated the unique index and rolled back the chain" }
+```
+
+Reading them back, the kind tells you what you are looking at. A `constraint` that conflicts with a `fact` is not two opinions — one is a rule and one is an observation.
+
+## Noise is stored, not discarded
+
+`noise`, `debug` and `log` write successfully and come back with `status: "filtered"`. The memory exists and has an id. It will not appear in a search.
+
+That is the honest place for a heartbeat you might want to audit and never want surfacing in an answer.
+
+<Callout tone="trap" title="Filtered is a successful write">
+  Nothing throws. If you stamp something `log` and later wonder why searches never find it, the
+  kind is the reason — not the query.
+</Callout>
+
+## Unknown kinds
+
+`event_kind` is typed as the known set **or any string**, so an unrecognised value type-checks. The server decides what to do with it, and what it does is not guaranteed to be what you wanted.
+
+Stay inside the table unless you have a reason not to.
+
+## Next
+
+- **[Sources](/locusgraph/remember/sources)** — the other stamp on every write
+- **[Store an event](/locusgraph/remember/store)** — the full request

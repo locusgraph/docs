@@ -1,0 +1,80 @@
+export const meta = {
+  title: "Types — LocusGraph docs",
+  description:
+    "Every request and response is typed and exported from the package root, with a naming pattern you can predict.",
+};
+
+# Types
+
+Every request and every response has an exported interface. Nothing is `any`, and nothing needs a hand-written shape on your side.
+
+```typescript
+import {
+  LocusGraphClient,
+  type ContextQuery,
+  type StoreEventResponse,
+} from "@locusgraph/client";
+```
+
+All of them come from the package root. There are no deep imports.
+
+## The naming pattern
+
+Once you have seen three, you can guess the rest:
+
+| Suffix | What it is | Examples |
+| --- | --- | --- |
+| `…Request` | A request body | `CreateEventApiRequest` · `ObserveRequest` · `BatchResolveRequest` |
+| `…Options` | Arguments to a method | `ContextSearchOptions` · `LinkContextsOptions` · `GetRelatedMemoriesOptions` |
+| `…Query` | A search input | `ContextQuery` · `DeepRecallQuery` |
+| `…Response` | What a call returns | `StoreEventResponse` · `ContextListResponse` · `FindingActionResponse` |
+| `…Result` | One item inside a response | `ContextResult` · `DeepRecallResult` |
+
+Plus the config type, `LocusGraphConfig`, for the constructor.
+
+## Typing your own functions
+
+The point of exported types is that your code can name them too:
+
+```typescript
+import type { ContextQuery, StoreEventResponse } from "@locusgraph/client";
+
+async function rememberPreference(
+  client: LocusGraphClient,
+  what: string,
+): Promise<StoreEventResponse> {
+  return client.storeEvent({
+    graph_id: "acme",
+    event_kind: "fact",
+    context_id: "preference:theme",
+    payload: { data: what },
+  });
+}
+
+function buildQuery(question: string): ContextQuery {
+  return { query: question };
+}
+```
+
+<Callout tone="note" title="The envelope is already off">
+  The API wraps responses in `{ success, data }`. The client unwraps it, so a `…Response` type
+  describes what you actually receive — not the envelope around it. You never write `res.data`.
+</Callout>
+
+## Pagination
+
+Reads that return lists take `page` and `page_size`.
+
+```typescript
+await client.listContextsByType("acme", "preference", { page: 0, page_size: 50 });
+```
+
+<Callout tone="trap" title="`page` is zero-indexed">
+  The first page is `0`, not `1`, everywhere in the API. Asking for page 1 quietly gives you the
+  second page of results — no error, just a gap at the top of your list.
+</Callout>
+
+## Next
+
+- **[Limits](/locusgraph/client/limits)** — what a page may be sized to, and the other caps
+- **[Store an event](/locusgraph/remember/store)** — the request type, field by field

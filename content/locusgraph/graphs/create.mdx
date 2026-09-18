@@ -1,0 +1,88 @@
+export const meta = {
+  title: "Create a graph — LocusGraph docs",
+  description:
+    "Making a graph, listing the ones you have, and what the summary numbers tell you about each.",
+};
+
+# Create a graph
+
+A graph is an isolated memory space. Everything else — contexts, memories, findings — lives inside one.
+
+```typescript
+const graph = await client.createGraph("Acme Corp", "Shared engineering memory");
+```
+
+```typescript
+{
+  graph_id: "…",
+  name: "Acme Corp",
+  description: "Shared engineering memory",
+  owner_agent_id: "…",
+  created_at: 1789726800,
+}
+```
+
+Two arguments: a human-readable name, and an optional description. **You do not choose the id** — the server assigns it, and that is the value you keep.
+
+<Callout tone="warn" title="Creating a graph needs an unscoped secret">
+  A graph-scoped token cannot create graphs — it reaches exactly one. Graph creation belongs in
+  your control plane, holding an unscoped secret, not in the request path serving a customer. See
+  [API keys](/locusgraph/graphs/keys).
+</Callout>
+
+## Create it when the customer arrives
+
+Not lazily on first write. A graph created on demand is a graph nobody audited, and the failure mode — two graphs for one customer after a race — is quiet and expensive to unpick.
+
+```typescript
+async function onSignup(company: string) {
+  const graph = await client.createGraph(company);
+  await saveGraphId(company, graph.graph_id);   // yours to keep
+  return graph.graph_id;
+}
+```
+
+Store `graph_id` alongside your own customer record. It is the only handle to everything that follows.
+
+## Listing them
+
+```typescript
+const { graphs, total, page, page_size } = await client.listGraphs({
+  page: 0,
+  page_size: 50,
+});
+```
+
+Each summary:
+
+```typescript
+{
+  graph_id: "…",
+  name: "Acme Corp",
+  description: "Shared engineering memory",
+  memory_count: 1284,
+  link_count: 310,
+  event_count: 1402,
+  created_at: 1789726800,
+  last_accessed: 1789812000,
+}
+```
+
+### Reading the numbers
+
+| Field | What it tells you |
+| --- | --- |
+| `memory_count` | Memories that are findable |
+| `event_count` | Everything written, including what was filtered |
+| `link_count` | Links between contexts |
+| `last_accessed` | When it was last read |
+
+`event_count` well above `memory_count` means a lot of writes are being filtered — usually Noise kinds, sometimes a mistake. `link_count` near zero on a mature graph means nothing is connected to anything, and searches will be flatter than they should be.
+
+`last_accessed` finds the graphs nobody is using.
+
+## Next
+
+- **[Settings](/locusgraph/graphs/settings)** — what you can change afterwards
+- **[API keys](/locusgraph/graphs/keys)** — scoping access to one graph
+- **[Multi-tenant](/locusgraph/use-cases/multi-tenant)** — how many graphs to have

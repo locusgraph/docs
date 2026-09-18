@@ -1,0 +1,79 @@
+export const meta = {
+  title: "Search memories — LocusGraph docs",
+  description:
+    "Ask a question in your own words and get back the memories that answer it, rendered for a prompt or as structured items.",
+};
+
+# Search memories
+
+```typescript
+const { memories } = await client.retrieveMemories({
+  query: "what theme do they like?",
+});
+```
+
+One required field. Everything else narrows, widens or reshapes the result — see [Query options](/locusgraph/recall/options).
+
+## Write the question, not keywords
+
+The query is matched on meaning, so it works best as the question your feature is actually trying to answer:
+
+```typescript
+// good — a question
+query: "what has this user decided about the dashboard?"
+
+// worse — keywords
+query: "dashboard decisions user"
+```
+
+Nothing is looked up by key. A memory stored as *"the user prefers dark mode"* answers *"what theme do they like?"* despite sharing no words with it.
+
+## What comes back
+
+```typescript
+{
+  memories: "…",     // rendered text — present for markdown and toon
+  items_found: 7,
+}
+```
+
+By default `memories` is **markdown**, already formatted to drop into a prompt. That is the common case: you are assembling context for a model, not building a UI.
+
+Ask for structure when you need it:
+
+```typescript
+const { items } = await client.retrieveMemories({
+  query: "what theme do they like?",
+  format: "json",
+});
+```
+
+<Callout tone="trap" title="`memories` and `items` are never both present">
+  `format: "markdown"` (the default) and `"toon"` fill `memories` and omit `items`. `"json"` fills
+  `items` and omits `memories` entirely. Both are optional on the type — narrow on the one your
+  `format` asked for, or you will be reading `undefined`.
+</Callout>
+
+## Nothing matched
+
+An empty result is not an error. `items_found` is `0` and `memories` is empty — nothing throws.
+
+That differs from addressing a context by name, which throws when it is not there. See [Errors](/locusgraph/client/errors).
+
+## Which graph
+
+Resolved from the call, then the client default:
+
+```typescript
+await client.retrieveMemories({ query: "…", graphId: "acme" });
+```
+
+## Cost
+
+Searching sits in the tightest rate bucket — **20 per minute**, shared with deep recall. One well-phrased query beats three narrow ones, and not only for the quota. See [Limits](/locusgraph/client/limits).
+
+## Next
+
+- **[Query options](/locusgraph/recall/options)** — narrowing, widening and reshaping
+- **[Reading a result](/locusgraph/recall/results)** — every field on an item
+- **[Deep recall](/locusgraph/recall/deep-recall)** — when one search cannot answer it

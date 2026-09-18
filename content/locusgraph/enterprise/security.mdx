@@ -1,0 +1,71 @@
+export const meta = {
+  title: "Security — LocusGraph docs",
+  description:
+    "How memories are isolated, what a credential can reach, what is written to the audit trail, and the failure modes the design refuses.",
+};
+
+# Security
+
+What holds when something goes wrong — not a list of promises.
+
+## Isolation is structural
+
+A graph is an isolated memory space. A search in one **cannot reach** another: not ranked lower, not filtered out afterwards, not visible at all.
+
+That matters because the alternative is a wall made of application code. Tag memories with a tenant field, filter the results, and one missed filter is a cross-tenant leak that returns `200`. The graph boundary does not depend on anyone remembering anything.
+
+## A credential reaches exactly as far as its scope
+
+| Credential | Reaches |
+| --- | --- |
+| Graph-scoped key | One graph |
+| Unscoped key | Every graph on the account, and can create graphs |
+| Account permission | The graphs that account was granted, at `read`, `write` or `owner` |
+
+Two rules stop a credential widening itself, both enforced when a key is minted:
+
+- A key cannot carry a capability the credential minting it does not already hold
+- A graph-scoped credential can only mint keys for its own graph — *"This credential can only issue a key scoped to its own graph"*
+
+So a leaked tenant key cannot be escalated. The worst it does is reproduce itself, and revoking the original revokes the reason it existed.
+
+<Callout tone="note" title="Give the request path the narrowest key that works">
+  One graph-scoped key per tenant, minted at signup, revocable on its own. A routing bug then
+  fails as `403` instead of quietly serving another customer's memories.
+</Callout>
+
+## Destruction is deliberately hard
+
+`POST /v1/graphs/{id}/purge` exists and is **disabled**:
+
+```
+Graph purge is disabled to prevent data loss.
+Archive the graph instead: PATCH /v1/graphs/{graph_id}/settings {"archived": true}
+```
+
+A graph is months of accumulated memory. The call that destroys all of it is not one keystroke from the call that renames it. Archiving is reversible; see [Settings](/locusgraph/graphs/settings).
+
+Ownership has a matching guard: you cannot lower your own permission, so a graph cannot be orphaned by one careless call.
+
+## The audit trail
+
+Authentication and account events are written to an audit log — the event type, who acted, what was acted on, and when.
+
+It is written **best effort**: a failed audit write is logged loudly and never fails the request that produced it. The event has already happened, and refusing the request afterwards would not unmake it.
+
+## Secrets
+
+The plaintext key is shown **once**, at mint time, and is not recoverable. The client reads it from `LOCUSGRAPH_AGENT_SECRET`, so it need not appear in source.
+
+It is a bearer token: anything holding one is a trusted environment. It does not belong in a browser bundle, a mobile app, or anywhere a user can read it.
+
+## What is not answered here
+
+Certifications, penetration test reports, data processing agreements and subprocessor lists are not published on this host. Ask.
+
+<EarlyAccess product="LocusGraph Enterprise" />
+
+## Next
+
+- **[Data residency](/locusgraph/enterprise/data-residency)** — where memories are stored
+- **[SSO and access](/locusgraph/enterprise/sso)** — who signs in, and how

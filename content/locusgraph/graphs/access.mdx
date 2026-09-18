@@ -1,0 +1,79 @@
+export const meta = {
+  title: "Access and transfer — LocusGraph docs",
+  description:
+    "The three permission levels, granting and revoking them, and handing a graph to a new owner.",
+};
+
+# Access and transfer
+
+Keys are how programs reach a graph. Permissions are how **accounts** do.
+
+## Three levels
+
+| Permission | Can |
+| --- | --- |
+| `read` | Search and read memories |
+| `write` | Everything `read` can, plus storing and linking |
+| `owner` | Everything, plus settings, permissions and transfer |
+
+## Who has access
+
+```bash
+curl https://api.locusgraph.com/v1/graphs/permissions/$GRAPH_ID \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET"
+```
+
+## Granting
+
+```bash
+curl -X POST https://api.locusgraph.com/v1/graphs/permissions/$GRAPH_ID \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{ "account_id": "…", "permission": "write" }'
+```
+
+Granting again with a different permission changes it. There is no separate update call.
+
+<Callout tone="trap" title="You cannot lower your own access">
+  Changing your own permission to anything but `owner` is refused: *"Cannot change your own
+  permission. Use another owner to modify your access."* It stops a graph being orphaned by one
+  careless call — there is no one left who can grant it back.
+</Callout>
+
+## Revoking
+
+```bash
+curl -X DELETE https://api.locusgraph.com/v1/graphs/permissions/$GRAPH_ID/$ACCOUNT_ID \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET"
+```
+
+Immediate. Keys that account minted are a separate matter — revoke those too, under [API keys](/locusgraph/graphs/keys).
+
+## Transfer
+
+```bash
+curl -X POST https://api.locusgraph.com/v1/graphs/$GRAPH_ID/transfer \
+  -H "Authorization: Bearer $LOCUSGRAPH_AGENT_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{ "to_account_id": "…" }'
+```
+
+Ownership moves to the named account. Use it when a person leaves, or when a graph built under someone's personal account should belong to a team.
+
+<Callout tone="warn" title="Not in the SDK">
+  Permissions and transfer are HTTP only. The SDK authenticates as one credential; it does not
+  administer who else may hold one.
+</Callout>
+
+## Choosing between a permission and a key
+
+**A permission** is for a person or an account that will hold it for a long time.
+
+**A key** is for a program, and should be scoped to one graph, named, and revocable on its own.
+
+Do not hand an application an owner permission because it was easier than minting a key. The whole point of the scoped key is that losing it costs one graph.
+
+## Next
+
+- **[Settings](/locusgraph/graphs/settings)** — what an owner can change
+- **[Multi-tenant](/locusgraph/use-cases/multi-tenant)** — where the boundary belongs

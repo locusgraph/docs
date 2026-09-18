@@ -1,0 +1,82 @@
+export const meta = {
+  title: "Deployment — LocusGraph docs",
+  description:
+    "Shared managed regions, or a dedicated single-tenant instance we operate for you in a region you choose.",
+};
+
+# Deployment
+
+Two ways to run LocusGraph. Both are operated by us; they differ in whether the infrastructure underneath is shared.
+
+| | **Managed** | **Dedicated** |
+| --- | --- | --- |
+| Who operates it | Us | Us |
+| Infrastructure | Shared regions | Yours alone |
+| Data location | Our region | A region you choose |
+| You operate | Nothing | Nothing |
+| Upgrades | Automatic | Scheduled with you |
+| Client change | — | `serverUrl` |
+
+## Managed
+
+The default. Point the client at a region server and hold a key.
+
+```typescript
+const client = new LocusGraphClient({
+  serverUrl: "https://api.locusgraph.com",
+  agentSecret: process.env.LOCUSGRAPH_AGENT_SECRET,
+});
+```
+
+Your graphs are isolated from every other customer's by the [graph boundary](/locusgraph/enterprise/security), which is structural rather than a filter — a search in one graph cannot reach another, at all. For most teams that is the right answer and there is nothing further to decide.
+
+## Dedicated
+
+A LocusGraph instance that is yours alone — your own database and vector index, in a region you choose. We operate it; you do not.
+
+```typescript
+const client = new LocusGraphClient({
+  serverUrl: "https://acme.locusgraph.com",
+  agentSecret: process.env.LOCUSGRAPH_AGENT_SECRET,
+});
+```
+
+That one line is the whole client-side difference. Every call on every page of these docs works unchanged.
+
+Reach for it when the requirement is **isolation of infrastructure**, not just isolation of data:
+
+- A compliance regime that asks whose workload shares the database
+- A region the shared service does not cover
+- An upgrade cadence you need a say in
+- Capacity that should not contend with anyone else's
+
+<Callout tone="note" title="Dedicated is still fully managed">
+  You run nothing. The difference from Managed is that the machinery underneath is not shared, and
+  the region is your choice.
+</Callout>
+
+## Running it in your own network
+
+Deployments inside a customer's own infrastructure are arranged under agreement rather than self-serve, and are not documented here. If data genuinely may not leave your network, start a conversation — the answer depends on your environment, and on terms rather than a download link.
+
+<EarlyAccess product="LocusGraph Enterprise" />
+
+Worth having ready: the regulation or policy driving the requirement, the environment you would run it in, and whether [deep recall](/locusgraph/recall/deep-recall) and ingest are in scope for your data policy. Those three decide most of it.
+
+## Choosing
+
+1. **Infrastructure must not be shared, or the region is not covered** → Dedicated
+2. **Data may not leave your network** → talk to us
+3. **Otherwise** → Managed
+
+Most teams stop at three. The other two exist for requirements you already know you have — if you are unsure which applies, you want Managed.
+
+## Moving between them
+
+Graphs do not follow a change of `serverUrl`. Moving from Managed to Dedicated is a data migration, not a configuration change. Plan it as one, and prefer deciding correctly at the start.
+
+## Next
+
+- **[Data residency](/locusgraph/enterprise/data-residency)** — what leaves, and when
+- **[Security](/locusgraph/enterprise/security)** — isolation and credentials
+- **[Support and SLAs](/locusgraph/enterprise/support)** — what is committed to

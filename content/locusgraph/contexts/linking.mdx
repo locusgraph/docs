@@ -1,0 +1,92 @@
+export const meta = {
+  title: "Link and unlink — LocusGraph docs",
+  description:
+    "The four relationship types, linking contexts after the fact, and what removing a link does.",
+};
+
+# Link and unlink
+
+Contexts connect to each other. Four relationships, each meaning something different.
+
+<LinkTypes />
+
+## Linking on the write
+
+The cheapest moment to link is when you already know:
+
+```typescript
+await client.storeEvent({
+  graph_id: "acme",
+  event_kind: "fact",
+  context_id: "person:alice",
+  extends: ["org:acme"],
+  related_to: ["project:billing_ui"],
+  payload: { data: "Alice joined Acme to lead billing" },
+});
+```
+
+Each field takes an **array** of context ids. See [Store an event](/locusgraph/remember/store).
+
+## Linking afterwards
+
+```typescript
+await client.linkContexts({
+  graphId: "acme",
+  fromContextId: "person:alice",
+  toContextId: "org:acme",
+  linkType: "extends",
+});
+```
+
+Direction matters. `from` **extends** `to` — Alice is a more specific thing than Acme, not the other way round.
+
+## Choosing the type
+
+| Ask | Type |
+| --- | --- |
+| Is this a narrower case of that? | `extends` |
+| Are these merely associated? | `related_to` |
+| Does this back up what that says? | `reinforces` |
+| Does this replace what that says? | `contradicts` |
+
+<Callout tone="note" title="`contradicts` is how something gets superseded">
+  Without it, an old memory and its correction are two memories that disagree, and the older one
+  does not know it has been overtaken. With it, the newer one supersedes rather than merely
+  outnumbers.
+</Callout>
+
+## Unlinking
+
+```typescript
+await client.unlinkContexts({
+  graphId: "acme",
+  fromContextId: "person:alice",
+  toContextId: "org:initech",
+  linkType: "extends",
+});
+```
+
+You must name the **type** as well as both ends. Two contexts can be joined by more than one relationship, and removing "the link" between them is ambiguous otherwise.
+
+Unlinking removes the relationship only. Both contexts and every memory under them stay exactly where they are.
+
+## Unlinking as part of something larger
+
+Moving a link and writing the memory that explains why should not be observable half-done:
+
+```typescript
+await client.transaction(
+  [
+    { op: "unlink", from_context_id: "person:alice", to_context_id: "org:initech", link_type: "extends" },
+    { op: "store", event_kind: "fact", context_id: "person:alice", extends: ["org:acme"], payload: { data: "moved from Initech to Acme" } },
+  ],
+  "acme",
+);
+```
+
+See [Batch and transactions](/locusgraph/remember/batch).
+
+## Next
+
+- **[Browse](/locusgraph/contexts/browsing)** — walking the links you have made
+- **[Contexts and memories](/locusgraph/contexts/overview)** — reading a context

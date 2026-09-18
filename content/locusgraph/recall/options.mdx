@@ -1,0 +1,88 @@
+export const meta = {
+  title: "Query options — LocusGraph docs",
+  description:
+    "Every option retrieveMemories accepts: what narrows a search, what widens it, and how to change the shape of what comes back.",
+};
+
+# Query options
+
+`query` is the only required field. The rest fall into three jobs.
+
+## Narrowing
+
+Fewer candidates, tighter answers.
+
+| Option | What it does |
+| --- | --- |
+| `limit` | Maximum memories to return |
+| `contextIds` | **Restricts** the search to these contexts |
+| `contextTypes` | Restricts by type, as `{ type: [names] }` |
+| `sources` | Only memories from these [sources](/locusgraph/remember/sources) |
+
+```typescript
+await client.retrieveMemories({
+  query: "what did we decide?",
+  contextIds: ["project:billing_ui"],
+  sources: ["user", "verified"],
+  limit: 10,
+});
+```
+
+## Widening
+
+More candidates, better recall on questions about a known thing.
+
+| Option | What it does |
+| --- | --- |
+| `boostContextIds` | **Additive.** Memories linked to these join the pool alongside the search hits |
+| `coverageContextIds` | Additive, plus a reserved share of the window spread across those contexts' timeline |
+| `coverageGroupPrefix` | How coverage spreads its picks — a context-id prefix of yours, e.g. `"session:"`. Unset means by calendar day |
+| `expandDepth` | How many levels of links to follow. Default `1`; use `2` for grandchildren |
+
+<Callout tone="trap" title="`contextIds` restricts, `boostContextIds` widens">
+  They look alike and do opposite things. Pass `contextIds: ["person:alice"]` and nothing outside
+  Alice's context can come back. Pass `boostContextIds: ["person:alice"]` and her memories join
+  whatever the search already found. Reach for boost when the question is *about* a known entity —
+  it surfaces her facts even when the wording misses them.
+</Callout>
+
+**Coverage** is for list-everything questions — *"what has this customer told us?"* — where the answers are scattered across many sessions and the top few by relevance would all come from the same afternoon.
+
+## Reshaping
+
+| Option | Values |
+| --- | --- |
+| `format` | `"markdown"` (default) · `"toon"` · `"json"` |
+| `semanticWeight` | `0` to `1` |
+
+`semanticWeight` decides which way a query leans: `0` is keyword-only, `1` is meaning-only. Omit it for the server default, which is a blend.
+
+```typescript
+// an exact module name — keyword knows best
+await client.retrieveMemories({ query: "billing_ui/settings.tsx", semanticWeight: 0 });
+
+// a question in prose — meaning knows best
+await client.retrieveMemories({ query: "why did we move off DynamoDB?", semanticWeight: 1 });
+```
+
+Set it per query. The same graph wants different answers for a sentence and for an identifier.
+
+## All of them together
+
+```typescript
+const { items } = await client.retrieveMemories({
+  graphId: "acme",
+  query: "what has Alice asked for on billing?",
+  boostContextIds: ["person:alice"],
+  contextTypes: { project: ["billing_ui"] },
+  expandDepth: 2,
+  sources: ["user"],
+  limit: 20,
+  format: "json",
+});
+```
+
+## Next
+
+- **[Reading a result](/locusgraph/recall/results)** — the fields you just asked for
+- **[Deep recall](/locusgraph/recall/deep-recall)** — when narrowing and widening both fall short

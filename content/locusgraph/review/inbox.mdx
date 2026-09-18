@@ -1,0 +1,83 @@
+export const meta = {
+  title: "The inbox — LocusGraph docs",
+  description:
+    "What is waiting on a person, every field on a finding, and how the inbox differs from the full findings list.",
+};
+
+# The inbox
+
+An observation becomes a **finding**: a statement the graph might learn. Some findings need a person. Those are the inbox.
+
+```typescript
+const { findings, usage } = await client.awarenessInbox("acme");
+```
+
+## Inbox or findings
+
+Two calls, and the difference is what you are doing:
+
+```typescript
+await client.awarenessInbox("acme");     // what needs a decision
+await client.awarenessFindings("acme");  // everything, whatever happened to it
+```
+
+Use the inbox to build a review queue. Use findings to audit — to see what was kept and dropped without anyone being asked.
+
+## A finding
+
+```typescript
+{
+  id: "fnd_…",
+  observation_id: "obs_…",
+  context_id: "policy:deployments",
+  statement: "no deploys on Friday afternoons",
+  kind: "constraint",
+  confidence: 0.74,
+  stakes: "…",
+  contradicts: ["policy:release_cadence"],
+  status: "pending",
+}
+```
+
+| Field | What it is |
+| --- | --- |
+| `id` | The finding. What you approve or reject |
+| `observation_id` | The raw observation it was distilled from |
+| `context_id` | Where the statement would be filed |
+| `statement` | The distilled claim — not your original payload |
+| `kind` | `fact`, `decision`, `rule`, `constraint` or `observation` |
+| `confidence` | `0`–`1` |
+| `stakes` | What accepting it affects |
+| `contradicts` | Contexts this would supersede |
+| `status` | `pending` until someone decides |
+
+### The statement is not your payload
+
+You sent a conversation. What you get back is one sentence distilled from it. Review **that** — it is what will be stored, and it is what the graph will repeat to everyone later.
+
+### `contradicts` is the one to read first
+
+<Callout tone="trap" title="A non-empty `contradicts` is a reversal">
+  It means approving this overturns something the graph already believes. Those findings deserve a
+  slower look than a new fact does — you are not adding knowledge, you are replacing it.
+</Callout>
+
+## `usage` comes back too
+
+Both calls return a `usage` block — LLM calls, tokens and cost — because turning observations into findings is model work, not a database read.
+
+## Building a queue
+
+```typescript
+const { findings } = await client.awarenessInbox("acme");
+
+const urgent = findings.filter((f) => f.contradicts.length > 0);
+const ordinary = findings.filter((f) => f.contradicts.length === 0);
+```
+
+Reversals first, then everything else by confidence. A low-confidence finding that contradicts nothing is the cheapest thing in the queue to reject.
+
+## Next
+
+- **[Approve or reject](/locusgraph/review/decisions)** — acting on one
+- **[Send an observation](/locusgraph/review/observe)** — where findings come from

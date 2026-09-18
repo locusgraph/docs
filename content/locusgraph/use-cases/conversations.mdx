@@ -1,0 +1,74 @@
+export const meta = {
+  title: "Conversation history — LocusGraph docs",
+  description:
+    "Carry what was said into the next conversation without replaying the transcript: store the takeaways, not the messages.",
+};
+
+# Conversation history
+
+The obvious approach is to store every message and feed them back. It works for a week, and then the history is longer than the context window and you are choosing what to drop on every call.
+
+Store the takeaways instead. A transcript is a recording; a takeaway is a memory.
+
+## What not to store
+
+```
+  ✗  "user: hey can you make the dashboard less bright"
+  ✗  "assistant: sure, I can switch it to a dark theme..."
+  ✗  the full turn-by-turn, chunked and embedded
+```
+
+Every one of those is a message about a thing rather than the thing. Six months of them buries the two sentences that mattered.
+
+## What to store
+
+At the end of a turn — or a session — write what changed.
+
+```typescript
+await client.storeEvent({
+  graph_id: "alice",
+  event_kind: "decision",
+  context_id: "project:dashboard",
+  source: "user",
+  payload: { data: "wants the dashboard dark by default, not a toggle" },
+});
+```
+
+One turn rarely produces more than one or two of these. Most turns produce none, and that is the point — a conversation where nothing was settled has nothing to remember.
+
+<Callout tone="note" title="Kinds carry the difference">
+  `fact` for something now true, `decision` for something chosen, `constraint` for a rule you must
+  not break. Reading them back, the kind tells you whether you are looking at a preference you may
+  revisit or a line you may not cross. See [Event kinds](/locusgraph/remember/event-kinds).
+</Callout>
+
+## Writing several at once
+
+A session that settled three things is one call.
+
+```typescript
+await client.storeEventsBatch(
+  [
+    { event_kind: "decision", context_id: "project:dashboard", payload: { data: "dark by default" } },
+    { event_kind: "constraint", context_id: "project:dashboard", payload: { data: "no animations on the summary view" } },
+    { event_kind: "fact", context_id: "user:alice", payload: { data: "works late, mostly after 9pm" } },
+  ],
+  "alice",
+);
+```
+
+Each item is admitted on its own — one rejection does not take the others down. If you need all-or-nothing, that is [a transaction](/locusgraph/remember/batch).
+
+## Reading it back at the start of a turn
+
+```typescript
+const { memories } = await client.retrieveMemories({
+  query: "what has this user already decided about the dashboard?",
+});
+```
+
+Put what comes back in your prompt. That is the whole integration: a handful of relevant memories instead of a growing transcript, chosen by the question rather than by recency.
+
+## Reference
+
+[Batch and transactions](/locusgraph/remember/batch) · [Event kinds](/locusgraph/remember/event-kinds) · [Search memories](/locusgraph/recall/search)

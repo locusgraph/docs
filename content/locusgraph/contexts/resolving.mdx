@@ -1,0 +1,93 @@
+export const meta = {
+  title: "Forward references — LocusGraph docs",
+  description:
+    "Linking to something before it exists, finding the links still waiting, and pointing them at the memory that finally fulfils them.",
+};
+
+# Forward references
+
+You can link to a context that does not exist yet.
+
+That is deliberate. An agent reading a document meets *"as agreed with the vendor"* long before it meets the agreement. Refusing the link would lose the fact that a connection was there; inventing a memory to hang it on would be worse.
+
+So the link is made, and it waits.
+
+## Finding what is waiting
+
+```typescript
+const overview = await client.getUnresolvedOverview("acme");
+```
+
+```typescript
+{
+  total_unresolved_links: 14,
+  unique_context_ids: 5,
+  context_ids: [
+    { context_id: "vendor:agreement", link_count: 6, oldest_link_age_hours: 72 },
+    …
+  ],
+}
+```
+
+`oldest_link_age_hours` is the number to watch. A reference unresolved for three days is usually one of two things: a memory that never arrived, or a naming mistake that means it arrived under a different name.
+
+For one context:
+
+```typescript
+const { links } = await client.getUnresolvedLinks("vendor:agreement", "acme");
+```
+
+## Resolving one
+
+Point the placeholder at the memory that fulfils it:
+
+```typescript
+const result = await client.resolve({
+  graphId: "acme",
+  context_id: "vendor:agreement",
+  locus_id: "loc_…",
+});
+```
+
+```typescript
+{ context_id: "vendor:agreement", locus_id: "loc_…", links_resolved: 6, success: true }
+```
+
+`links_resolved` is every link that was waiting on that context. One resolve call reconciles all of them.
+
+## Resolving many
+
+```typescript
+const { results, total_resolved } = await client.batchResolve({
+  graphId: "acme",
+  resolutions: [
+    { context_id: "vendor:agreement", locus_id: "loc_a" },
+    { context_id: "policy:renewal", locus_id: "loc_b" },
+  ],
+});
+```
+
+## Where the locus id comes from
+
+From a search, with `format: "json"`:
+
+```typescript
+const { items } = await client.retrieveMemories({
+  query: "the vendor agreement terms",
+  format: "json",
+});
+
+await client.resolve({ context_id: "vendor:agreement", locus_id: items[0].locus_id });
+```
+
+Or from `facts[].locus` on a [deep recall](/locusgraph/recall/deep-recall).
+
+<Callout tone="note" title="Unresolved links are not errors">
+  Nothing is broken while a reference waits, and nothing throws. Sweep the overview periodically —
+  it is a work queue, not an error log.
+</Callout>
+
+## Next
+
+- **[Browse](/locusgraph/contexts/browsing)** — checking whether the target arrived under another name
+- **[Reading a result](/locusgraph/recall/results)** — where `locus_id` comes from

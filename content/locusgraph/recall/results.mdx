@@ -1,0 +1,84 @@
+export const meta = {
+  title: "Reading a result — LocusGraph docs",
+  description:
+    "The two shapes a search returns, every field on a structured item, and what each one is good for.",
+};
+
+# Reading a result
+
+A search returns one of two shapes, decided by `format`.
+
+## Rendered text
+
+The default. `memories` is a formatted string, ready for a prompt.
+
+```typescript
+const { memories, items_found } = await client.retrieveMemories({ query: "…" });
+```
+
+| Field | What it is |
+| --- | --- |
+| `memories` | The rendered memories — markdown by default, TOON with `format: "toon"` |
+| `items_found` | How many matched |
+
+Use this when the destination is a model. You are not parsing anything.
+
+## Structured items
+
+```typescript
+const { items, items_found } = await client.retrieveMemories({
+  query: "…",
+  format: "json",
+});
+```
+
+Each item:
+
+```typescript
+{
+  locus_id: "loc_…",
+  context_ids: ["preference:theme", "person:alice"],
+  text: "prefers dark mode",
+  score: 0.82,
+  confidence: 0.7,
+  kind: "fact",
+  source: "user",
+  created: 1789726800,
+}
+```
+
+| Field | What it is |
+| --- | --- |
+| `locus_id` | The memory's id. Use it with `getLocus` or `deleteLocus` |
+| `context_ids` | **Every** context this memory is enrolled in, not just the primary one |
+| `text` | The memory |
+| `score` | How well it answered, `0`–`1`. What the ranking sorted on |
+| `confidence` | How much the memory is trusted, set from its [source](/locusgraph/remember/sources) |
+| `kind` | The [event kind](/locusgraph/remember/event-kinds) it was stored as |
+| `source` | Provenance. May be `null` |
+| `created` | Unix seconds |
+
+## Score and confidence are different questions
+
+`score` answers *"how well does this match what you asked?"* — it is about the query, and the same memory scores differently for different questions.
+
+`confidence` answers *"how much do we trust this?"* — it is about the memory, and does not move when the query changes.
+
+<Callout tone="note" title="Use confidence when two memories disagree">
+  Both may score well and say opposite things. The one with higher confidence came from a more
+  trusted source. That is the field to break the tie on when you are showing a user one answer
+  rather than a list.
+</Callout>
+
+## `context_ids` is the full enrolment
+
+A memory written under `preference:theme` and linked to `person:alice` comes back with both. That is how you tell what a memory is *about* from what it was filed under.
+
+## `created` is not relevance
+
+Recency already contributes to ranking. Re-sorting results by `created` overrides that, and usually makes answers worse — the newest memory is often a restatement of an older, better one.
+
+## Next
+
+- **[Query options](/locusgraph/recall/options)** — asking for exactly these fields
+- **[Deep recall](/locusgraph/recall/deep-recall)** — a different result shape, with citations
