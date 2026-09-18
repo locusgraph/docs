@@ -79,3 +79,31 @@
 [data-section] nav a[aria-current="page"] {
   color: var(--s1);
 }
+
+/*
+ * The hero tape.
+ *
+ * Translating by half the doubled strip lands the second copy exactly where the
+ * first began, so the loop has no seam. `will-change` keeps it on its own layer
+ * rather than repainting the hero behind it every frame.
+ */
+
+@keyframes tape-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.tape {
+  animation: tape-scroll 38s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tape {
+    animation: none;
+  }
+}

@@ -2,113 +2,118 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ProductMark } from "@/components/site/product-mark";
 import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
+import { Tape } from "@/components/site/tape";
+import { pagesOf, treesFor } from "@/lib/site/docs-nav";
+import { iconForHref } from "@/lib/site/icons";
 import { PRODUCT_INFO, PRODUCTS } from "@/lib/site/products";
 import { pageMeta } from "@/lib/site/seo";
 
 /**
  * The docs host root.
  *
- * A page, not a redirect: the host serves four sections, so there is no single
- * intro to send a reader to. Redirecting here would pick a winner and hand
- * everyone else a bounce. It is also the one URL the whole host canonicalises
- * to, so it stays indexable and lists every section it owns.
+ * A page, not a redirect: the host serves several sections, so there is no
+ * single intro to send a reader to. Redirecting would pick a winner and hand
+ * everyone else a bounce.
+ *
+ * Ready sections get a card with a way in — the first few pages of each, pulled
+ * from the nav so the links cannot drift. Sections that are not ready are one
+ * quiet line at the bottom rather than four dimmed cards competing with the two
+ * that work.
  */
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
-  description: "Documentation for LocusGraph, Spendgraph, BrainStorm and Locus Skill.",
+  description:
+    "Documentation for LocusGraph and Spendgraph — how to store what your app learns, and know what every model call costs.",
   path: "/",
 });
+
+const live = PRODUCTS.filter((product) => PRODUCT_INFO[product].ready);
+const soon = PRODUCTS.filter((product) => !PRODUCT_INFO[product].ready);
 
 export default function DocsHome() {
   return (
     <div className="flex min-h-screen flex-col bg-[radial-gradient(ellipse_70%_45%_at_50%_0%,rgba(42,120,214,0.07),transparent_70%)] dark:bg-[radial-gradient(ellipse_70%_45%_at_50%_0%,rgba(57,135,229,0.09),transparent_70%)]">
       <SiteHeader />
 
-      <main className="flex-1 px-6 py-12">
+      <main className="flex-1 px-6 pt-16 pb-20">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-balance text-5xl font-semibold leading-[1.06] tracking-tighter sm:text-6xl">
-            Everything LocusGraph ships, <span className="text-s1">written down</span>.
+            Everything we ship, <span className="text-s1">written down</span>.
           </h1>
-          <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-lg text-soft">
-            Four sections on one host. Start where the work is — each one carries its own reference,
-            guides and API surface.
+          <p className="mx-auto mt-5 max-w-[46ch] text-pretty text-lg text-soft">
+            Reference, guides and API surface for every LocusGraph product — on one host, in one
+            shape.
           </p>
         </div>
 
-        <div className="mx-auto mt-12 grid w-full max-w-3xl gap-3 sm:grid-cols-2">
-          {PRODUCTS.map((product) => {
-            const { title, blurb, ready } = PRODUCT_INFO[product];
-            const face = (
-              <>
-                <span className="flex items-center justify-between text-base font-medium">
-                  <span className="flex items-center gap-2.5">
-                    <span
-                      className={`grid size-7 shrink-0 place-items-center rounded-md ${
-                        ready ? "bg-foreground text-background" : "bg-ghost text-faint"
-                      }`}
-                    >
+        <Tape />
+
+        <div className="mx-auto mt-14 grid w-full max-w-4xl gap-4 md:grid-cols-2">
+          {live.map((product) => {
+            const { title, blurb } = PRODUCT_INFO[product];
+            const entries = treesFor(product).flatMap(pagesOf).slice(0, 3);
+
+            return (
+              <section
+                key={product}
+                className="flex flex-col rounded-2xl border border-line bg-surface p-6"
+              >
+                <Link href={`/${product}`} className="group no-underline">
+                  <span className="flex items-center gap-3">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-foreground text-background">
                       <ProductMark product={product} className="size-5" />
                     </span>
-                    {title}
-                  </span>
-                  {ready ? (
+                    <span className="text-lg font-semibold tracking-tight">{title}</span>
                     <span
                       aria-hidden
-                      className="text-faint transition group-hover:translate-x-0.5 group-hover:text-soft"
+                      className="ml-auto text-faint transition group-hover:translate-x-0.5 group-hover:text-soft"
                     >
                       →
                     </span>
-                  ) : (
-                    <span className="rounded-full border border-line px-2 py-0.5 text-xs text-faint">
-                      Soon
-                    </span>
-                  )}
-                </span>
-                <span className="mt-1 block text-sm text-soft">{blurb}</span>
-              </>
-            );
+                  </span>
+                </Link>
 
-            // A section that is not ready renders as plain markup rather than a
-            // disabled link: an anchor with no href is not focusable and
-            // announces nothing, and one that is focusable but inert is worse.
-            return ready ? (
-              <Link
-                key={product}
-                href={`/${product}`}
-                className="group rounded-xl border border-line bg-surface px-5 py-4 no-underline transition hover:bg-ghost"
-              >
-                {face}
-              </Link>
-            ) : (
-              <div
-                key={product}
-                aria-disabled="true"
-                title={`${title} docs are not published yet`}
-                className="cursor-not-allowed rounded-xl border border-line border-dashed px-5 py-4 opacity-55"
-              >
-                {face}
-              </div>
+                <p className="mt-3 text-pretty text-sm text-soft">{blurb}</p>
+
+                <ul className="mt-5 space-y-1 border-t border-line pt-4">
+                  {entries.map((entry) => {
+                    const Icon = iconForHref(entry.href);
+                    return (
+                      <li key={entry.href}>
+                        <Link
+                          href={entry.href}
+                          className="-mx-2 flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm text-soft no-underline transition hover:bg-ghost hover:text-foreground"
+                        >
+                          <Icon className="size-4 shrink-0 text-faint" aria-hidden />
+                          {entry.title}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
             );
           })}
         </div>
 
-        <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-faint">
-          Sections marked <span className="text-soft">Soon</span> are not generally available yet —{" "}
-          <a
-            href="mailto:nasim@effortlesslabs.xyz?subject=Early%20access"
-            className="text-soft hover:text-foreground"
-          >
-            ask for early access
-          </a>
-          .
-        </p>
-        <p className="mx-auto mt-2 max-w-2xl text-center text-sm text-faint">
-          Docs only. Product pages live on{" "}
-          <a href="https://www.locusgraph.com" className="text-soft hover:text-foreground">
-            locusgraph.com
-          </a>
-          ; each app signs in on its own subdomain.
-        </p>
+        {soon.length > 0 ? (
+          <p className="mx-auto mt-10 max-w-4xl text-center text-sm text-faint">
+            {soon.map((product, i) => (
+              <span key={product}>
+                {i > 0 ? " · " : null}
+                {PRODUCT_INFO[product].title}
+              </span>
+            ))}{" "}
+            are on the way —{" "}
+            <a
+              href="mailto:nasim@effortlesslabs.xyz?subject=Early%20access"
+              className="text-soft hover:text-foreground"
+            >
+              ask for early access
+            </a>
+            .
+          </p>
+        ) : null}
       </main>
 
       <SiteFooter />
