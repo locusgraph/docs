@@ -32,8 +32,8 @@ export interface ProductInfo {
 export const PRODUCT_INFO: Record<Product, ProductInfo> = {
   locusgraph: {
     title: "LocusGraph",
-    blurb: "The graph the products are built on.",
-    ready: false,
+    blurb: "A memory that lasts, for the things your app learns.",
+    ready: true,
   },
   spendgraph: {
     title: "Spendgraph",

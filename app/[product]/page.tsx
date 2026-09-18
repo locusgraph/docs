@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EarlyAccess } from "@/components/docs/early-access";
 import { treesFor } from "@/lib/site/docs-nav";
+import { iconForHref } from "@/lib/site/icons";
 import { isProduct, PRODUCT_INFO, PRODUCTS } from "@/lib/site/products";
 import { pageMeta } from "@/lib/site/seo";
 
@@ -58,18 +59,24 @@ export default async function ProductDocs({ params }: { params: Promise<{ produc
           <section key={`${tree.title}-${section.title}`}>
             <h2>{section.title}</h2>
             <div className="not-prose my-5 grid gap-2 sm:grid-cols-2">
-              {section.items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="rounded-xl border border-line px-4 py-3 no-underline transition hover:bg-ghost"
-                >
-                  <span className="block text-sm font-medium">{item.title}</span>
-                  {item.blurb ? (
-                    <span className="mt-0.5 block text-sm text-soft">{item.blurb}</span>
-                  ) : null}
-                </Link>
-              ))}
+              {section.items.map((item) => {
+                const Icon = iconForHref(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-xl border border-line px-4 py-3 no-underline transition hover:bg-ghost"
+                  >
+                    <span className="flex items-center gap-2 text-sm font-medium">
+                      <Icon className="size-4 shrink-0 text-soft" aria-hidden />
+                      {item.title}
+                    </span>
+                    {item.blurb ? (
+                      <span className="mt-0.5 block text-sm text-soft">{item.blurb}</span>
+                    ) : null}
+                  </Link>
+                );
+              })}
             </div>
           </section>
         ))

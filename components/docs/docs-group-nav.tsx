@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { productOf, treeFor, treesFor } from "@/lib/site/docs-nav";
+import { iconForGroup } from "@/lib/site/icons";
 
 /**
  * Every group in this section, along the header.
@@ -23,19 +24,23 @@ export function DocsGroupNav() {
 
   return (
     <nav className="no-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto">
-      {groups.map((tree) => (
-        <Link
-          key={tree.href}
-          href={tree.href}
-          title={tree.blurb}
-          aria-current={tree === current ? "page" : undefined}
-          className={`shrink-0 rounded-md px-2 py-1 text-sm transition hover:bg-ghost ${
-            tree === current ? "font-medium text-foreground" : "text-soft hover:text-foreground"
-          }`}
-        >
-          {tree.title}
-        </Link>
-      ))}
+      {groups.map((tree) => {
+        const Icon = iconForGroup(tree.title);
+        return (
+          <Link
+            key={tree.href}
+            href={tree.href}
+            title={tree.blurb}
+            aria-current={tree === current ? "page" : undefined}
+            className={`flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-sm transition hover:bg-ghost ${
+              tree === current ? "font-medium text-foreground" : "text-soft hover:text-foreground"
+            }`}
+          >
+            {Icon ? <Icon className="size-3.5 shrink-0" aria-hidden /> : null}
+            {tree.title}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

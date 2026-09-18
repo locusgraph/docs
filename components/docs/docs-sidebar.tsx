@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, BookOpen, Compass, FileText, type LucideIcon, Rocket } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ProductMark } from "@/components/site/product-mark";
@@ -18,20 +18,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { pagesOf, productOf, treesFor } from "@/lib/site/docs-nav";
+import { iconForHref } from "@/lib/site/icons";
 import { isProduct, PRODUCT_INFO } from "@/lib/site/products";
-
-/**
- * Icons by page, falling back rather than by lookup table per section.
- *
- * Keyed on the last path segment, not the whole href: a page called `overview`
- * means the same thing in every section, and keying on the full path would ask
- * every new section to re-register the same three entries.
- */
-const ICONS: Record<string, LucideIcon> = {
-  overview: Compass,
-  "getting-started": Rocket,
-  concepts: BookOpen,
-};
 
 export function DocsSidebar() {
   const pathname = usePathname();
@@ -72,7 +60,7 @@ export function DocsSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {pagesOf(tree).map((item) => {
-                  const Icon = ICONS[item.href.split("/").pop() ?? ""] ?? FileText;
+                  const Icon = iconForHref(item.href);
                   return (
                     <SidebarMenuItem key={item.href}>
                       <SidebarMenuButton
