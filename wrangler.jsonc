@@ -8,6 +8,13 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  // Keep the workers.dev hostname. Declaring `routes` alone turns it off, which
+  // takes the site offline the moment a custom domain fails to attach.
+  "workers_dev": true,
+  // doc.locusgraph.com is attached here once its existing DNS records are gone.
+  // Cloudflare refuses to create the record while another one holds the name:
+  //   Hostname 'doc.locusgraph.com' already has externally managed DNS records
+  // "routes": [{ "pattern": "doc.locusgraph.com", "custom_domain": true }],
   "observability": {
     "enabled": true
   }
