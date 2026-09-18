@@ -29,7 +29,7 @@ export default function NotFound() {
             This page is not on this host
           </h1>
           <p className="mx-auto mt-4 max-w-[52ch] text-pretty text-lg text-soft">
-            The address may have changed, or it may belong somewhere else — marketing pages live on
+            The address may have changed, or it may belong somewhere else. Marketing pages live on
             locusgraph.com, and each product signs in on its own subdomain.
           </p>
         </div>

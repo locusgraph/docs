@@ -23,7 +23,7 @@ import { pageMeta } from "@/lib/site/seo";
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
   description:
-    "Documentation for LocusGraph and Spendgraph — how to store what your app learns, and know what every model call costs.",
+    "Documentation for LocusGraph and Spendgraph: how to store what your app learns, and know what every model call costs.",
   path: "/",
 });
 
@@ -41,7 +41,7 @@ export default function DocsHome() {
             Everything we ship, <span className="text-s1">written down</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-[46ch] text-pretty text-lg text-soft">
-            Reference, guides and API surface for every LocusGraph product — on one host, in one
+            Reference, guides and API surface for every LocusGraph product, on one host, in one
             shape.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function DocsHome() {
                 {PRODUCT_INFO[product].title}
               </span>
             ))}{" "}
-            are on the way —{" "}
+            are on the way.{" "}
             <a
               href="mailto:nasim@effortlesslabs.xyz?subject=Early%20access"
               className="text-soft hover:text-foreground"

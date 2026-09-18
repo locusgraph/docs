@@ -256,7 +256,7 @@ export function QuickstartSteps() {
 /** Stored one way, asked another, found anyway. */
 export function MeaningMatch() {
   return (
-    <Fig caption="No shared words. Found anyway — the two mean the same thing.">
+    <Fig caption="No shared words. Found anyway: the two mean the same thing.">
       <svg viewBox="0 0 640 150" className="w-full" role="img" aria-label="Matching by meaning">
         <title>Matching by meaning</title>
         <defs>
@@ -328,7 +328,7 @@ export function ConceptTree() {
           strokeDasharray="4 4"
         />
         <text x="32" y="38" className={`${LABEL} text-faint`}>
-          Graph — one isolated memory space
+          Graph: one isolated memory space
         </text>
 
         {/* context A */}
@@ -383,7 +383,7 @@ export function ConceptTree() {
 /** What the two halves of a context name are for. */
 export function SlugAnatomy() {
   return (
-    <Fig caption="The type groups it. The slug is the filing location — pick one spelling and keep it.">
+    <Fig caption="The type groups it. The slug is the filing location. Pick one spelling and keep it.">
       <svg
         viewBox="0 0 640 120"
         className="w-full"
@@ -403,12 +403,12 @@ export function SlugAnatomy() {
 
         <path d="M 150 60 L 150 74 L 278 74 L 278 60" className="stroke-line" fill="none" />
         <text x="214" y="94" textAnchor="middle" className={`${LABEL} text-faint`}>
-          type — the family it belongs to
+          type: the family it belongs to
         </text>
 
         <path d="M 300 60 L 300 74 L 440 74 L 440 60" className="stroke-line" fill="none" />
         <text x="370" y="94" textAnchor="middle" className={`${LABEL} text-faint`}>
-          slug — the exact thing
+          slug: the exact thing
         </text>
       </svg>
     </Fig>

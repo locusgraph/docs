@@ -14,7 +14,7 @@ export function EarlyAccess({
   className?: string;
 }) {
   const href = `mailto:nasim@effortlesslabs.xyz?subject=${encodeURIComponent(
-    `Early access — ${product}`
+    `Early access: ${product}`
   )}`;
 
   return (

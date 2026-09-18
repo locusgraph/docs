@@ -821,7 +821,7 @@ const TOOLS: DocsTree = {
 const STAGE: DocsTree = {
   title: "Stage",
   href: "/spendgraph/stage/overview",
-  blurb: "One prompt, one schema, one priced reply — including the tries that failed.",
+  blurb: "One prompt, one schema, one priced reply, including the tries that failed.",
   sections: [
     {
       title: "Start here",
