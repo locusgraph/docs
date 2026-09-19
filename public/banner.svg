@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 320" width="1280" height="320" role="img" aria-label="LocusGraph Docs — everything we ship, written down">
+  <rect width="1280" height="320" rx="16" fill="#09090b"/>
+
+  <g transform="translate(80 96)">
+    <text x="0" y="0" font-family="Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="-2" fill="#fafafa">LocusGraph <tspan fill="#a1a1aa">docs</tspan></text>
+    <text x="0" y="52" font-family="Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="400" fill="#a1a1aa">Everything we ship, written down.</text>
+    <text x="0" y="108" font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#71717a">two products  ·  113 pages  ·  one host</text>
+  </g>
+
+  <!-- Two stacks of pages, one per section, in that section's own accent.
+       The bars are lines of prose; the tallest card in each stack is the page
+       you are on. -->
+  <g transform="translate(830 76)">
+    <g>
+      <rect x="0" y="24" width="148" height="172" rx="10" fill="#141417" stroke="#27272a"/>
+      <rect x="10" y="12" width="148" height="172" rx="10" fill="#18181b" stroke="#27272a"/>
+      <rect x="20" y="0" width="148" height="172" rx="10" fill="#1c1c20" stroke="#0099ff" stroke-opacity="0.5"/>
+      <rect x="38" y="24" width="64" height="8" rx="4" fill="#0099ff"/>
+      <rect x="38" y="48" width="112" height="6" rx="3" fill="#3f3f46"/>
+      <rect x="38" y="66" width="96" height="6" rx="3" fill="#3f3f46"/>
+      <rect x="38" y="84" width="112" height="6" rx="3" fill="#3f3f46"/>
+      <rect x="38" y="110" width="80" height="6" rx="3" fill="#27272a"/>
+      <rect x="38" y="128" width="104" height="6" rx="3" fill="#27272a"/>
+      <text x="38" y="158" font-family="Geist Mono, ui-monospace, monospace" font-size="13" fill="#0099ff">locusgraph</text>
+    </g>
+
+    <g transform="translate(206 0)">
+      <rect x="0" y="24" width="148" height="172" rx="10" fill="#141417" stroke="#27272a"/>
+      <rect x="10" y="12" width="148" height="172" rx="10" fill="#18181b" stroke="#27272a"/>
+      <rect x="20" y="0" width="148" height="172" rx="10" fill="#1c1c20" stroke="#7f8bff" stroke-opacity="0.5"/>
+      <rect x="38" y="24" width="72" height="8" rx="4" fill="#7f8bff"/>
+      <rect x="38" y="48" width="112" height="6" rx="3" fill="#3f3f46"/>
+      <rect x="38" y="66" width="88" height="6" rx="3" fill="#3f3f46"/>
+      <rect x="38" y="84" width="112" height="6" rx="3" fill="#3f3f46"/>
+      <rect x="38" y="110" width="96" height="6" rx="3" fill="#27272a"/>
+      <rect x="38" y="128" width="72" height="6" rx="3" fill="#27272a"/>
+      <text x="38" y="158" font-family="Geist Mono, ui-monospace, monospace" font-size="13" fill="#7f8bff">spendgraph</text>
+    </g>
+  </g>
+</svg>

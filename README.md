@@ -1,3 +1,16 @@
+<p align="center">
+  <img src="./public/banner.svg" alt="LocusGraph Docs — everything we ship, written down" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://docs.locusgraph.com"><strong>Docs</strong></a> ·
+  <a href="https://docs.locusgraph.com/locusgraph">LocusGraph</a> ·
+  <a href="https://docs.locusgraph.com/spendgraph">Spendgraph</a> ·
+  <a href="https://docs.locusgraph.com/llms.txt">llms.txt</a>
+</p>
+
+---
+
 # LocusGraph Docs
 
 The documentation host for every LocusGraph product, served from one Next.js app
