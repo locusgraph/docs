@@ -49,7 +49,7 @@ export interface DocsTree {
 const LOCUSGRAPH: DocsTree = {
   title: "",
   href: "/locusgraph/overview",
-  blurb: "A memory that lasts, for the things your app learns.",
+  blurb: "A memory that lasts, for the things your agent learns.",
   sections: [
     {
       title: "Start here",
@@ -195,7 +195,7 @@ const LG_CLIENT: DocsTree = {
 const LG_REMEMBER: DocsTree = {
   title: "Remember",
   href: "/locusgraph/remember/store",
-  blurb: "Writing what your app learns, one event or a thousand.",
+  blurb: "Writing what your agent learns, one event or a thousand.",
   sections: [
     {
       title: "Writing",
@@ -456,7 +456,7 @@ const SPENDGRAPH: DocsTree = {
 const SDK: DocsTree = {
   title: "SDK",
   href: "/spendgraph/sdk/quickstart",
-  blurb: "Report what your app spends on models, and read it back.",
+  blurb: "Report what your agent spends on models, and read it back.",
   sections: [
     {
       title: "Start here",
