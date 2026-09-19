@@ -21,8 +21,8 @@ importers:
         specifier: ^0.8.1
         version: 0.8.1
       '@spendgraph/config':
-        specifier: ^0.8.0
-        version: 0.8.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/evals':
         specifier: ^0.8.1
         version: 0.8.1
@@ -2266,8 +2266,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@spendgraph/config@0.8.0':
-    resolution: {integrity: sha512-3WxAVAopiPff1s7C36j7sWH+AYccw3yDTAZCkUKGlQxxfTLXfORz6MnvTFB/bQu95aENCpoHQZzC8sDVefal/g==}
+  '@spendgraph/config@0.8.1':
+    resolution: {integrity: sha512-xr7s9wN3F8dn8WtSbtcoHkvJavP3w6JbIU1haL2MkIyEzF1NQNNR9hzOPAkr6jEJwPcnp1ujgZkSdO9RgacNhQ==}
     engines: {node: '>=18'}
 
   '@spendgraph/evals@0.8.1':
@@ -6463,7 +6463,7 @@ snapshots:
     dependencies:
       '@spendgraph/sdk': 0.8.1
 
-  '@spendgraph/config@0.8.0': {}
+  '@spendgraph/config@0.8.1': {}
 
   '@spendgraph/evals@0.8.1': {}
 
