@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.locusgraph.com"><strong>Docs</strong></a> ·
+  <a href="https://docs.locusgraph.com"><strong>docs.locusgraph.com</strong></a> ·
   <a href="https://docs.locusgraph.com/locusgraph">LocusGraph</a> ·
   <a href="https://docs.locusgraph.com/spendgraph">Spendgraph</a> ·
   <a href="https://docs.locusgraph.com/llms.txt">llms.txt</a>
@@ -11,128 +11,73 @@
 
 ---
 
-# LocusGraph Docs
+Documentation for every LocusGraph product, on one host. 113 pages across two
+sections. Marketing lives on `www.locusgraph.com`; a page here is documentation
+or it does not belong here.
 
-The documentation host for every LocusGraph product, served from one Next.js app
-at `docs.locusgraph.com`.
+## [LocusGraph](https://docs.locusgraph.com/locusgraph)
 
-Marketing pages and articles are not here — those live on `www.locusgraph.com`,
-and each product signs its users in on its own subdomain. A page on this host is
-documentation or it does not belong on this host.
+A memory that lasts, for the things your app learns.
 
-## Running it
+[Overview](https://docs.locusgraph.com/locusgraph/overview) ·
+[Quickstart](https://docs.locusgraph.com/locusgraph/quickstart) ·
+[Concepts](https://docs.locusgraph.com/locusgraph/concepts)
 
-```bash
-pnpm install
-pnpm dev          # http://localhost:3100
-```
-
-| Script | What it does |
-| --- | --- |
-| `pnpm dev` | Next dev server on port 3100 |
-| `pnpm build` | Production build |
-| `pnpm start` | Serve the build on port 3100 |
-| `pnpm lint` | `biome check .` |
-| `pnpm typecheck` | `tsc --noEmit` |
-
-Enable the hooks once per clone:
-
-```bash
-git config core.hooksPath .githooks
-```
-
-`pre-push` runs lint and typecheck before anything leaves the machine.
-
-## URL shape
-
-The docs host is shared, so the product is the first path segment. Two sections
-are free to both document a page called `overview`, and the route resolves one
-before the other.
-
-```
-/                            the index, listing every section
-/{product}                   one section's docs root
-/{product}/{...slug}         a page
-```
-
-`{product}` is the same lowercase-kebab slug the product uses everywhere else:
-`locusgraph`, `spendgraph`, `brainstorm`, `locus-skill`.
-
-## Where the pages come from
-
-Two sources, both resolved through `lib/site/docs-manifest.ts`:
-
-1. **Published packages.** Most Spendgraph pages are `.mdx` files inside
-   `@spendgraph/<pkg>/docs/`, written beside the code they describe and shipped
-   with the package. This host renders whichever version is installed.
-2. **Local content.** `content/<product>/**.mdx`, for pages that belong to no
-   package — a section overview, or a page that used to be an app route.
-
-Every page exports the summary the route turns into metadata:
-
-```mdx
-export const meta = {
-  title: "Overview — spendgraph docs",
-  description: "One sentence, used for the description and the social card.",
-};
-
-# Overview
-```
-
-## Adding a page
-
-Three edits, in this order:
-
-1. Write the `.mdx` — in the package it documents, or under `content/<product>/`
-2. Register it in `lib/site/docs-manifest.ts` under that product's key
-3. Add it to the product's tree in `lib/site/docs-nav.ts`
-
-The nav is the reading order, and it is what the previous/next footer links
-walk. A page missing from step 3 is reachable only by typing its URL; a nav
-entry missing from step 2 is a dead link. Nothing checks this automatically yet
-— see `TODO.md`.
-
-## Layout
-
-```
-app/
-  page.tsx                   host index — the section cards
-  layout.tsx                 root layout, fonts, theme provider, metadataBase
-  icon.svg                   favicon, the LocusGraph mark on a dark tile
-  [product]/
-    layout.tsx               the docs shell: sidebar, header, outline
-    page.tsx                 a section's docs root
-    [...slug]/page.tsx       one page, resolved through the manifest
-components/
-  docs/                      sidebar, header, group nav, outline, callout, code
-  site/                      marks, product marks, site chrome, theme switch
-  ui/                        shadcn primitives
-content/                     pages that belong to no package
-lib/site/
-  products.ts                the sections, their names, and whether they are ready
-  docs-nav.ts                the sidebar, per section
-  docs-manifest.ts           every page, and how to load it
-  seo.ts                     canonical, Open Graph and Twitter tags
-```
-
-## Shared configuration
-
-Biome, TypeScript, PostCSS and the CSS tokens all come from
-`@spendgraph/config` — the same package the products extend, so the docs look
-like the dashboards rather than approximating them.
-
-`next.config.ts` lists every `@spendgraph/*` package in `transpilePackages`.
-Without it the MDX loader does not reach a page inside `node_modules`, and each
-one fails with `Unknown module type`.
-
-## Sections
-
-| Section | Pages | Listed on the index |
+| | | |
 | --- | --- | --- |
-| Spendgraph | 73 | Yes |
-| LocusGraph | 3 | No — `ready: false` |
-| BrainStorm | 0 | No — `ready: false` |
-| Locus Skill | 0 | No — `ready: false` |
+| [Use cases](https://docs.locusgraph.com/locusgraph/use-cases/preferences) | 6 | The shapes this gets used in most |
+| [Client](https://docs.locusgraph.com/locusgraph/client/install) | 6 | Installing the SDK, connecting it, and what it throws |
+| [Remember](https://docs.locusgraph.com/locusgraph/remember/store) | 5 | Writing what your app learns, one event or a thousand |
+| [Recall](https://docs.locusgraph.com/locusgraph/recall/search) | 4 | Searching by meaning, and reading what comes back |
+| [Contexts](https://docs.locusgraph.com/locusgraph/contexts/overview) | 4 | Grouping memories, and the links between those groups |
+| [Review](https://docs.locusgraph.com/locusgraph/review/observe) | 3 | Proposing memories, and deciding which are kept |
+| [Graphs](https://docs.locusgraph.com/locusgraph/graphs/create) | 4 | The container everything is stored in, and who reaches it |
+| [Enterprise](https://docs.locusgraph.com/locusgraph/enterprise/security) | 5 | Running LocusGraph at company scale |
 
-`ready` lives in `lib/site/products.ts`. Routes exist either way; the flag only
-decides whether the host index offers the card as a link.
+## [Spendgraph](https://docs.locusgraph.com/spendgraph)
+
+Know what every token costs.
+
+[Overview](https://docs.locusgraph.com/spendgraph/overview) ·
+[Getting started](https://docs.locusgraph.com/spendgraph/getting-started) ·
+[Concepts](https://docs.locusgraph.com/spendgraph/concepts)
+
+Ten packages, listed in the order each is built on the one above it.
+
+| | | |
+| --- | --- | --- |
+| [SDK](https://docs.locusgraph.com/spendgraph/sdk/quickstart) | 7 | Report what your app spends, and read it back |
+| [LLMs](https://docs.locusgraph.com/spendgraph/llms/overview) | 6 | Call any provider, get one shape back |
+| [Prompts](https://docs.locusgraph.com/spendgraph/prompt/overview) | 6 | Stored or written in code, rendered and recorded |
+| [Stage](https://docs.locusgraph.com/spendgraph/stage/overview) | 5 | One prompt, one schema, one priced reply |
+| [Tools](https://docs.locusgraph.com/spendgraph/tools/overview) | 9 | Declare once, offer the right few, record the turn |
+| [Graph](https://docs.locusgraph.com/spendgraph/graph/overview) | 6 | Nodes and edges in, a priced rollout out |
+| [Harness](https://docs.locusgraph.com/spendgraph/harness/overview) | 11 | The seven shapes, with the pricing already attached |
+| [Vigil](https://docs.locusgraph.com/spendgraph/vigil/getting-started) | 6 | Park a run that takes hours, and resume it |
+| [Evals](https://docs.locusgraph.com/spendgraph/evals/getting-started) | 9 | Score model output, and tell a change from noise |
+| [CLI](https://docs.locusgraph.com/spendgraph/cli/overview) | 5 | Drive the dashboard from a terminal |
+
+## For agents
+
+[`/llms.txt`](https://docs.locusgraph.com/llms.txt) maps all 113 pages, each
+with its own description. Append `.md` to any documentation URL for that page as
+markdown rather than a page of HTML, or take
+[`/llms-full.txt`](https://docs.locusgraph.com/llms-full.txt) for the whole
+corpus in one request.
+
+```
+https://docs.locusgraph.com/locusgraph/concepts.md
+```
+
+## Not listed yet
+
+`BrainStorm` and `Locus Skill` have routes and no pages. They stay off the host
+index while `ready: false` in `lib/site/products.ts`.
+
+## Where the pages live
+
+Spendgraph pages ship in [`@spendgraph/docs`](https://www.npmjs.com/package/@spendgraph/docs)
+and are written in the spendgraph repo, so a change there reaches this host on
+the next publish. LocusGraph pages are local, under `content/locusgraph/`.
+Either way `lib/site/docs-manifest.ts` is the list of what this host serves, and
+the sidebar, sitemap, search index and `llms.txt` are all generated from it.
