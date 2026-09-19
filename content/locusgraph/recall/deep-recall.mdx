@@ -10,6 +10,8 @@ Some questions do not have an answer sitting in one memory. *"What did we decide
 
 `retrieveMemories` returns the best matches. `deepRecall` goes looking, then answers.
 
+<SearchVsDeepRecall />
+
 ```typescript
 const { summary, facts, coverage } = await client.deepRecall({
   question: "What did we decide about churn, and why?",

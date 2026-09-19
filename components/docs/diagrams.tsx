@@ -224,6 +224,10 @@ export function ExperienceVsConclusion() {
           ))}
         </ul>
       </div>
+      <figcaption className="col-span-full bg-surface px-5 py-3 text-center text-sm text-faint">
+        An experience is what happened. A conclusion is what you decided it means. Store the first
+        and the second stays yours to change.
+      </figcaption>
     </figure>
   );
 }
@@ -249,6 +253,9 @@ export function QuickstartSteps() {
           </li>
         ))}
       </ol>
+      <figcaption className="border-line border-t bg-surface px-5 py-3 text-center text-sm text-faint">
+        Four calls. Nothing between them is configuration you have to get right first.
+      </figcaption>
     </figure>
   );
 }
@@ -445,6 +452,10 @@ export function TrustLadder() {
           </li>
         ))}
       </ol>
+      <figcaption className="border-line border-t bg-surface px-5 py-3 text-center text-sm text-faint">
+        Where a memory came from decides how far it is trusted, and you cannot raise a rung by
+        asserting it.
+      </figcaption>
     </figure>
   );
 }
@@ -466,6 +477,9 @@ export function LinkTypes() {
           <p className="mt-2 text-xs tracking-wide text-faint uppercase">{kind}</p>
         </div>
       ))}
+      <figcaption className="col-span-full bg-surface px-5 py-3 text-center text-sm text-faint">
+        A link says how two contexts relate, so a walk knows which way to go and when to stop.
+      </figcaption>
     </figure>
   );
 }
@@ -645,6 +659,10 @@ export function BatchVsTransaction() {
           <p className="mt-1 text-sm text-soft">{c.detail}</p>
         </div>
       ))}
+      <figcaption className="col-span-full bg-surface px-5 py-3 text-center text-sm text-faint">
+        A batch keeps whatever landed. A transaction keeps all of it or none, which is the one you
+        want when the writes only make sense together.
+      </figcaption>
     </figure>
   );
 }
@@ -675,6 +693,256 @@ export function RemovalLevels() {
           </li>
         ))}
       </ol>
+      <figcaption className="border-line border-t bg-surface px-5 py-3 text-center text-sm text-faint">
+        Three levels, widening. Pick the narrowest that does the job: the one above it takes
+        memories you did not mean to lose.
+      </figcaption>
     </figure>
+  );
+}
+
+/** One search against a walk, and what each hands back. */
+export function SearchVsDeepRecall() {
+  return (
+    <Fig caption="Both cost you. A search answers from what it matched; deep recall goes looking first, and tells you whether it finished.">
+      <svg
+        viewBox="0 0 640 210"
+        className="w-full"
+        role="img"
+        aria-label="retrieveMemories against deepRecall"
+      >
+        <title>retrieveMemories against deepRecall</title>
+        <defs>
+          <Arrow id="sd-a" />
+        </defs>
+
+        {[
+          {
+            y: 40,
+            call: "retrieveMemories",
+            ask: '"what theme do they like?"',
+            steps: ["match on meaning", "rank", "render"],
+            back: ["memories", "items_found"],
+            tone: "text-foreground",
+          },
+          {
+            y: 136,
+            call: "deepRecall",
+            ask: '"what did we decide about churn, and why?"',
+            steps: ["walk the graph", "gather evidence", "answer"],
+            back: ["summary", "facts", "coverage"],
+            tone: "text-s1",
+          },
+        ].map((row) => (
+          <g key={row.call}>
+            <text x="20" y={row.y - 18} className={`${MONO} ${row.tone}`}>
+              {row.call}
+            </text>
+            <text x="20" y={row.y - 2} className={`${LABEL} text-faint`}>
+              {row.ask}
+            </text>
+
+            {row.steps.map((step, i) => (
+              <g key={step}>
+                <rect
+                  x={20 + i * 116}
+                  y={row.y + 10}
+                  width="104"
+                  height="28"
+                  rx="6"
+                  className="fill-ghost"
+                />
+                <text
+                  x={72 + i * 116}
+                  y={row.y + 28}
+                  textAnchor="middle"
+                  className={`${LABEL} text-soft`}
+                >
+                  {step}
+                </text>
+                {i < row.steps.length - 1 ? (
+                  <path
+                    d={`M ${126 + i * 116} ${row.y + 24} L ${132 + i * 116} ${row.y + 24}`}
+                    className="stroke-line"
+                    strokeWidth="1.5"
+                    fill="none"
+                    markerEnd="url(#sd-a)"
+                  />
+                ) : null}
+              </g>
+            ))}
+
+            <path
+              d={`M 372 ${row.y + 24} L 404 ${row.y + 24}`}
+              className="stroke-line"
+              strokeWidth="1.5"
+              fill="none"
+              markerEnd="url(#sd-a)"
+            />
+            <text x="414" y={row.y + 28} className={`${MONO} ${row.tone}`}>
+              {`{ ${row.back.join(", ")} }`}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </Fig>
+  );
+}
+
+/** The three jobs every query option does. */
+export function ThreeJobs() {
+  // The names are the ones in the tables on this page. Nothing invented: an
+  // option that does not exist reads exactly like one that does.
+  const jobs = [
+    {
+      name: "narrowing",
+      why: "fewer candidates, tighter answers",
+      opts: "limit · contextIds · contextTypes · sources",
+    },
+    {
+      name: "widening",
+      why: "pull in more than the search hit",
+      opts: "boostContextIds · coverageContextIds · coverageGroupPrefix · expandDepth",
+    },
+    {
+      name: "reshaping",
+      why: "change what comes back",
+      opts: "format · semanticWeight",
+    },
+  ];
+
+  return (
+    <Fig caption="Two options can read alike and sit in different rows. The row is what tells you which way it moves the result.">
+      <svg
+        viewBox="0 0 640 180"
+        className="w-full"
+        role="img"
+        aria-label="The three jobs an option does"
+      >
+        <title>The three jobs an option does</title>
+        {jobs.map((job, i) => {
+          const y = 32 + i * 54;
+          return (
+            <g key={job.name}>
+              <text x="20" y={y} className={`${MONO} text-s1`}>
+                {job.name}
+              </text>
+              <text x="120" y={y} className={`${LABEL} text-faint`}>
+                {job.why}
+              </text>
+              <rect x="20" y={y + 10} width="600" height="26" rx="6" className="fill-ghost" />
+              <text x="32" y={y + 27} className={`${MONO} text-foreground`}>
+                {job.opts}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </Fig>
+  );
+}
+
+/** An observation becomes a finding, and a finding waits for a person. */
+export function ObserveToDecision() {
+  return (
+    <Fig caption="An observation is not a write. Nothing is stored until a person approves the statement that was distilled from it.">
+      <svg
+        viewBox="0 0 640 196"
+        className="w-full"
+        role="img"
+        aria-label="From observation to decision"
+      >
+        <title>From observation to decision</title>
+        <defs>
+          <Arrow id="od-a" />
+        </defs>
+
+        {[
+          { x: 20, label: "observe", sub: "the raw exchange", tone: "text-foreground" },
+          { x: 180, label: "a finding", sub: "the distilled claim", tone: "text-foreground" },
+          { x: 340, label: "the inbox", sub: "status: pending", tone: "text-s1" },
+        ].map((box, i) => (
+          <g key={box.label}>
+            <rect x={box.x} y="34" width="130" height="44" rx="8" className="fill-ghost" />
+            <text x={box.x + 65} y="54" textAnchor="middle" className={`${MONO} ${box.tone}`}>
+              {box.label}
+            </text>
+            <text x={box.x + 65} y="70" textAnchor="middle" className={`${LABEL} text-faint`}>
+              {box.sub}
+            </text>
+            {i < 2 ? (
+              <path
+                d={`M ${box.x + 136} 56 L ${box.x + 154} 56`}
+                className="stroke-line"
+                strokeWidth="1.5"
+                fill="none"
+                markerEnd="url(#od-a)"
+              />
+            ) : null}
+          </g>
+        ))}
+
+        <path d="M 405 84 L 405 100" className="stroke-line" strokeWidth="1.5" fill="none" />
+        <path d="M 102 100 L 502 100" className="stroke-line" strokeWidth="1.5" fill="none" />
+        {[102, 287, 502].map((x) => (
+          <path
+            key={x}
+            d={`M ${x} 100 L ${x} 126`}
+            className="stroke-line"
+            strokeWidth="1.5"
+            fill="none"
+            markerEnd="url(#od-a)"
+          />
+        ))}
+
+        {[
+          { x: 20, label: "promoted", sub: "stored as written", tone: "text-s1" },
+          { x: 205, label: "edited_promoted", sub: "a reviewer changed it", tone: "text-s1" },
+          { x: 420, label: "rejected", sub: "nothing stored", tone: "text-faint" },
+        ].map((box) => (
+          <g key={box.label}>
+            <rect x={box.x} y="134" width="165" height="44" rx="8" className="fill-ghost" />
+            <text x={box.x + 82} y="154" textAnchor="middle" className={`${MONO} ${box.tone}`}>
+              {box.label}
+            </text>
+            <text x={box.x + 82} y="170" textAnchor="middle" className={`${LABEL} text-faint`}>
+              {box.sub}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </Fig>
+  );
+}
+
+/** What a finding carries, and which field to read first. */
+export function FindingFields() {
+  const fields = [
+    { name: "statement", what: "the distilled claim, not your payload", first: false },
+    { name: "contradicts", what: "what it disagrees with. Read this first", first: true },
+    { name: "context_id", what: "where it would be filed" },
+    { name: "confidence", what: "how sure the distiller was" },
+    { name: "stakes", what: "what turns on getting it wrong" },
+  ];
+
+  return (
+    <Fig caption="A finding that contradicts something already stored is the one a reviewer has to look at. The rest can be skimmed.">
+      <svg viewBox="0 0 640 166" className="w-full" role="img" aria-label="What a finding carries">
+        <title>What a finding carries</title>
+        {fields.map((f, i) => {
+          const y = 28 + i * 27;
+          return (
+            <g key={f.name}>
+              <text x="20" y={y} className={`${MONO} ${f.first ? "text-s1" : "text-foreground"}`}>
+                {f.name}
+              </text>
+              <text x="160" y={y} className={`${LABEL} ${f.first ? "text-soft" : "text-faint"}`}>
+                {f.what}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </Fig>
   );
 }
