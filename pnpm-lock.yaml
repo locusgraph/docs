@@ -18,38 +18,38 @@ importers:
         specifier: ^16.3.5
         version: 16.3.5(@mdx-js/loader@3.1.1(supports-color@10.2.2))(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.2.4))
       '@spendgraph/cli':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/config':
         specifier: ^0.8.0
         version: 0.8.0
       '@spendgraph/evals':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/graph':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/harness':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/llms':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/prompt':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/sdk':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/stage':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/tools':
-        specifier: ^0.7.0
-        version: 0.7.0
+        specifier: ^0.8.1
+        version: 0.8.1
       '@spendgraph/vigil':
-        specifier: ^0.8.0
-        version: 0.8.0
+        specifier: ^0.8.1
+        version: 0.8.1
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -2261,8 +2261,8 @@ packages:
   '@speed-highlight/core@1.2.24':
     resolution: {integrity: sha512-qeW2e1l78afw8VhRPfPQ1Gjj+KU5XFQ/OFV5ti6eTa9bruO7mJyZtA4vw0ofqmA3tKCkROE9xLk3VZoeRc98nw==}
 
-  '@spendgraph/cli@0.7.0':
-    resolution: {integrity: sha512-6Aw6oq4Hxqso6EhyjsrMzDr9QGwCrYbszstOiwEWSMKm9H12a2vHvfOiHLbLE7GHBiD62IghQSNRUkDphddAZg==}
+  '@spendgraph/cli@0.8.1':
+    resolution: {integrity: sha512-Akk0JJVRdZQT3NoWrmoG+heiApZQWfymKZCn6b/F/nC8CfUZgGQMXeVRlqk3vjJ/A1C/pU1c2V5eAbIXcpDMpw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -2270,40 +2270,40 @@ packages:
     resolution: {integrity: sha512-3WxAVAopiPff1s7C36j7sWH+AYccw3yDTAZCkUKGlQxxfTLXfORz6MnvTFB/bQu95aENCpoHQZzC8sDVefal/g==}
     engines: {node: '>=18'}
 
-  '@spendgraph/evals@0.7.0':
-    resolution: {integrity: sha512-zlcH/JvRK5C75jRc9XkPxD0/iK5NqO8L2eHHCCU4pjEa4IWRbsTx2OZBg/A5LRhnn85Hn+SaluDe7DqKiFbQcg==}
+  '@spendgraph/evals@0.8.1':
+    resolution: {integrity: sha512-xdmE94Jn6jOhwXGyBLe6n229yReIVXKvljvfqFdpKFE0k6owko+H9MjUO0mV85khGPwW02N5BU7Ijg3eqozWOA==}
     engines: {node: '>=18'}
 
-  '@spendgraph/graph@0.7.0':
-    resolution: {integrity: sha512-V7eCGwgpaDOd9YpxBxs095VtAaAYbg/QsSQ9Ro3GhAgmTmlSJ/+mYS1gdKCiNwioya6Qi4DbrjznRmZyd5udKg==}
+  '@spendgraph/graph@0.8.1':
+    resolution: {integrity: sha512-pdqy4bXK0zHJcQ8FhlApmJ92UrNCZ5rCIqpIh/mkG/vlOdi/Qv9HjrVwjDV8xkYWE9dVWoTCkvk72ET34HlnuA==}
     engines: {node: '>=18'}
 
-  '@spendgraph/harness@0.7.0':
-    resolution: {integrity: sha512-8zGDiVzjujzXF7fa50dbsqI8Ao/jsvbutGhWNYAl8Vmf/zUsQtKlvdSkaibbR8mbMf3LNTsLXfl0qUU5i1c5Wg==}
+  '@spendgraph/harness@0.8.1':
+    resolution: {integrity: sha512-x94Uw/rATZzLamNkzgxaJd6uL+bMFC4UWwHtJ59vAeeK8/7UK74PEP9ZX83NSxutbam9QO1GuVeUuK2aD0WY5Q==}
     engines: {node: '>=18'}
 
-  '@spendgraph/llms@0.7.0':
-    resolution: {integrity: sha512-LnjShrZ0296FqFKqZDa5Zo8+WuFRf7ymYy6XXkh5kLS4x91SRH5AtS7CskX9h1oKUoM5o1YU0IpOzaMtz3NS6A==}
+  '@spendgraph/llms@0.8.1':
+    resolution: {integrity: sha512-wqiBMJ5Fi9o9OPp/DTO7zznZ9Rj3tNMHC437rxX9N++Th+okGlGWXxS22qF1Xly/qb0r+wXeIijcH+4mwHedyQ==}
     engines: {node: '>=18'}
 
-  '@spendgraph/prompt@0.7.0':
-    resolution: {integrity: sha512-s26mkYznyLCAf+AC1FjEcGzujRtTCwy1rkfwog+430wx+QtyGN8W8wsdJVHOGtg3apwdpJNVnHW+C3Jbypmr+w==}
+  '@spendgraph/prompt@0.8.1':
+    resolution: {integrity: sha512-XvE0743da2hmiOBfx/qvRgI/bBU64zLoLF+I1X99bxQK/lH4g7oeGjCwci9LJblvxje1umRuzGgFD9e1VlaMMg==}
     engines: {node: '>=18'}
 
-  '@spendgraph/sdk@0.7.0':
-    resolution: {integrity: sha512-g7npbokaXcbINtl250syhrBgpuXBpP1heQ2QEQQBQttOFFl2ZzEQIp6fIn97e1Axh9R8uHjsQC9aWMJsErbSDg==}
+  '@spendgraph/sdk@0.8.1':
+    resolution: {integrity: sha512-TFv4HkF3jOfa5rEjquf0zlgH4bJwT9oZWvuQ0Nn7PR7+qgCFZNbZRB0H9kTqeIME1UcJcagf4XlPzdlgJzpu2w==}
     engines: {node: '>=18'}
 
-  '@spendgraph/stage@0.7.0':
-    resolution: {integrity: sha512-Jdlt4QzDsimMgFMEv8uIEF/ejqGl3MZTX4XQzLpSdavN2ZKl8QE7DCHNxHoXFCh4hRHVIgamEj6eU2QrRh7OFQ==}
+  '@spendgraph/stage@0.8.1':
+    resolution: {integrity: sha512-LNZB/Ej+2WtVnxjPldGLTK6VjSZISZsuA5QquQ/aKoWIRGAXjzplV/I2Z2m01K5sbdCj6qhCaYsdi3wRwNgbZQ==}
     engines: {node: '>=18'}
 
-  '@spendgraph/tools@0.7.0':
-    resolution: {integrity: sha512-miMD++GjTK2+GXmOHutdhDnLHi2ELvnOBDuSzryVLmcgzWCk9F31ZwbpryZ3GSCWnEc4fT+sxhUqc1hH5IxtCg==}
+  '@spendgraph/tools@0.8.1':
+    resolution: {integrity: sha512-k3nM+bFhy9IpeIdDNOZylA8OTsN9PEAVxVF7ZnacgKzSSnXz5ehoK3PWT1c3VH2EqtPlXoKQgbGkzd2/pm66yQ==}
     engines: {node: '>=18'}
 
-  '@spendgraph/vigil@0.8.0':
-    resolution: {integrity: sha512-VbGS6KQw7n5sEoeuBHUubX1NxTvKCeqFoAGuh/Apas5VxQIqn36Jt0jKMVRmWgntjkBzS6ugoQoh2sFGg0TWqg==}
+  '@spendgraph/vigil@0.8.1':
+    resolution: {integrity: sha512-d6Op2u9/gOit/0g5CRB3aRz4+uXkSLHwvnBDGAV/Wf+f0GfE4fAUsE11nZKxGFuTU9Qb33h3dnalKzFFCBM+wA==}
     engines: {node: '>=18'}
 
   '@swc/helpers@0.5.15':
@@ -6459,50 +6459,50 @@ snapshots:
 
   '@speed-highlight/core@1.2.24': {}
 
-  '@spendgraph/cli@0.7.0':
+  '@spendgraph/cli@0.8.1':
     dependencies:
-      '@spendgraph/sdk': 0.7.0
+      '@spendgraph/sdk': 0.8.1
 
   '@spendgraph/config@0.8.0': {}
 
-  '@spendgraph/evals@0.7.0': {}
+  '@spendgraph/evals@0.8.1': {}
 
-  '@spendgraph/graph@0.7.0':
+  '@spendgraph/graph@0.8.1':
     dependencies:
-      '@spendgraph/sdk': 0.7.0
+      '@spendgraph/sdk': 0.8.1
 
-  '@spendgraph/harness@0.7.0':
+  '@spendgraph/harness@0.8.1':
     dependencies:
-      '@spendgraph/graph': 0.7.0
-      '@spendgraph/sdk': 0.7.0
-      '@spendgraph/tools': 0.7.0
+      '@spendgraph/graph': 0.8.1
+      '@spendgraph/sdk': 0.8.1
+      '@spendgraph/tools': 0.8.1
     transitivePeerDependencies:
       - '@napi-rs/canvas'
 
-  '@spendgraph/llms@0.7.0':
+  '@spendgraph/llms@0.8.1':
     dependencies:
-      '@spendgraph/sdk': 0.7.0
+      '@spendgraph/sdk': 0.8.1
 
-  '@spendgraph/prompt@0.7.0':
+  '@spendgraph/prompt@0.8.1':
     dependencies:
-      '@spendgraph/sdk': 0.7.0
+      '@spendgraph/sdk': 0.8.1
 
-  '@spendgraph/sdk@0.7.0': {}
+  '@spendgraph/sdk@0.8.1': {}
 
-  '@spendgraph/stage@0.7.0':
+  '@spendgraph/stage@0.8.1':
     dependencies:
-      '@spendgraph/llms': 0.7.0
-      '@spendgraph/prompt': 0.7.0
+      '@spendgraph/llms': 0.8.1
+      '@spendgraph/prompt': 0.8.1
 
-  '@spendgraph/tools@0.7.0':
+  '@spendgraph/tools@0.8.1':
     dependencies:
-      '@spendgraph/sdk': 0.7.0
+      '@spendgraph/sdk': 0.8.1
       jszip: 3.10.2
       unpdf: 1.8.1
     transitivePeerDependencies:
       - '@napi-rs/canvas'
 
-  '@spendgraph/vigil@0.8.0': {}
+  '@spendgraph/vigil@0.8.1': {}
 
   '@swc/helpers@0.5.15':
     dependencies:

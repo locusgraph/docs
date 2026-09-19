@@ -3,11 +3,17 @@
 onlyBuiltDependencies:
   - sharp
 
+# pnpm withholds a version published in the last day, which is a good default
+# against a compromised release and a bad one for packages we cut ourselves:
+# the docs here and the code they describe ship in the same hour, so the gate
+# only delays our own work. Scoped to `@spendgraph`, so every other dependency
+# keeps the wait.
 minimumReleaseAgeExclude:
-  - '@spendgraph/config@0.8.0'
-  - '@spendgraph/vigil@0.8.0'
+  - '@spendgraph/*'
 
+# Which dependencies may run an install script. `sharp` is the only one that
+# has to: the other two ship prebuilt binaries and their scripts are optional.
 allowBuilds:
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  workerd: set this to true or false
+  esbuild: false
+  sharp: true
+  workerd: false
