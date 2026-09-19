@@ -301,3 +301,145 @@ export function TwoCredentials() {
     </Fig>
   );
 }
+
+/**
+ * The whole stack on one page: what sits on what, and the three that never
+ * run in the request.
+ *
+ * Drawn as a stack rather than a flow because the question it answers is
+ * "which of these do I need", and the answer is "everything below the line you
+ * stop at". A flow chart would say the order things happen, which is not the
+ * thing people get wrong.
+ */
+export function TheStack() {
+  const W = 420;
+  const rows = [
+    {
+      y: 24,
+      name: "harness",
+      blurb: "the seven shapes, already wired",
+      href: "refine · route · chain · parallel · orchestrate · loop · cascade",
+    },
+    {
+      y: 84,
+      name: "graph",
+      blurb: "nodes and edges you wire yourself",
+      href: "when it is not one of the seven",
+    },
+    {
+      y: 144,
+      name: "stage",
+      blurb: "one prompt, one schema, one priced reply",
+      href: "retries a wrong shape, and bills the failed try",
+    },
+  ];
+
+  const parts = [
+    { name: "prompt", blurb: "wording, versioned" },
+    { name: "llms", blurb: "one shape back" },
+    { name: "tools", blurb: "your code, callable" },
+  ];
+
+  const aside = [
+    { y: 24, name: "vigil", blurb: "parks a long run" },
+    { y: 98, name: "evals", blurb: "scores it after" },
+    { y: 172, name: "cli", blurb: "from a terminal" },
+  ];
+
+  return (
+    <Fig caption="Everything rests on the SDK. Take any layer and you take the ones under it, which is why the SDK alone is a two-minute install.">
+      <svg viewBox="0 0 640 316" className="w-full" role="img" aria-label="What sits on what">
+        <title>What sits on what</title>
+        <defs>
+          <Arrow id="tsk-a" />
+        </defs>
+
+        {rows.map((row) => (
+          <g key={row.name}>
+            <rect x="20" y={row.y} width={W} height="48" rx="8" className="fill-ghost" />
+            <text x="36" y={row.y + 21} className={`${MONO} text-s1`}>
+              {row.name}
+            </text>
+            <text x="110" y={row.y + 21} className={`${LABEL} text-foreground`}>
+              {row.blurb}
+            </text>
+            <text x="36" y={row.y + 38} className={`${LABEL} text-faint`}>
+              {row.href}
+            </text>
+          </g>
+        ))}
+
+        {parts.map((part, i) => {
+          const w = (W - 16) / 3;
+          const x = 20 + i * (w + 8);
+          return (
+            <g key={part.name}>
+              <rect x={x} y="204" width={w} height="44" rx="8" className="fill-ghost" />
+              <text x={x + 12} y="224" className={`${MONO} text-s1`}>
+                {part.name}
+              </text>
+              <text x={x + 12} y="240" className={`${LABEL} text-faint`}>
+                {part.blurb}
+              </text>
+            </g>
+          );
+        })}
+
+        <rect x="20" y="260" width={W} height="44" rx="8" className="fill-ghost" />
+        <text x="36" y="280" className={`${MONO} text-s1`}>
+          sdk
+        </text>
+        <text x="110" y="280" className={`${LABEL} text-foreground`}>
+          the only thing that speaks to the app
+        </text>
+        <text x="36" y="296" className={`${LABEL} text-faint`}>
+          every layer above reports its spend through here
+        </text>
+
+        <path
+          d="M 462 296 L 462 30"
+          className="stroke-line"
+          strokeWidth="1.5"
+          fill="none"
+          markerEnd="url(#tsk-a)"
+        />
+        <text
+          x="450"
+          y="164"
+          textAnchor="middle"
+          transform="rotate(-90 450 164)"
+          className={`${LABEL} text-faint`}
+        >
+          built on
+        </text>
+
+        {aside.map((one) => (
+          <g key={one.name}>
+            <rect
+              x="476"
+              y={one.y}
+              width="152"
+              height="52"
+              rx="8"
+              className="fill-ghost"
+              strokeDasharray="3 3"
+              strokeWidth="1"
+            />
+            <text x="490" y={one.y + 22} className={`${MONO} text-foreground`}>
+              {one.name}
+            </text>
+            <text x="490" y={one.y + 38} className={`${LABEL} text-faint`}>
+              {one.blurb}
+            </text>
+          </g>
+        ))}
+        <text x="552" y="244" textAnchor="middle" className={`${LABEL} text-faint`}>
+          not in the
+        </text>
+        <text x="552" y="258" textAnchor="middle" className={`${LABEL} text-faint`}>
+          request path
+        </text>
+      </svg>
+    </Fig>
+  );
+}

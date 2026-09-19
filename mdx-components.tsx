@@ -23,6 +23,7 @@ import { EarlyAccess } from "@/components/docs/early-access";
 import {
   ReceiptsStack,
   TheGap,
+  TheStack,
   TwoCredentials,
 } from "@/components/docs/spendgraph-section-diagrams";
 
@@ -90,6 +91,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     RemovalLevels,
     SlugAnatomy,
     TheGap,
+    TheStack,
     TrustLadder,
     TwoCredentials,
     TwoDoors,
