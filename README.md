@@ -76,6 +76,14 @@ index while `ready: false` in `lib/site/products.ts`.
 
 ## License
 
-[Apache 2.0](./LICENSE). The prose and the diagrams are documentation for
-LocusGraph products; the site that renders them is yours to read, fork and
-learn from.
+Two licences, split by what a file is rather than what it renders.
+
+| | |
+| --- | --- |
+| Code, the app that serves the docs | [Apache 2.0](./LICENSE) |
+| Prose and diagrams, under `content/` | [CC BY 4.0](./LICENSE-CONTENT) |
+
+Neither grants any right to the LocusGraph or Spendgraph names or marks.
+Spendgraph pages are not in this repository: they ship in
+[`@spendgraph/docs`](https://www.npmjs.com/package/@spendgraph/docs) under its
+own Apache 2.0 licence.

@@ -1,0 +1,40 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright 2026 LocusGraph
+
+The documentation prose and the diagrams in this repository are licensed under
+the Creative Commons Attribution 4.0 International License. The full text is at
+https://creativecommons.org/licenses/by/4.0/legalcode and a plain summary is at
+https://creativecommons.org/licenses/by/4.0/
+
+WHAT THIS COVERS
+
+  content/**            the pages written for this host
+  public/banner.svg     the repository banner
+
+  The figure components under components/docs/ are source files and are covered
+  by the Apache License 2.0 in LICENSE, like the rest of the code. The pictures
+  they draw are documentation; the React that draws them is software, and it is
+  simpler to license a file by what it is than by what it renders.
+
+WHAT IT DOES NOT COVER
+
+  Everything else in this repository, which is under the Apache License 2.0.
+  See LICENSE.
+
+  Pages served from `@spendgraph/docs`, which are not in this repository. That
+  package carries its own licence, also Apache 2.0.
+
+  Trademarks. Neither licence grants any right to the LocusGraph or Spendgraph
+  names, logos or marks. Apache 2.0 says so in section 6; CC BY 4.0 says so in
+  section 2(b)(2). If you redistribute this material, do not present it as ours.
+
+YOU MAY
+
+  Share and adapt the prose and the diagrams, for any purpose, including
+  commercially, provided you give appropriate credit, link to the licence, and
+  say whether you changed anything.
+
+ATTRIBUTION
+
+  "LocusGraph documentation, https://docs.locusgraph.com, CC BY 4.0."
