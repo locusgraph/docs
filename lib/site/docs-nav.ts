@@ -977,11 +977,23 @@ const VIGIL: DocsTree = {
   ],
 };
 
+/**
+ * The sidebar order, bottom up.
+ *
+ * `sdk` first because everything speaks to the app through it. Then `llms`,
+ * which calls a provider, then `prompt`, which decides the wording, then
+ * `stage`, which is those two plus a schema and a retry. `tools`, `graph` and
+ * `harness` build on that, `vigil` parks a run, `evals` scores what came back,
+ * and `cli` drives the lot from a terminal.
+ *
+ * `content/spendgraph/overview.mdx` lists the same ten in the same order. Two
+ * orders that disagree read as no order at all.
+ */
 const SPENDGRAPH_TREES: DocsTree[] = [
   SPENDGRAPH,
   SDK,
-  PROMPT,
   LLMS,
+  PROMPT,
   STAGE,
   TOOLS,
   GRAPH,

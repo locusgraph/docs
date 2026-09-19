@@ -1,6 +1,7 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { type DocsTree, pagesOf, treeFor } from "../lib/site/docs-nav";
-import { declaredTrees, listedTrees, pages, reachable, SECTIONS } from "./site";
+import { declaredTrees, listedTrees, pages, reachable, SECTIONS, treesFor } from "./site";
 
 /**
  * The nav and the manifest describe the same set of pages, or a reader meets a
@@ -64,4 +65,23 @@ describe("every reachable page resolves to a tree", () => {
       });
     }
   }
+});
+
+/**
+ * The sidebar and the overview page list the ten packages in the same order.
+ *
+ * They disagreed: the sidebar had prompt before llms, the overview had tools
+ * before stage. Neither was wrong on its own, and together they read as no
+ * order at all. The sidebar is the source, because it is what a reader moves
+ * through.
+ */
+it("the overview lists the packages in sidebar order", () => {
+  const sidebar = treesFor("spendgraph")
+    .filter((tree) => tree !== "SPENDGRAPH")
+    .map((tree) => tree.toLowerCase());
+
+  const overview = readFileSync("content/spendgraph/overview.mdx", "utf8");
+  const listed = [...overview.matchAll(/^\| \[`([a-z]+)`\]/gm)].map((m) => m[1]);
+
+  expect(listed).toEqual(sidebar);
 });
