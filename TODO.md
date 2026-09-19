@@ -58,8 +58,10 @@ winner and bounce everyone else. The root is an indexable index instead.
       0.7.0 while the source tree is 0.8.0; only `vigil` and `config` are
       current. Publishing 0.8.0 and running `pnpm update` levels the rendered
       docs with the code they describe, and refreshes the search index with them
-- [ ] **`workflows` and `examples` have no section.** Both are packages with
-      READMEs and no `docs/` folder, so nothing here renders them
+- [x] **`workflows` and `examples` need no section.** Both are `private: true`,
+      so they are not installable and not meant to be documented publicly.
+      `@spendgraph/workflows` 0.6.0 is still on npm from before it was made
+      private, which is worth unpublishing or deprecating
 
 ## Build and tooling
 
