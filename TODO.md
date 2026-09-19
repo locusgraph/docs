@@ -1,73 +1,83 @@
 # TODO
 
-What is left on the docs host, roughly in the order it unblocks other work.
-The SEO items trace back to `handbook/SEO-SOURCE.md` and carry its Sl numbers.
+What is left, roughly in the order it unblocks other work. The SEO items keep
+the Sl numbers from `handbook/SEO-SOURCE.md`.
 
-## Crawlability — Sl 6
+## Done
 
-The spec names `doc.locusgraph.com`. That hostname is still held by a CNAME to
-Vercel, which Cloudflare refuses to create a custom domain over, so this host
-serves `docs.locusgraph.com` instead. Redirecting `doc.` here is worth doing
-once the Vercel side is untangled.
+- **`app/robots.ts`** and **`app/sitemap.ts`**: Sl 6. The sitemap is generated
+  from the manifest, so the two cannot drift. 116 URLs
+- **Canonicals and meta descriptions**: `pageMeta` in `lib/site/seo.ts`,
+  resolved against `metadataBase` in `app/layout.tsx`
+- **Title template**: `{Page} | LocusGraph Docs`, Sl 11
+- **Custom domain**: the site serves `docs.locusgraph.com`, and every canonical
+  names that host
+- **Search**: a palette over an index built from the manifest, 113 pages
+- **LocusGraph section**: 40 pages across nine groups, `ready: true`
 
-The docs host is meant to be indexed and to carry its own sitemap. Three of the
-four pieces do not exist yet.
+### The root is a page, not a redirect
 
-- [ ] **`app/robots.ts`** — allow everything, and point at the sitemap
-- [ ] **`app/sitemap.ts`** — every route the manifest knows about. It is already
-      the list of pages, so the sitemap can be generated from it rather than
-      maintained by hand
-- [ ] **Decide what the root does.** Sl 6 says 301/308 to an intro page, written
-      when the docs were one product. The host now serves four sections, so the
-      root is an index page instead — redirecting would pick a winner and bounce
-      everyone else. Confirm this reading, or implement the redirect
-- [x] **Canonicals and meta descriptions** — `pageMeta` in `lib/site/seo.ts`,
-      resolved against `metadataBase` in `app/layout.tsx`
-- [x] **Title template** — `{Page} | LocusGraph Docs`, Sl 11
+Sl 6 says the root should 301 to an intro. That was written when the docs were
+one product. This host serves several sections, so redirecting would pick a
+winner and bounce everyone else. The root is an indexable index instead.
 
-Submit `https://docs.locusgraph.com/sitemap.xml` in the existing Search Console
-property once the sitemap ships. Do not submit anything for the app subdomains.
+## Ship-blocking
+
+- [ ] **No social card.** `public/` holds only the search index, so `pageMeta`
+      emits no `og:image` and all 116 URLs unfurl blank. One 1200x630 PNG fixes
+      every page: add `public/opengraph-image.png`, restore the `images` key in
+      `openGraph`, and put Twitter back to `summary_large_image`
+- [ ] **Submit the sitemap.** `https://docs.locusgraph.com/sitemap.xml` in the
+      existing Search Console property, per Sl 6. Do not submit app sitemaps
+- [ ] **`doc.locusgraph.com` still points at Vercel.** A CNAME to
+      `vercel-dns-017.com` holds the name, which is why this host is `docs.`.
+      Redirect `doc.` here once that is untangled, so the spec's hostname and
+      any existing links still resolve
+
+## Correctness
+
+- [ ] **Nothing checks the nav reaches the manifest.** A tree can be declared
+      and never listed in `NAV`, which is how the whole Enterprise group was
+      invisible while every count still said 40. The check walks the array the
+      sidebar renders rather than grepping every `href:` in the file. It belongs
+      in `pre-push`, next to the manifest cross-check `CLAUDE.md` asks for
+- [ ] **No tests.** `pre-push` runs lint and typecheck only
 
 ## Content
 
-- [ ] **BrainStorm section** — no pages. `ready: false` keeps it off the index
-- [ ] **Locus Skill section** — no pages, same
-- [ ] **LocusGraph section** — three pages exist (overview, getting started,
-      concepts) but the section is still `ready: false`. Either finish it or
-      flip the flag in `lib/site/products.ts`
-- [ ] **Locus Skill mark** — still the lucide `Workflow` placeholder in
-      `components/site/product-mark.tsx`. LocusGraph, Spendgraph and BrainStorm
-      have real artwork
+- [ ] **Spendgraph prose was never swept.** The human-voice pass covered
+      `content/` only. 66 of its 73 pages live in `node_modules` and still carry
+      em dashes and ellipses
+- [ ] **BrainStorm**: 0 pages, `ready: false`
+- [ ] **Locus Skill**: 0 pages, `ready: false`, still on the lucide `Workflow`
+      placeholder in `components/site/product-mark.tsx`
+- [ ] **Spendgraph has no figures.** LocusGraph has 12 pages with diagrams;
+      Spendgraph has none. Its package pages cannot take MDX components, so this
+      needs the diagrams to live in the packages or the pages to move local
 
 ## Packages
 
-- [ ] **npm is a version behind.** Nine `@spendgraph/*` packages serve 0.7.0
-      while the source tree is at 0.8.0; only `vigil` and `config` are current.
-      Publishing 0.8.0 and running `pnpm update` brings the rendered docs level
-      with the code they describe
+- [ ] **npm is a version behind.** `@spendgraph/sdk` and eight others serve
+      0.7.0 while the source tree is 0.8.0; only `vigil` and `config` are
+      current. Publishing 0.8.0 and running `pnpm update` levels the rendered
+      docs with the code they describe, and refreshes the search index with them
 - [ ] **`workflows` and `examples` have no section.** Both are packages with
       READMEs and no `docs/` folder, so nothing here renders them
 
 ## Build and tooling
 
 - [ ] **`sharp` build script is blocked.** pnpm reads `onlyBuiltDependencies`
-      from `pnpm-workspace.yaml` — `pnpm config get` confirms it — but still
-      refuses, and `pnpm rebuild sharp` refuses too. It wants interactive
-      approval: run `pnpm approve-builds`. Only affects Next image optimisation
-- [ ] **Nothing checks the nav against the manifest.** The cross-check in
-      `CLAUDE.md` is a shell one-liner run by hand. It belongs in `pre-push`,
-      or in a test
-- [ ] **No tests.** `pre-push` runs lint and typecheck only
-- [ ] **`app/apple-icon.png`** — 180×180, for iOS home-screen bookmarks. Needs a
-      PNG render; `app/icon.svg` covers every other surface
+      from `pnpm-workspace.yaml` and still refuses; `pnpm rebuild sharp` refuses
+      too. It wants `pnpm approve-builds`, which is interactive. Only affects
+      Next image optimisation
+- [ ] **`pnpm deploy` collides with pnpm's own command.** It fails with
+      `ERR_PNPM_INVALID_DEPLOY_TARGET` and needs `pnpm run deploy`. Renaming the
+      script to `deploy:cf` removes the trap before CI finds it
+- [ ] **`app/apple-icon.png`**: 180x180, for iOS home-screen bookmarks.
+      `app/icon.svg` covers every other surface
 
 ## Known rough edges
 
-- [ ] **`components/docs/toc.tsx:68`** — `useExhaustiveDependencies` warning,
-      inherited with the component. The fix is marked unsafe by Biome
-- [ ] **No social card.** `pageMeta` emits no `og:image`, because there is no
-      `public/` directory and the referenced files did not exist. Add a
-      1200×630 `public/opengraph-image.png`, restore the `images` key, and put
-      Twitter back to `summary_large_image`
-- [ ] **Section roots are thin.** `/{product}` lists its groups and nothing
-      else. A section with no pages shows a placeholder card
+- [ ] **`components/docs/toc.tsx:68`**: `useExhaustiveDependencies` warning,
+      inherited with the component. Biome marks the fix unsafe
+- [ ] **Section roots are thin.** `/{product}` lists its groups and nothing else
