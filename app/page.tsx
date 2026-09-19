@@ -24,7 +24,7 @@ import { pageMeta } from "@/lib/site/seo";
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
   description:
-    "Two things your AI app loses: what it learned, and what it cost. LocusGraph keeps the first, Spendgraph accounts for the second.",
+    "What it learned, and what it cost: two things an AI app loses. LocusGraph keeps the first, Spendgraph accounts for the second.",
   path: "/",
 });
 
@@ -42,11 +42,12 @@ export default function DocsHome() {
               names mean nothing to a reader who has not met them, and the
               losses are what they recognise. */}
           <h1 className="text-balance text-5xl font-semibold leading-[1.06] tracking-tighter sm:text-6xl">
-            Two things your AI app loses: <span className="text-s1">what it learned</span>, and{" "}
+            <span className="text-s1">What it learned</span>. And{" "}
             <span className="text-s1">what it cost</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-lg text-soft">
-            LocusGraph keeps the first. Spendgraph accounts for the second.
+            Two things an AI app loses. LocusGraph keeps the first, Spendgraph accounts for the
+            second.
           </p>
           <div className="mt-7 flex justify-center">
             <AgentPrompt />
