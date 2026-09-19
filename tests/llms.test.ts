@@ -233,3 +233,33 @@ describe("the api in the corpus", () => {
     }
   });
 });
+
+/**
+ * The Copy page control fetches `<pathname>.md`.
+ *
+ * It builds that path from the router rather than from a manifest, so a page
+ * whose `.md` was never generated gives a button that fails on click and looks
+ * broken. The generator and the control have to agree on the path for every
+ * page the host serves, including the generated endpoint pages.
+ */
+describe("what Copy page fetches", () => {
+  it("exists for every written page", () => {
+    for (const section of READY) {
+      for (const slug of pages(section)) {
+        expect(
+          existsSync(`public/${section}/${slug}.md`),
+          `/${section}/${slug} has a Copy page button and no .md behind it`
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("exists for every endpoint page", () => {
+    for (const endpoint of ENDPOINTS) {
+      expect(
+        existsSync(`public/${endpoint.product}/api/${endpoint.slug}.md`),
+        `/${endpoint.product}/api/${endpoint.slug} has a Copy page button and no .md behind it`
+      ).toBe(true);
+    }
+  });
+});

@@ -4,6 +4,7 @@ import { isValidElement } from "react";
 import { Callout } from "@/components/docs/callout";
 import { Client } from "@/components/docs/client-marks";
 import { CodeBlock } from "@/components/docs/code-block";
+import { CopyPage } from "@/components/docs/copy-page";
 import {
   BatchVsTransaction,
   ChunkVsStatement,
@@ -105,6 +106,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     TrustLadder,
     TwoCredentials,
     TwoDoors,
+    /**
+     * The page title, with the control that copies the page beside it.
+     *
+     * Here rather than in the route because a doc page's `h1` comes from its
+     * own MDX: the route renders `<Prose />` and never sees the heading. Every
+     * page has exactly one `h1`, so this puts the control on all of them
+     * without a line of content changing.
+     */
+    h1: ({ children }) => (
+      <div className="flex items-start justify-between gap-6">
+        <h1 className="min-w-0">{children}</h1>
+        <span className="mt-1.5">
+          <CopyPage />
+        </span>
+      </div>
+    ),
     h2: ({ children }) => <Heading as="h2">{children}</Heading>,
     h3: ({ children }) => <Heading as="h3">{children}</Heading>,
     /**

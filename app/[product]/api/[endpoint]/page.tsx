@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Playground } from "@/components/api/playground";
+import { CopyPage } from "@/components/docs/copy-page";
 import { ENDPOINTS, endpointBySlug } from "@/lib/api/endpoints";
 import { PRODUCT_INFO, type Product } from "@/lib/site/products";
 import { pageMeta } from "@/lib/site/seo";
@@ -71,7 +72,12 @@ export default async function ApiEndpoint({
           </span>
         </div>
 
-        <h1 className="scroll-mt-20">{endpoint.name}</h1>
+        <div className="flex items-start justify-between gap-6">
+          <h1 className="min-w-0 scroll-mt-20">{endpoint.name}</h1>
+          <span className="mt-1.5">
+            <CopyPage />
+          </span>
+        </div>
         <p className="lead">{endpoint.summary}</p>
         <p>{endpoint.description}</p>
 
