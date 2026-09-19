@@ -45,9 +45,6 @@ winner and bounce everyone else. The root is an indexable index instead.
 - [ ] **Spendgraph prose was never swept.** The human-voice pass covered
       `content/` only. 66 of its 73 pages live in `node_modules` and still carry
       em dashes and ellipses
-- [ ] **BrainStorm**: 0 pages, `ready: false`
-- [ ] **Locus Skill**: 0 pages, `ready: false`, still on the lucide `Workflow`
-      placeholder in `components/site/product-mark.tsx`
 - [ ] **Spendgraph has no figures.** LocusGraph has 12 pages with diagrams;
       Spendgraph has none. Its package pages cannot take MDX components, so this
       needs the diagrams to live in the packages or the pages to move local
@@ -87,3 +84,12 @@ winner and bounce everyone else. The root is an indexable index instead.
       per group with its blurb and page count, and a line saying how much is
       there. The old page flattened every tree's sections, so Spendgraph showed
       "Start here" twice and rendered all 73 pages as one wall
+
+## Deferred
+
+Both sections exist as routes and stay off the host index while `ready: false`.
+The landing page already points anyone who finds them at early access.
+
+- **BrainStorm**: 0 pages. Needs source material before anything can be written
+- **Locus Skill**: 0 pages, and still on the lucide `Workflow` placeholder in
+  `components/site/product-mark.tsx`. Needs its own mark as well as content
