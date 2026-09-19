@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { type DocsTree, pagesOf, treeFor } from "../lib/site/docs-nav";
-import { declaredTrees, listedTrees, pages, reachable, SECTIONS, treesFor } from "./site";
+import { declaredTrees, listedTrees, nav, pages, reachable, SECTIONS, treesFor } from "./site";
 
 /**
  * The nav and the manifest describe the same set of pages, or a reader meets a
@@ -90,4 +90,29 @@ it("the overview lists the packages in sidebar order", () => {
   const listed = [...overview.matchAll(/^\| \[`([a-z]+)`\]/gm)].map((m) => m[1]);
 
   expect(listed).toEqual(sidebar);
+});
+
+/**
+ * The breadcrumb runs from the host index to the page.
+ *
+ * It was two levels of plain text, so the header named the section without
+ * offering a way back to it. These assert the shape rather than the render: the
+ * trail is built from the same nav these tests already walk, so a tree that
+ * loses its `href` or `title` breaks a level, and nothing else would notice.
+ */
+describe("the breadcrumb has a level to show", () => {
+  for (const section of SECTIONS) {
+    for (const tree of treesFor(section)) {
+      it(`${section}: ${tree}`, () => {
+        const declared = nav.slice(
+          nav.indexOf(`const ${tree}: DocsTree = {`),
+          nav.indexOf("\n};", nav.indexOf(`const ${tree}: DocsTree = {`))
+        );
+        // Every tree needs an href for the group crumb to point anywhere. A
+        // title is optional: a tree with none is the section's own pages, and
+        // "LocusGraph > Overview" already says where that is.
+        expect(declared, `${tree} has no href`).toMatch(/href: "\/[a-z-]+\//);
+      });
+    }
+  }
 });
