@@ -68,9 +68,8 @@ winner and bounce everyone else. The root is an indexable index instead.
       from `pnpm-workspace.yaml` and still refuses; `pnpm rebuild sharp` refuses
       too. It wants `pnpm approve-builds`, which is interactive. Only affects
       Next image optimisation
-- [ ] **`pnpm run deploy:cf` collides with pnpm's own command.** It fails with
-      `ERR_PNPM_INVALID_DEPLOY_TARGET` and needs `pnpm run deploy:cf`. Renaming the
-      script to `deploy:cf` removes the trap before CI finds it
+- [x] **Deploy script renamed to `deploy:cf`.** The old name `deploy` collided
+      with pnpm's own command and failed with `ERR_PNPM_INVALID_DEPLOY_TARGET`
 - [x] **Apple icon.** `app/apple-icon.tsx`, drawn the same way. iOS ignores
       SVG for home-screen bookmarks and falls back to a screenshot without it
 
