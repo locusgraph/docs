@@ -23,41 +23,54 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = readFileSync(join(root, "lib/site/docs-manifest.ts"), "utf8");
 const products = readFileSync(join(root, "lib/site/products.ts"), "utf8");
 const nav = readFileSync(join(root, "lib/site/docs-nav.ts"), "utf8");
-const apiSpec = readFileSync(join(root, "lib/api/endpoints.ts"), "utf8");
-
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docs.locusgraph.com";
 
 /**
- * The API reference, read out of its spec.
+ * The API reference, read from its own JSON.
  *
- * These pages are generated from `lib/api/endpoints.ts` rather than loaded from
- * the manifest, so the walk above never sees them. Left out, the one file that
- * exists so an agent can see the whole surface would be missing the half of it
- * an agent is most likely to want.
- *
- * Parsed as text, the way the nav and the manifest are: importing it would drag
- * TypeScript into a script that only needs four fields per endpoint.
+ * These pages are generated from the spec rather than loaded from the manifest,
+ * so the walk above never sees them. This used to scrape `endpoints.ts` with a
+ * regex, which reached the summary and nothing else: every endpoint in
+ * `llms-full.txt` was a stub with no parameters, no errors and no response,
+ * which is the half of the docs an agent most wants.
  */
-function apiEndpoints() {
-  const out = [];
-  for (const block of apiSpec.split(/\n {2}\{\n/).slice(1)) {
-    const field = (name) => block.match(new RegExp(`${name}: "((?:[^"\\\\]|\\\\.)*)"`))?.[1];
-    const slug = field("slug");
-    const summary = block.match(/summary:\s*\n?\s*"((?:[^"\\\\]|\\\\.)*)"/)?.[1];
-    if (!slug || !summary) continue;
-    out.push({
-      slug,
-      name: field("name"),
-      method: field("method"),
-      path: field("path"),
-      group: field("group"),
-      summary,
-    });
-  }
-  return out;
-}
+const API = JSON.parse(readFileSync(join(root, "lib/api/endpoints.json"), "utf8"));
 
-const API = apiEndpoints();
+/** One endpoint as markdown: what the page says, without the playground. */
+function apiMarkdown(endpoint) {
+  const lines = [
+    `# ${endpoint.name}`,
+    "",
+    `\`${endpoint.method} ${endpoint.path}\``,
+    "",
+    endpoint.summary,
+    "",
+    endpoint.description,
+    "",
+    `Requires the \`${endpoint.scope}\` scope.`,
+    "",
+    "## Parameters",
+    "",
+  ];
+
+  for (const param of endpoint.params) {
+    const bits = [`\`${param.name}\``, param.type, param.required ? "required" : "optional"];
+    if (param.options) bits.push(`one of: ${param.options.join(", ")}`);
+    lines.push(`- ${bits.join(" · ")}. ${param.note}`);
+  }
+
+  lines.push("", "## Returns", "", endpoint.returns, "", "```json", endpoint.response, "```", "");
+  lines.push("## When it fails", "");
+  for (const error of endpoint.errors) {
+    lines.push(`- **${error.status}** \`${error.code}\`. ${error.note}`);
+  }
+
+  lines.push(
+    "",
+    `A playground for this endpoint, with the request in cURL, Node, Python and Go: ${SITE}/locusgraph/api/${endpoint.slug}`
+  );
+  return `${lines.join("\n")}\n`;
+}
 
 /** Sections a reader can reach. An unready section is not worth indexing. */
 const ready = [
@@ -199,14 +212,7 @@ for (const page of docs) {
 for (const endpoint of API) {
   const file = join(root, "public", "locusgraph", "api", `${endpoint.slug}.md`);
   mkdirSync(dirname(file), { recursive: true });
-  writeFileSync(
-    file,
-    `# ${endpoint.name}\n\n` +
-      `\`${endpoint.method} ${endpoint.path}\`\n\n` +
-      `${endpoint.summary}\n\n` +
-      `Full reference, with parameters, responses and a playground: ` +
-      `${SITE}/locusgraph/api/${endpoint.slug}\n`
-  );
+  writeFileSync(file, apiMarkdown(endpoint));
 }
 
 /**
@@ -401,9 +407,13 @@ for (const endpoint of API) {
     `Source: ${SITE}/locusgraph/api/${endpoint.slug}`,
     `Section: LocusGraph API, ${endpoint.group}`,
     "",
-    `${endpoint.method} ${endpoint.path}`,
-    "",
-    endpoint.summary,
+    // The inner headings drop a level: in a file where each endpoint is an H2,
+    // an H2 "Parameters" is a sibling of the endpoint rather than part of it.
+    apiMarkdown(endpoint)
+      .split(String.fromCharCode(10))
+      .slice(2)
+      .map((line) => (line.startsWith("## ") ? `#${line}` : line))
+      .join(String.fromCharCode(10)),
     ""
   );
 }

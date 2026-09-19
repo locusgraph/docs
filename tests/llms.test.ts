@@ -198,3 +198,38 @@ describe("the pointer for agents", () => {
     expect(footer).not.toMatch(/<[a-z]+[^>]*\shidden(\s|>|=)/);
   });
 });
+
+/**
+ * An endpoint in the corpus has to be the reference, not a stub.
+ *
+ * It was a stub: the generator scraped `endpoints.ts` with a regex that reached
+ * the summary and nothing else, so an agent reading `llms-full.txt` got a name
+ * and one sentence per endpoint and no way to call anything. The data moved to
+ * `endpoints.json` so the script and the app read the same thing.
+ */
+describe("the api in the corpus", () => {
+  const full = readFileSync("public/llms-full.txt", "utf8");
+
+  it("carries every parameter, response and failure", () => {
+    for (const endpoint of ENDPOINTS) {
+      const at = full.indexOf(`/locusgraph/api/${endpoint.slug}\n`);
+      expect(at, `${endpoint.slug} is missing`).toBeGreaterThan(-1);
+
+      const entry = full.slice(at, full.indexOf("\nSource: ", at + 1));
+      expect(entry, `${endpoint.slug} lists no parameters`).toContain("### Parameters");
+      expect(entry, `${endpoint.slug} says nothing about failure`).toContain("### When it fails");
+      for (const param of endpoint.params) {
+        expect(entry, `${endpoint.slug} is missing ${param.name}`).toContain(`\`${param.name}\``);
+      }
+    }
+  });
+
+  it("gives each .md the whole page", () => {
+    for (const endpoint of ENDPOINTS) {
+      const md = readFileSync(`public/locusgraph/api/${endpoint.slug}.md`, "utf8");
+      expect(md).toContain(`${endpoint.method} ${endpoint.path}`);
+      expect(md).toContain("## Parameters");
+      expect(md.length, `${endpoint.slug}.md is a stub`).toBeGreaterThan(400);
+    }
+  });
+});
