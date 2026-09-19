@@ -132,3 +132,30 @@
 .docs-body:has([data-wide]) > aside {
   display: none;
 }
+
+/**
+ * The two product accents, on a page that belongs to neither section.
+ *
+ * The host index sets no `data-section`, so `--s1` there is the default blue
+ * and both halves of the headline would read the same. These carry the exact
+ * values the two sections use, so the colour on "wisdom" is the one a reader
+ * meets again on every LocusGraph page, and likewise for Spendgraph.
+ *
+ * Written out rather than derived from `[data-section]`, because the headline
+ * needs both at once and an element has one section at a time.
+ */
+.ink-locusgraph {
+  color: #0077cc;
+}
+
+.ink-spendgraph {
+  color: #2e31dc;
+}
+
+.dark .ink-locusgraph {
+  color: #0099ff;
+}
+
+.dark .ink-spendgraph {
+  color: #7f8bff;
+}

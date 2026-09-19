@@ -24,7 +24,7 @@ import { pageMeta } from "@/lib/site/seo";
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
   description:
-    "What it learned, and what it cost: two things an AI app loses. LocusGraph keeps the first, Spendgraph accounts for the second.",
+    "Wisdom and money. LocusGraph keeps what your AI app learns. Spendgraph tracks what it spends.",
   path: "/",
 });
 
@@ -38,16 +38,16 @@ export default function DocsHome() {
 
       <main className="flex-1 px-6 pt-10 pb-8">
         <div className="mx-auto max-w-2xl text-center">
-          {/* The accent falls on the two losses, not on the product names: the
-              names mean nothing to a reader who has not met them, and the
-              losses are what they recognise. */}
+          {/* One colour per product, and each half of the headline wears the
+              one its product uses everywhere else. A reader who follows
+              "wisdom" into LocusGraph meets the same blue on every page there;
+              the same holds for Spendgraph's indigo. */}
           <h1 className="text-balance text-5xl font-semibold leading-[1.06] tracking-tighter sm:text-6xl">
-            <span className="text-s1">What it learned</span>. And{" "}
-            <span className="text-s1">what it cost</span>.
+            <span className="ink-locusgraph">Wisdom</span> and{" "}
+            <span className="ink-spendgraph">money</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-lg text-soft">
-            Two things an AI app loses. LocusGraph keeps the first, Spendgraph accounts for the
-            second.
+            LocusGraph keeps what your app learns. Spendgraph tracks what it spends.
           </p>
           <div className="mt-7 flex justify-center">
             <AgentPrompt />

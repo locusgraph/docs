@@ -282,7 +282,7 @@ const OPTIONAL = new Set(["Enterprise"]);
 const map = [
   "# LocusGraph Docs",
   "",
-  "> Two things your AI app loses: what it learned, and what it cost. LocusGraph keeps the first, Spendgraph accounts for the second. Each link below is a page on this host, and appending `.md` to any of them returns that page as markdown.",
+  "> Wisdom and money. LocusGraph keeps what your AI app learns, Spendgraph tracks what it spends. Each link below is a page on this host, and appending `.md` to any of them returns that page as markdown.",
   "",
   "Every page is also concatenated into `/llms-full.txt` for reading the whole corpus in one request. That file is a convention rather than part of this format.",
   "",
