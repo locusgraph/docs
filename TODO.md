@@ -42,19 +42,33 @@ winner and bounce everyone else. The root is an indexable index instead.
 
 ## Content
 
-- [ ] **Spendgraph prose was never swept.** The human-voice pass covered
-      `content/` only. 66 of its 73 pages live in `node_modules` and still carry
-      em dashes and ellipses
-- [ ] **Spendgraph has no figures.** LocusGraph has 12 pages with diagrams;
-      Spendgraph has none. Its package pages cannot take MDX components, so this
-      needs the diagrams to live in the packages or the pages to move local
+- [x] **Spendgraph prose swept.** The human-voice rules now cover the package
+      pages too, at source, in the spendgraph repo. Visible here once 0.8.0 is
+      published
+- [x] **Spendgraph has figures.** Eight, in
+      `components/docs/spendgraph-diagrams.tsx`, one on each package's opening
+      page. A package page may reference a component it does not ship, so these
+      live here and the packages name them; `tests/components.test.ts` holds
+      that seam. Visible here once 0.8.0 is published
 
 ## Packages
 
 - [ ] **npm is a version behind.** `@spendgraph/sdk` and eight others serve
       0.7.0 while the source tree is 0.8.0; only `vigil` and `config` are
-      current. Publishing 0.8.0 and running `pnpm update` levels the rendered
-      docs with the code they describe, and refreshes the search index with them
+      current. Everything else is ready and pushed, so this is the one step
+      left, and it needs a login this machine does not have:
+
+      ```bash
+      npm login                          # as effortlesslabs
+      cd ../../fnLog0/spendgraph
+      pnpm -r publish --access public    # skips the two private packages
+      ```
+
+      Then, back here: `pnpm update`, delete `content/spendgraph/sdk/` and point
+      those four manifest entries at `@spendgraph/sdk/docs/*`, `pnpm test`,
+      `pnpm deploy:cf`. That levels the rendered docs with the code they
+      describe and refreshes the search index with the swept prose and the
+      figures
 - [x] **`workflows` and `examples` need no section.** Both are `private: true`,
       so they are not installable and not meant to be documented publicly
 - [ ] **`@spendgraph/workflows` 0.6.0 is public on npm.** Published 2026-08-29,
