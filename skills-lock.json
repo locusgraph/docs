@@ -7,23 +7,11 @@
       "skillPath": "skills/human-voice/SKILL.md",
       "computedHash": "4bf4b08755c9a3ea9f1d2eb4c090d0ac4966898b6c7d4d281884fbb3278ad958"
     },
-    "migrate-radix-to-base": {
-      "source": "shadcn/ui",
-      "sourceType": "github",
-      "skillPath": "skills/migrate-radix-to-base/SKILL.md",
-      "computedHash": "e1f2030ee5059be3dff0812ca0e4b995ee9fa3132176f049ebe6c90346a6755e"
-    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "c1a68ee06a668aced9ab2b5fbdea5f989864123794eb2e056b339a072dbb7f10"
-    },
-    "voice": {
-      "source": "zircote/human-voice",
-      "sourceType": "github",
-      "skillPath": "skills/voice/SKILL.md",
-      "computedHash": "5b4f849b252a20b03427253db9974277a396b71ebd85e5d643bab87232aa89f4"
     }
   }
 }
