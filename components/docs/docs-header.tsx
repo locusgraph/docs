@@ -6,6 +6,7 @@ import { DocsSearch } from "@/components/docs/search";
 import { ThemeSwitch } from "@/components/site/theme-switch";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { endpointBySlug } from "@/lib/api/endpoints";
 import { pagesOf, productOf, treeFor } from "@/lib/site/docs-nav";
 import { isProduct, PRODUCT_INFO } from "@/lib/site/products";
 
@@ -23,6 +24,16 @@ export function DocsHeader() {
   const tree = treeFor(pathname);
   const page = tree ? pagesOf(tree).find((item) => item.href === pathname) : undefined;
 
+  /**
+   * An endpoint page is generated, so the nav has no item to read its name off:
+   * the guides sidebar carries one link into the reference, not one per
+   * endpoint. Without this the breadcrumb on all thirty-seven of them says
+   * "Docs".
+   */
+  const endpoint = pathname.includes("/api/")
+    ? endpointBySlug(pathname.split("/api/")[1] ?? "")
+    : undefined;
+
   return (
     <header className="flex h-12 shrink-0 items-center gap-2 border-b border-line px-4">
       <SidebarTrigger className="-ml-1" />
@@ -34,7 +45,7 @@ export function DocsHeader() {
             <span className="mx-1.5 text-line">/</span>
           </>
         ) : null}
-        {page?.title ?? "Docs"}
+        {endpoint?.name ?? page?.title ?? "Docs"}
       </h2>
       <div className="ml-auto flex min-w-0 items-center gap-2">
         <DocsSearch />

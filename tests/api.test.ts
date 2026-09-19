@@ -158,15 +158,27 @@ describe("highlighting", () => {
  * for exactly this reason.
  */
 describe("the nav", () => {
-  it("has a link to every endpoint", async () => {
+  /**
+   * The guides sidebar carries one link in, not one per endpoint: the reference
+   * has a sidebar of its own, and listing all of them twice would bury the
+   * written pages under the thing a reader reaches for second.
+   */
+  it("has one door into the reference", async () => {
     const { NAV } = await import("../lib/site/docs-nav");
     const hrefs = NAV.locusgraph.flatMap((tree) =>
       tree.sections.flatMap((section) => section.items.map((item) => item.href))
     );
+    const api = hrefs.filter((href) => href.startsWith("/locusgraph/api/"));
+
+    expect(api).toHaveLength(1);
+    expect(api[0]).toBe(`/locusgraph/api/${ENDPOINTS[0].slug}`);
+  });
+
+  it("groups every endpoint for its own sidebar", () => {
+    const groups = new Set(ENDPOINTS.map((e) => e.group));
+    expect(groups.size).toBeGreaterThan(1);
     for (const endpoint of ENDPOINTS) {
-      expect(hrefs, `${endpoint.slug} is not in the nav`).toContain(
-        `/locusgraph/api/${endpoint.slug}`
-      );
+      expect(endpoint.group, `${endpoint.slug} has no group`).toBeTruthy();
     }
   });
 });

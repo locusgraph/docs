@@ -3,6 +3,7 @@
 import { ArrowLeft, FileText } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ApiSidebar } from "@/components/api/api-sidebar";
 import { ProductMark } from "@/components/site/product-mark";
 import {
   Sidebar,
@@ -24,6 +25,17 @@ import { isProduct, PRODUCT_INFO } from "@/lib/site/products";
 export function DocsSidebar() {
   const pathname = usePathname();
   const product = productOf(pathname);
+
+  /**
+   * The API reference has its own, in `components/api/api-sidebar.tsx`.
+   *
+   * Branching here rather than giving `/api` its own layout: a nested layout
+   * wraps its parent rather than replacing it, so the only way to swap the
+   * sidebar in the route tree is to move these pages out from under
+   * `app/[product]/layout.tsx` and lose the shell they share.
+   */
+  if (pathname.includes("/api/")) return <ApiSidebar product={product} />;
+
   const trees = treesFor(product);
   const info = isProduct(product) ? PRODUCT_INFO[product] : undefined;
 

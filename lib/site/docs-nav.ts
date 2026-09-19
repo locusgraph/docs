@@ -2,14 +2,19 @@ import { ENDPOINTS } from "../api/endpoints";
 import type { Product } from "./products";
 
 /**
- * One nav item per endpoint, from the spec. Written out here rather than in
- * `LG_API` so the tree reads like the others.
+ * One way in, not thirty-seven.
+ *
+ * The API reference has a sidebar of its own, so listing every endpoint here
+ * too would bury the guides under the thing a reader reaches for second. This
+ * is the door; `components/api/api-sidebar.tsx` is what is behind it.
  */
-const API_NAV_ITEMS: DocsLink[] = ENDPOINTS.map((endpoint) => ({
-  title: endpoint.name,
-  href: `/locusgraph/api/${endpoint.slug}`,
-  blurb: endpoint.summary,
-}));
+const API_NAV_ITEMS: DocsLink[] = [
+  {
+    title: "API reference",
+    href: `/locusgraph/api/${ENDPOINTS[0].slug}`,
+    blurb: "Every endpoint a key reaches, with a playground on each one.",
+  },
+];
 
 export interface DocsLink {
   title: string;
