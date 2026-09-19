@@ -161,6 +161,11 @@ const LG_CLIENT: DocsTree = {
           href: "/locusgraph/client/limits",
           blurb: "Payload caps, batch ceilings and rate limits, in one place",
         },
+        {
+          title: "Versioning",
+          href: "/locusgraph/client/versioning",
+          blurb: "What moves, what stays, and what to pin",
+        },
       ],
     },
   ],
@@ -198,6 +203,11 @@ const LG_REMEMBER: DocsTree = {
           title: "Batch and transactions",
           href: "/locusgraph/remember/batch",
           blurb: "Many events per call, and the one that is all-or-nothing",
+        },
+        {
+          title: "Deleting",
+          href: "/locusgraph/remember/deleting",
+          blurb: "Removing a memory, a context, or everything hanging off one",
         },
       ],
     },

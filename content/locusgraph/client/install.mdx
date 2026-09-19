@@ -1,7 +1,7 @@
 export const meta = {
   title: "Install | LocusGraph docs",
   description:
-    "Add @locusgraph/client to a project, make one call, and know what the package gives you.",
+    "Add @locusgraph/client to a project, make one call, and know what the package gives you and what it does not.",
 };
 
 # Install
@@ -10,7 +10,7 @@ export const meta = {
 npm install @locusgraph/client
 ```
 
-One package. It ships the client, every request and response type, and nothing else, no provider SDK, no framework, no peer dependencies to reconcile.
+One package. It ships the client and every request and response type. No provider SDK, no framework, no peer dependencies to reconcile, and nothing to configure at build time.
 
 ## Your first call
 
@@ -29,9 +29,9 @@ await client.storeEvent({
 });
 ```
 
-`serverUrl` is optional: it defaults to `https://api.locusgraph.com`. [Connecting](/locusgraph/client/connecting) covers pointing it somewhere else.
+`serverUrl` is optional and defaults to `https://api.locusgraph.com`. [Connecting](/locusgraph/client/connecting) covers pointing it elsewhere.
 
-## What you get
+## What comes with it
 
 ```typescript
 import {
@@ -43,14 +43,30 @@ import {
 
 The class and the types come from the package root. There are no deep imports to learn. See [Types](/locusgraph/client/types).
 
-## Requirements
+The client covers writing, reading, contexts, review and graph creation. Three surfaces are **HTTP only** and have no method on it:
 
-The client is built on `fetch`, so it runs anywhere `fetch` is global: Node 18 and later, Bun, Deno, Cloudflare Workers, and the edge runtimes built on them.
+| Not in the client | Where it lives |
+| --- | --- |
+| Document ingestion | [Documents](/locusgraph/use-cases/documents) |
+| Graph settings | [Settings](/locusgraph/graphs/settings) |
+| API keys, permissions, transfer | [API keys](/locusgraph/graphs/keys) |
+
+## Where it runs
+
+Built on `fetch`, so it runs anywhere `fetch` is global: Node 18 and later, Bun, Deno, Cloudflare Workers, and the edge runtimes built on them. No polyfill, no bundler configuration.
 
 <Callout tone="warn" title="Server-side only">
-  The client authenticates with a bearer secret. Anything holding one is a trusted environment: 
-  a server, a worker, a job. Putting it in a browser bundle hands every visitor your token.
+  The client authenticates with a bearer secret. Anything holding one is a trusted environment: a
+  server, a worker, a job. Putting it in a browser bundle hands every visitor your token.
 </Callout>
+
+## Pin it
+
+```json
+{ "dependencies": { "@locusgraph/client": "0.10.1" } }
+```
+
+Pre-1.0, so a minor bump may break. [Versioning](/locusgraph/client/versioning) covers what moves and what stays.
 
 ## Next
 

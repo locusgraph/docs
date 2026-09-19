@@ -59,6 +59,19 @@ const results = await client.searchContexts("alice", "acme", {
 
 `min_count` is the useful one for cleanup: contexts with a single memory are often typos or one-offs.
 
+## One context, with its numbers
+
+```typescript
+const { context, stats } = await client.getContextDetails({
+  graphId: "acme",
+  contextType: "person",
+  contextName: "alice",
+});
+```
+
+The context's metadata, and its stats beside it. Worth reading before
+[deleting](/locusgraph/remember/deleting) anything: it says how much hangs off the name.
+
 ## Walking relationships
 
 ```typescript

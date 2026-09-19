@@ -1,0 +1,59 @@
+export const meta = {
+  title: "Versioning | LocusGraph docs",
+  description:
+    "How the API and the client are versioned, what the engine keeps working when names change, and what to pin.",
+};
+
+# Versioning
+
+Two things carry versions, and they move separately.
+
+| | Version | Where you see it |
+| --- | --- | --- |
+| The HTTP API | `v1` | Every path: `/v1/memories`, `/v1/graphs` |
+| The client | semver | `@locusgraph/client` in your `package.json` |
+
+The SDK talks to `v1`. Upgrading the package does not change which API version you are on.
+
+## Pin the client
+
+```json
+{ "dependencies": { "@locusgraph/client": "0.10.1" } }
+```
+
+The client is **pre-1.0**, which by convention means a minor bump may break. Pin exactly and upgrade deliberately, rather than taking whatever a fresh install resolves.
+
+## The engine keeps old names working
+
+The clearest evidence of how compatibility is handled is the [source](/locusgraph/remember/sources) ladder. Four older names are still accepted and map to the current ones:
+
+| Old | Current |
+| --- | --- |
+| `validator` | `verified` |
+| `executor` | `tool` |
+| `agent` | `assistant` |
+| `model` | `assistant` |
+
+Nothing forces a rename. Old code keeps working, and the preferred names are for new code.
+
+## Unknown values are accepted, not guaranteed
+
+`event_kind` is typed as the known set **or any string**, so an unrecognised value type-checks and the request is accepted. What the server does with it is not specified.
+
+<Callout tone="trap" title="A type-check passing is not a contract">
+  `event_kind: "my_custom_kind"` compiles and sends. Stay inside the documented
+  [event kinds](/locusgraph/remember/event-kinds) unless you have agreed otherwise, or you are
+  relying on behaviour nothing promises to keep.
+</Callout>
+
+## What is not published here
+
+Deprecation windows, release cadence, and notice before a breaking change are not documented on this host. If you need them written down, they belong in an agreement.
+
+<EarlyAccess product="LocusGraph" />
+
+## Next
+
+- **[Install](/locusgraph/client/install)**: getting the package
+- **[Sources](/locusgraph/remember/sources)**: the ladder, and its aliases
+- **[Support and SLAs](/locusgraph/enterprise/support)**: what the platform commits to

@@ -10,6 +10,19 @@ Five words, and the API stops being a list of methods.
 
 <ConceptTree />
 
+All five appear in a single write:
+
+```typescript
+await client.storeEvent({
+  graph_id: "acme",                 // the graph  - an isolated memory space
+  context_id: "person:alice",       // the context - type:slug, the handle
+  event_kind: "fact",               // the kind    - what sort of memory
+  source: "user",                   // the source  - who says so
+  extends: ["org:acme"],            // a link      - to another context
+  payload: { data: "Alice joined Acme" },   // the memory itself
+});
+```
+
 ## Graph
 
 An isolated memory space, addressed by an id. Nothing in one graph is visible from another.

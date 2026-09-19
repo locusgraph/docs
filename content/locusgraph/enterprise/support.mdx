@@ -18,16 +18,14 @@ Before an agreement is involved, several things are observable rather than promi
 
 **Degraded answers announce themselves.** `coverage: "partial"` and `fallback: true` say the answer came from less than a full walk. A system that returned the same shape either way would be harder to operate.
 
-## Rate limits by bucket
+## Rate limits
 
-| Bucket | Limit | What is in it |
-| --- | --- | --- |
-| `spend` | 20/min | Search, deep recall |
-| `ingest` | 10/min | Document ingestion |
-| `write` | 120/min | Writes, batches, transactions, observations |
-| `read` | 300/min | Everything else |
+Four buckets, counted per minute, with the numbers published on one page:
+[Limits](/locusgraph/client/limits). Searching is the tight one, because a recall is not a cheap
+lookup.
 
-If these ceilings do not fit your volume, that is a conversation rather than a blocker.
+They are stated there rather than here so there is one place to read them and one place to change
+them. If the ceilings do not fit your volume, that is a conversation rather than a blocker.
 
 ## What is not on this page
 

@@ -1,0 +1,109 @@
+export const meta = {
+  title: "Deleting | LocusGraph docs",
+  description:
+    "Removing one memory, removing a context and what goes with it, and the one thing the API will not let you delete at all.",
+};
+
+# Deleting
+
+Three levels, and they remove different amounts.
+
+```
+  deleteLocus      one memory, and its links
+  forgetContext    a context, its links, and any memory it was
+                   the last thread holding
+  archive          a whole graph, reversibly. There is no hard delete
+```
+
+## One memory
+
+```typescript
+const result = await client.deleteLocus("loc_...", "acme");
+```
+
+```typescript
+{ locus_id: "loc_...", affected_links: 3 }
+```
+
+`affected_links` counts the edges removed with it, in both directions. A memory that several contexts referenced takes those references with it.
+
+### Look before you delete
+
+`locus_id` comes back from a search, so it is easy to delete the wrong one. Read it first:
+
+```typescript
+const detail = await client.getLocus("loc_...", "acme");
+```
+
+```typescript
+{
+  locus: { locus_id, kind, payload, source, created },
+  links: { outgoing: [...], incoming: [...] },
+  metadata: { ... },
+}
+```
+
+`payload` arrives as **JSON text**, not a parsed object. Parse it before reading `data`.
+
+This is also the only call that exposes decay metadata, and its `confidence` is the same number a search reports.
+
+## A context, and what hangs off it
+
+```typescript
+await client.forgetContext({
+  graphId: "acme",
+  contextType: "project",
+  contextName: "cancelled",
+});
+```
+
+```typescript
+{ deleted: true, context_id: "project:cancelled" }
+```
+
+This removes the context, every link it held, **and any memory it was the last thread holding**. A memory enrolled in two contexts survives losing one of them; a memory that only lived here goes with it.
+
+<Callout tone="trap" title="One call can remove more than one context's worth of memory">
+  There is no dry run. If you are unsure how much hangs off a context, read it first: the
+  `reference_count` on [the context](/locusgraph/contexts/overview) says how many memories are
+  enrolled, and `getContextDetails` returns its stats alongside it.
+</Callout>
+
+## Several removals at once
+
+A deletion that only makes sense alongside other changes belongs in a transaction, which applies all of it or none:
+
+```typescript
+await client.transaction(
+  [
+    { op: "delete", context_id: "project:cancelled" },
+    { op: "store", event_kind: "fact", context_id: "project:billing_ui", payload: { data: "cancelled project folded into billing" } },
+  ],
+  "acme",
+);
+```
+
+See [Batch and transactions](/locusgraph/remember/batch).
+
+## A whole graph
+
+There is no delete. `POST /v1/graphs/{id}/purge` exists and is disabled:
+
+```
+Graph purge is disabled to prevent data loss.
+Archive the graph instead: PATCH /v1/graphs/{graph_id}/settings {"archived": true}
+```
+
+A graph is months of accumulated memory, and the call that destroys all of it is deliberately not one keystroke from the call that renames it. Archiving is reversible. See [Settings](/locusgraph/graphs/settings).
+
+## Removing on request
+
+For a person who asks to be forgotten, work outward: delete the memories they are named in, then the contexts that exist only for them. For an entire customer, archive their graph.
+
+Nothing here is undoable at the memory level. There is no trash.
+
+## Next
+
+- **[Contexts and memories](/locusgraph/contexts/overview)**: what a context holds before you remove it
+- **[Settings](/locusgraph/graphs/settings)**: archiving a graph
+- **[Data residency](/locusgraph/enterprise/data-residency)**: what removal means for a compliance answer
