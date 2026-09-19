@@ -59,9 +59,11 @@ winner and bounce everyone else. The root is an indexable index instead.
       current. Publishing 0.8.0 and running `pnpm update` levels the rendered
       docs with the code they describe, and refreshes the search index with them
 - [x] **`workflows` and `examples` need no section.** Both are `private: true`,
-      so they are not installable and not meant to be documented publicly.
-      `@spendgraph/workflows` 0.6.0 is still on npm from before it was made
-      private, which is worth unpublishing or deprecating
+      so they are not installable and not meant to be documented publicly
+- [ ] **`@spendgraph/workflows` 0.6.0 is public on npm.** Published 2026-08-29,
+      before the package was made private. 31 downloads last week. Past npm's
+      72-hour unpublish window, so `npm deprecate` is the likely route.
+      Needs `npm login` as `effortlesslabs`
 
 ## Build and tooling
 
