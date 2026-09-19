@@ -24,7 +24,7 @@ import { pageMeta } from "@/lib/site/seo";
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
   description:
-    "Wisdom and money. LocusGraph keeps what your AI app learns. Spendgraph tracks what it spends.",
+    "Wisdom and money. LocusGraph keeps what your agent learns. Spendgraph tracks what it spends.",
   path: "/",
 });
 
@@ -47,7 +47,7 @@ export default function DocsHome() {
             <span className="ink-spendgraph">money</span>.
           </h1>
           <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-lg text-soft">
-            LocusGraph keeps what your app learns. Spendgraph tracks what it spends.
+            LocusGraph keeps what your agent learns. Spendgraph tracks what it spends.
           </p>
           <div className="mt-7 flex justify-center">
             <AgentPrompt />
