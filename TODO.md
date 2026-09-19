@@ -5,6 +5,41 @@ What is left. The SEO items keep the Sl numbers from `handbook/SEO-SOURCE.md`.
 Finished work is not listed here. It is in the code, in `CLAUDE.md` for the
 things that bite, and in `git log` for the rest.
 
+## Tomorrow, 2026-09-20
+
+In this repo:
+
+- [ ] **Breadcrumbs do not collapse on a narrow screen.** Flagged while building
+      the API reference and never built
+- [ ] **`/locusgraph/client/errors` needs one more sentence once #28 lands.** It
+      now says a later write to a context takes the place of what was there, and
+      stops short of saying how to avoid that, because `scope` is the answer and
+      no caller can set it yet
+
+Waiting on the engine, tracked in `locusgraph/engine`:
+
+- [ ] **#28, `scope` reaches no caller.** `POST /v1/events` and MCP
+      `store_event` both drop it, so a context holds one memory in practice.
+      Nothing in `locusgraph/docs#2` can be written until this lands, because
+      the only honest instruction today is to attach links with different
+      prefixes
+- [ ] **#27, an overwrite reports `recorded`.** A write that replaced a memory
+      is indistinguishable from one that stored a new one. Separate from #28 and
+      worth fixing first, since it costs data today
+- [ ] **PR #21, observe path hardening**, and **PR #22, the rename to
+      `engine`.** Both open against `dev`
+
+Once #28 lands, `locusgraph/docs#2` is twelve pages. Three are a straight edit
+once `scope` is documented. `count` on `/locusgraph/api/list-contexts`,
+`min_refs` on `/locusgraph/api/walk-a-graph` and `min count` on
+`/locusgraph/contexts/browsing` count scopes rather than memories, and whether
+that stays described as memories is a product call, not a docs one.
+
+Elsewhere:
+
+- [ ] **Publish `@spendgraph/*` 0.8.3.** Needs `vault run`, which only you can
+      start
+
 ## Open
 
 Both need someone with an account this machine does not have.
