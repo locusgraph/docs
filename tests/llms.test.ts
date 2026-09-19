@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { ENDPOINTS } from "../lib/api/endpoints";
 import { pages, SECTIONS } from "./site";
 
 /**
@@ -76,7 +77,25 @@ describe("llms.txt", () => {
   it("links nothing that is not a page", () => {
     const listed = [...map.matchAll(/\]\(https:\/\/[^/]+\/([a-z-]+)\/([a-z0-9/-]+)\)/g)];
     for (const [, section, slug] of listed) {
+      // The API reference is generated from its own spec, so the manifest has
+      // nothing to say about it. `tests/api.test.ts` holds those.
+      if (slug.startsWith("api/")) {
+        const endpoint = slug.slice("api/".length);
+        expect(
+          ENDPOINTS.map((e) => e.slug),
+          `${section}/${slug} is listed and no endpoint has that slug`
+        ).toContain(endpoint);
+        continue;
+      }
       expect(pages(section), `${section}/${slug} is listed but not served`).toContain(slug);
+    }
+  });
+
+  it("lists every endpoint", () => {
+    for (const endpoint of ENDPOINTS) {
+      expect(map, `${endpoint.slug} is missing from llms.txt`).toContain(
+        `/locusgraph/api/${endpoint.slug})`
+      );
     }
   });
 

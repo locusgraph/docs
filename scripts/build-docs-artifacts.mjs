@@ -23,6 +23,41 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = readFileSync(join(root, "lib/site/docs-manifest.ts"), "utf8");
 const products = readFileSync(join(root, "lib/site/products.ts"), "utf8");
 const nav = readFileSync(join(root, "lib/site/docs-nav.ts"), "utf8");
+const apiSpec = readFileSync(join(root, "lib/api/endpoints.ts"), "utf8");
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docs.locusgraph.com";
+
+/**
+ * The API reference, read out of its spec.
+ *
+ * These pages are generated from `lib/api/endpoints.ts` rather than loaded from
+ * the manifest, so the walk above never sees them. Left out, the one file that
+ * exists so an agent can see the whole surface would be missing the half of it
+ * an agent is most likely to want.
+ *
+ * Parsed as text, the way the nav and the manifest are: importing it would drag
+ * TypeScript into a script that only needs four fields per endpoint.
+ */
+function apiEndpoints() {
+  const out = [];
+  for (const block of apiSpec.split(/\n {2}\{\n/).slice(1)) {
+    const field = (name) => block.match(new RegExp(`${name}: "((?:[^"\\\\]|\\\\.)*)"`))?.[1];
+    const slug = field("slug");
+    const summary = block.match(/summary:\s*\n?\s*"((?:[^"\\\\]|\\\\.)*)"/)?.[1];
+    if (!slug || !summary) continue;
+    out.push({
+      slug,
+      name: field("name"),
+      method: field("method"),
+      path: field("path"),
+      group: field("group"),
+      summary,
+    });
+  }
+  return out;
+}
+
+const API = apiEndpoints();
 
 /** Sections a reader can reach. An unready section is not worth indexing. */
 const ready = [
@@ -161,6 +196,19 @@ for (const page of docs) {
   writeFileSync(file, page.markdown);
 }
 
+for (const endpoint of API) {
+  const file = join(root, "public", "locusgraph", "api", `${endpoint.slug}.md`);
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(
+    file,
+    `# ${endpoint.name}\n\n` +
+      `\`${endpoint.method} ${endpoint.path}\`\n\n` +
+      `${endpoint.summary}\n\n` +
+      `Full reference, with parameters, responses and a playground: ` +
+      `${SITE}/locusgraph/api/${endpoint.slug}\n`
+  );
+}
+
 /**
  * The site's own blurb, from `products.ts`, so the description an agent reads
  * is the one a person reads on the index page.
@@ -171,8 +219,6 @@ function blurbOf(product) {
   const block = products.slice(at, products.indexOf("},", at));
   return block.match(/blurb:\s*\n?\s*"((?:[^"\\]|\\.)*)"/)?.[1] ?? "";
 }
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docs.locusgraph.com";
 
 /**
  * The sidebar's order, per product: each group, and the pages under it.
@@ -301,6 +347,19 @@ for (const { slug: product, title } of ready) {
   ordered.set(product, seen);
 }
 
+// The reference, grouped the way its own sidebar groups it.
+for (const group of [...new Set(API.map((e) => e.group))]) {
+  const inGroup = API.filter((e) => e.group === group);
+  if (inGroup.length === 0) continue;
+  map.push("", `## LocusGraph API: ${group}`, "");
+  for (const endpoint of inGroup) {
+    map.push(
+      `- [${endpoint.method} ${endpoint.path}](${SITE}/locusgraph/api/${endpoint.slug}): ${endpoint.summary}`
+    );
+  }
+}
+map.push("");
+
 if (optional.length > 0) {
   map.push("## Optional", "", "Skip these when context is short.", "", ...optional);
 }
@@ -333,6 +392,20 @@ for (const { slug: product, title } of ready) {
       ""
     );
   }
+}
+
+for (const endpoint of API) {
+  full.push(
+    `## ${endpoint.name}`,
+    "",
+    `Source: ${SITE}/locusgraph/api/${endpoint.slug}`,
+    `Section: LocusGraph API, ${endpoint.group}`,
+    "",
+    `${endpoint.method} ${endpoint.path}`,
+    "",
+    endpoint.summary,
+    ""
+  );
 }
 
 const llmsFull = join(root, "public/llms-full.txt");
