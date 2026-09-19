@@ -53,22 +53,11 @@ winner and bounce everyone else. The root is an indexable index instead.
 
 ## Packages
 
-- [ ] **npm is a version behind.** `@spendgraph/sdk` and eight others serve
-      0.7.0 while the source tree is 0.8.0; only `vigil` and `config` are
-      current. Everything else is ready and pushed, so this is the one step
-      left, and it needs a login this machine does not have:
-
-      ```bash
-      npm login                          # as effortlesslabs
-      cd ../../fnLog0/spendgraph
-      pnpm -r publish --access public    # skips the two private packages
-      ```
-
-      Then, back here: `pnpm update`, delete `content/spendgraph/sdk/` and point
-      those four manifest entries at `@spendgraph/sdk/docs/*`, `pnpm test`,
-      `pnpm deploy:cf`. That levels the rendered docs with the code they
-      describe and refreshes the search index with the swept prose and the
-      figures
+- [x] **npm is level at 0.8.1.** All eleven packages, published and installed
+      here, so the rendered docs match the code they describe. The four SDK
+      pages that were kept locally now come from `@spendgraph/sdk/docs/`, and
+      `content/spendgraph/` is down to the three pages that belong to no
+      package: overview, getting-started, concepts
 - [x] **`workflows` and `examples` need no section.** Both are `private: true`,
       so they are not installable and not meant to be documented publicly
 - [ ] **`@spendgraph/workflows` 0.6.0 is public on npm.** Published 2026-08-29,
@@ -78,10 +67,20 @@ winner and bounce everyone else. The root is an indexable index instead.
 
 ## Build and tooling
 
-- [ ] **`sharp` build script is blocked.** pnpm reads `onlyBuiltDependencies`
-      from `pnpm-workspace.yaml` and still refuses; `pnpm rebuild sharp` refuses
-      too. It wants `pnpm approve-builds`, which is interactive. Only affects
-      Next image optimisation
+- [x] **`sharp` builds.** It never needed `pnpm approve-builds`. pnpm 12 reads
+      `allowBuilds` from `pnpm-workspace.yaml`, and ours held the placeholder
+      text `set this to true or false` rather than booleans, which is what
+      failed every install with `ERR_PNPM_IGNORED_BUILDS`. Now `sharp: true`,
+      `esbuild: false`, `workerd: false`
+
+### pnpm 12 withholds a fresh release
+
+`minimumReleaseAge` refuses a version published in the last day. Good against a
+compromised release, wrong for packages we cut ourselves: these docs and the
+code they describe ship in the same hour, so the gate only delays our own work.
+`minimumReleaseAgeExclude` is scoped to `'@spendgraph/*'`; everything else keeps
+the wait. Before that it held one-off entries per version, which had to be
+edited on every release.
 - [x] **Deploy script renamed to `deploy:cf`.** The old name `deploy` collided
       with pnpm's own command and failed with `ERR_PNPM_INVALID_DEPLOY_TARGET`
 - [x] **Apple icon.** `app/apple-icon.tsx`, drawn the same way. iOS ignores
