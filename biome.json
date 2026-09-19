@@ -10,7 +10,8 @@
       "!**/.open-next/**",
       "!components/ui/**",
       "!next-env.d.ts",
-      "!**/*.css"
+      "!**/*.css",
+      "!public/search-index.json"
     ]
   }
 }

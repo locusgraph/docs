@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { DocsGroupNav } from "@/components/docs/docs-group-nav";
+import { DocsSearch } from "@/components/docs/search";
 import { ThemeSwitch } from "@/components/site/theme-switch";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -36,6 +37,7 @@ export function DocsHeader() {
         {page?.title ?? "Docs"}
       </h2>
       <div className="ml-auto flex min-w-0 items-center gap-2">
+        <DocsSearch />
         <DocsGroupNav />
         <Separator orientation="vertical" className="h-4" />
         <ThemeSwitch />

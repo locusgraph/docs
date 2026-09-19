@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DocsSearch } from "@/components/docs/search";
 import { GithubMark, LocusMark, XMark } from "@/components/site/marks";
 import { ThemeSwitch } from "@/components/site/theme-switch";
 
@@ -31,6 +32,7 @@ export function SiteHeader() {
             <span className="text-soft">docs</span>
           </Link>
           <nav className="flex items-center gap-4">
+            <DocsSearch />
             <a
               href="https://www.locusgraph.com"
               className="text-sm font-medium text-soft hover:text-foreground"
