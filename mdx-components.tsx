@@ -21,6 +21,17 @@ import {
 } from "@/components/docs/diagrams";
 import { EarlyAccess } from "@/components/docs/early-access";
 
+/** The Spendgraph dashboard, for the few package links that point at it. */
+const SPENDGRAPH_APP = "https://spendgraph.locusgraph.com";
+const APP_PATHS = new Set(["/pricing", "/projects", "/keys"]);
+
+/** A package doc's link, in the shape this host serves. */
+function docsHref(href: string): string {
+  if (href.startsWith("/docs/")) return `/spendgraph${href.slice(5)}`;
+  if (APP_PATHS.has(href)) return `${SPENDGRAPH_APP}${href}`;
+  return href;
+}
+
 function textOf(node: React.ReactNode): string {
   if (node === null || node === undefined || typeof node === "boolean") return "";
   if (typeof node === "string" || typeof node === "number") return String(node);
@@ -100,9 +111,20 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         </CodeBlock>
       );
     },
+    /**
+     * A package doc links with the path its own site used, `/docs/...`, which
+     * is not the shape this host serves. Rewriting here rather than in the
+     * packages keeps them portable: a package should not have to know the URL
+     * layout of whatever renders it.
+     *
+     * A handful point at the dashboard rather than at a doc. Those are a
+     * different origin, so they leave as absolute URLs.
+     *
+     * Local content already writes `/spendgraph/...` and passes through.
+     */
     a: ({ href, children, ...props }) =>
       href?.startsWith("/") ? (
-        <Link href={href} {...props}>
+        <Link href={docsHref(href)} {...props}>
           {children}
         </Link>
       ) : (
