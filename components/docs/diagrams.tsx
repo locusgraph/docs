@@ -42,7 +42,7 @@ export function MemoryFlow() {
         </defs>
 
         <text x="78" y="20" textAnchor="middle" className={`${LABEL} text-soft`}>
-          your app
+          your agent
         </text>
         <text x="470" y="20" textAnchor="middle" className={`${LABEL} text-soft`}>
           LocusGraph
