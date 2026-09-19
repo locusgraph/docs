@@ -19,6 +19,14 @@ export interface ApiParam {
   readonly type: string;
   readonly required?: boolean;
   readonly note: string;
+  /**
+   * The values this field accepts, when it is an enum. The playground renders a
+   * select rather than a text box, because a field with eight valid values and
+   * no list of them is a field you have to leave the page to fill in.
+   */
+  readonly options?: readonly string[];
+  /** `prose` gets a textarea: a payload is a sentence, not a word. */
+  readonly field?: "prose";
 }
 
 export interface ApiError {
@@ -85,6 +93,7 @@ export const ENDPOINTS: readonly Endpoint[] = [
       {
         name: "format",
         type: '"markdown" | "toon" | "json"',
+        options: ["markdown", "toon", "json"],
         note: "markdown, the default, is prompt-ready text. json returns structured items instead.",
       },
       {
@@ -165,8 +174,9 @@ export const ENDPOINTS: readonly Endpoint[] = [
       { name: "graph_id", type: "string", required: true, note: "Which graph to write to." },
       {
         name: "event_kind",
-        type: '"fact" | "knowledge" | "action" | "decision" | "observation" | "feedback"',
+        type: "enum",
         required: true,
+        options: ["fact", "knowledge", "action", "decision", "observation", "feedback"],
         note: "What sort of memory this is.",
       },
       {
@@ -176,12 +186,23 @@ export const ENDPOINTS: readonly Endpoint[] = [
       },
       {
         name: "source",
-        type: "string",
-        note: "Provenance, which sets how far the memory is trusted.",
+        type: "enum",
+        options: [
+          "policy",
+          "verified",
+          "tool",
+          "document",
+          "user",
+          "assistant",
+          "derived",
+          "system",
+        ],
+        note: "Provenance, which sets how far the memory is trusted. The ladder runs from policy down to system.",
       },
       {
         name: "payload",
         type: "object",
+        field: "prose",
         note: "The memory itself. Put a concise natural-language statement in `payload.data`: that is the text search matches on.",
       },
       {
@@ -227,14 +248,16 @@ export const ENDPOINTS: readonly Endpoint[] = [
       },
       {
         name: "source",
-        type: '"policy" | "verified" | "tool" | "turn"',
+        type: "enum",
         required: true,
+        options: ["policy", "verified", "tool", "turn"],
         note: "Where this came from. `derived` is refused: the engine never re-observes its own output.",
       },
       {
         name: "payload",
         type: "string | object",
         required: true,
+        field: "prose",
         note: "The raw observation, stored verbatim. Capped at 64KB; whole documents belong to ingest.",
       },
       {

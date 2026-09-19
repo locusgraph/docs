@@ -67,10 +67,29 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
     }
   };
 
+  /**
+   * What the field holds, as the type the API expects.
+   *
+   * A number stays a number and an object stays an object: `payload` is a JSON
+   * object on the wire, and leaving it a string put `"payload": "{\"data\": …}"`
+   * in every sample, which is a quoted string the API would reject. A value
+   * mid-edit will not parse, and then it goes over as text rather than throwing
+   * the sample away while someone is still typing.
+   */
   const parsed: Record<string, unknown> = Object.fromEntries(
     Object.entries(body)
       .filter(([, v]) => v !== "")
-      .map(([k, v]) => [k, /^-?\d+$/.test(v) ? Number(v) : v])
+      .map(([k, v]) => {
+        if (/^-?\d+$/.test(v)) return [k, Number(v)];
+        if (/^\s*[[{]/.test(v)) {
+          try {
+            return [k, JSON.parse(v)];
+          } catch {
+            return [k, v];
+          }
+        }
+        return [k, v];
+      })
   );
 
   const code = sampleFor(endpoint, parsed, lang);
@@ -109,26 +128,61 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
       <div className="rounded-lg border border-line bg-surface p-3">
         <p className="mb-2.5 text-xs font-medium">Request</p>
         <div className="flex flex-col gap-2">
-          {Object.keys(body).map((field) => (
-            <div key={field} className="flex items-center gap-2.5">
-              <label
-                htmlFor={`pg-${field}`}
-                className="w-24 shrink-0 font-mono text-[11px] text-soft"
+          {Object.keys(body).map((field) => {
+            const spec = endpoint.params.find((p) => p.name === field);
+            const control =
+              "min-w-0 grow rounded-md border border-line bg-background px-2.5 py-1.5 font-mono text-xs text-foreground";
+            const edit = (value: string) => {
+              setBody({ ...body, [field]: value });
+              setSent(false);
+            };
+
+            return (
+              <div
+                key={field}
+                className={`flex gap-2.5 ${spec?.field === "prose" ? "items-start" : "items-center"}`}
               >
-                {field}
-              </label>
-              <input
-                id={`pg-${field}`}
-                type="text"
-                value={body[field]}
-                onChange={(e) => {
-                  setBody({ ...body, [field]: e.target.value });
-                  setSent(false);
-                }}
-                className="min-w-0 grow rounded-md border border-line bg-background px-2.5 py-1.5 font-mono text-xs text-foreground"
-              />
-            </div>
-          ))}
+                <label
+                  htmlFor={`pg-${field}`}
+                  className="w-24 shrink-0 pt-1.5 font-mono text-[11px] text-soft"
+                >
+                  {field}
+                </label>
+                {spec?.options ? (
+                  // A select, not a text box: eight valid values and no list of
+                  // them is a field you leave the page to fill in.
+                  <select
+                    id={`pg-${field}`}
+                    value={body[field]}
+                    onChange={(e) => edit(e.target.value)}
+                    className={control}
+                  >
+                    {spec.options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                ) : spec?.field === "prose" ? (
+                  <textarea
+                    id={`pg-${field}`}
+                    rows={3}
+                    value={body[field]}
+                    onChange={(e) => edit(e.target.value)}
+                    className={`${control} resize-y leading-relaxed`}
+                  />
+                ) : (
+                  <input
+                    id={`pg-${field}`}
+                    type="text"
+                    value={body[field]}
+                    onChange={(e) => edit(e.target.value)}
+                    className={control}
+                  />
+                )}
+              </div>
+            );
+          })}
           {Object.keys(body).length === 0 ? (
             <p className="text-xs text-faint">
               This call takes no body. Everything it needs is in the path.

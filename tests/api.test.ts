@@ -170,3 +170,52 @@ describe("the nav", () => {
     }
   });
 });
+
+/**
+ * A field the playground renders as a control has to say what the control is.
+ *
+ * An enum with no `options` becomes a text box the reader has to guess at, and
+ * `options` that are not in the documented type is the page disagreeing with
+ * itself one line apart.
+ */
+describe("the playground controls", () => {
+  it("gives every enum its values", () => {
+    for (const endpoint of ENDPOINTS) {
+      for (const param of endpoint.params) {
+        if (param.type !== "enum") continue;
+        expect(
+          param.options,
+          `${endpoint.slug}.${param.name} is an enum with no options`
+        ).toBeTruthy();
+        expect(param.options?.length ?? 0).toBeGreaterThan(1);
+      }
+    }
+  });
+
+  it("defaults an enum to one of its own values", () => {
+    for (const endpoint of ENDPOINTS) {
+      for (const param of endpoint.params) {
+        const seeded = endpoint.sample[param.name];
+        if (!param.options || seeded === undefined) continue;
+        expect(
+          param.options,
+          `${endpoint.slug}.${param.name} is seeded off its own list`
+        ).toContain(String(seeded));
+      }
+    }
+  });
+
+  it("keeps an object payload an object in every sample", () => {
+    const store = ENDPOINTS.find((e) => e.slug === "store-an-event");
+    if (!store) throw new Error("store-an-event is gone");
+
+    const payload = store.params.find((p) => p.name === "payload");
+    expect(payload?.field, "payload should get a textarea, not a one-line input").toBe("prose");
+
+    for (const lang of LANGS) {
+      const code = sampleFor(store, store.sample, lang);
+      expect(code, `${lang} quoted the payload object`).not.toContain('"payload": "{');
+      expect(code).toContain("Prefers dark mode");
+    }
+  });
+});
