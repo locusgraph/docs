@@ -29,11 +29,7 @@
       {
         "name": "format",
         "type": "\"markdown\" | \"toon\" | \"json\"",
-        "options": [
-          "markdown",
-          "toon",
-          "json"
-        ],
+        "options": ["markdown", "toon", "json"],
         "note": "markdown, the default, is prompt-ready text. json returns structured items instead."
       },
       {
@@ -159,14 +155,7 @@
         "name": "event_kind",
         "type": "enum",
         "required": true,
-        "options": [
-          "fact",
-          "knowledge",
-          "action",
-          "decision",
-          "observation",
-          "feedback"
-        ],
+        "options": ["fact", "knowledge", "action", "decision", "observation", "feedback"],
         "note": "What sort of memory this is."
       },
       {
@@ -265,12 +254,7 @@
         "name": "source",
         "type": "enum",
         "required": true,
-        "options": [
-          "policy",
-          "verified",
-          "tool",
-          "turn"
-        ],
+        "options": ["policy", "verified", "tool", "turn"],
         "note": "Where this came from. `derived` is refused: the engine never re-observes its own output."
       },
       {
@@ -509,12 +493,7 @@
       {
         "name": "link_type",
         "type": "enum",
-        "options": [
-          "extends",
-          "related_to",
-          "reinforces",
-          "contradicts"
-        ],
+        "options": ["extends", "related_to", "reinforces", "contradicts"],
         "note": "Only memories carrying a link of this kind."
       }
     ],
@@ -732,14 +711,7 @@
       {
         "name": "kind",
         "type": "enum",
-        "options": [
-          "fact",
-          "knowledge",
-          "action",
-          "decision",
-          "observation",
-          "feedback"
-        ],
+        "options": ["fact", "knowledge", "action", "decision", "observation", "feedback"],
         "note": "Only events of this kind."
       },
       {
@@ -1071,10 +1043,7 @@
     "returns": "One entry per id, with the ones that matched nothing marked.",
     "sample": {
       "graph_id": "acme",
-      "context_ids": [
-        "preference:dark_mode",
-        "policy:deployments"
-      ]
+      "context_ids": ["preference:dark_mode", "policy:deployments"]
     },
     "response": "{\n  \"found\": [ … ],\n  \"missing\": []\n}",
     "errors": [
@@ -1127,12 +1096,7 @@
         "name": "link_type",
         "type": "enum",
         "required": true,
-        "options": [
-          "extends",
-          "related_to",
-          "reinforces",
-          "contradicts"
-        ],
+        "options": ["extends", "related_to", "reinforces", "contradicts"],
         "note": "How the two relate."
       }
     ],
@@ -1194,12 +1158,7 @@
         "name": "link_type",
         "type": "enum",
         "required": true,
-        "options": [
-          "extends",
-          "related_to",
-          "reinforces",
-          "contradicts"
-        ],
+        "options": ["extends", "related_to", "reinforces", "contradicts"],
         "note": "Which link to remove."
       }
     ],
@@ -1319,22 +1278,13 @@
       {
         "name": "direction",
         "type": "enum",
-        "options": [
-          "incoming",
-          "outgoing",
-          "both"
-        ],
+        "options": ["incoming", "outgoing", "both"],
         "note": "Which way the edges point. Anything else is a 400."
       },
       {
         "name": "link_type",
         "type": "enum",
-        "options": [
-          "extends",
-          "related_to",
-          "reinforces",
-          "contradicts"
-        ],
+        "options": ["extends", "related_to", "reinforces", "contradicts"],
         "note": "Only edges of this kind."
       },
       {

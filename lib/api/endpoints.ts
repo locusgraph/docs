@@ -59,27 +59,6 @@ export interface Endpoint {
   readonly errors: readonly ApiError[];
 }
 
-/** On every endpoint, so each page does not restate them. */
-const COMMON: readonly ApiError[] = [
-  {
-    status: 400,
-    code: "BAD_REQUEST",
-    note: "The body was not valid JSON, or a field failed its check. The message names the field.",
-  },
-  { status: 401, code: "UNAUTHORIZED", note: "No key, or a key that has been revoked." },
-  {
-    status: 403,
-    code: "FORBIDDEN",
-    note: "The key is pinned to a different graph. A key cannot widen itself.",
-  },
-];
-
-const NOT_FOUND: ApiError = {
-  status: 404,
-  code: "NOT_FOUND",
-  note: "Nothing with that id in this graph.",
-};
-
 export const ENDPOINTS: readonly Endpoint[] = spec as readonly Endpoint[];
 
 export const API_GROUPS = [...new Set(ENDPOINTS.map((e) => e.group))];
