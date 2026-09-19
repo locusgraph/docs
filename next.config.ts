@@ -3,23 +3,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /**
-   * Docs that describe a package live in the package, beside the code they
-   * describe, and the route here is four lines that render one. Without this
-   * the MDX loader does not reach them, because they resolve through
-   * `node_modules` and loaders stop at its edge.
+   * Every package's pages live in `@spendgraph/docs`, so the ten packages they
+   * describe ship without them. Without this the MDX loader does not reach
+   * them, because they resolve through `node_modules` and loaders stop at its
+   * edge.
    */
-  transpilePackages: [
-    "@spendgraph/cli",
-    "@spendgraph/evals",
-    "@spendgraph/graph",
-    "@spendgraph/harness",
-    "@spendgraph/llms",
-    "@spendgraph/prompt",
-    "@spendgraph/sdk",
-    "@spendgraph/stage",
-    "@spendgraph/tools",
-    "@spendgraph/vigil",
-  ],
+  transpilePackages: ["@spendgraph/docs"],
 };
 
 /**

@@ -3,14 +3,13 @@ import { describe, expect, it } from "vitest";
 import { componentsUsed, localPages, packagePages, prose } from "./site";
 
 /**
- * A page that names a component this host does not register renders the tag as
- * nothing, so the figure is silently missing on a page that reads as though it
- * has one.
+ * A page that names a component nothing provides renders the tag as nothing,
+ * so a figure is silently missing from a page that reads as though it has one.
  *
- * Package pages matter more than local ones here. A figure used by a package
- * lives in this repo, not in the package, so the two drift independently: the
- * package can be published carrying a tag only a later version of this host
- * knows about.
+ * The two kinds of page get it from different places, which is the whole point
+ * of the split. A page in `@spendgraph/docs` imports its figures, so it carries
+ * what it needs and would render the same anywhere. A page in `content/` is
+ * ours, and takes what this file registers.
  */
 const registry = readFileSync("mdx-components.tsx", "utf8");
 const block = registry.slice(
@@ -18,8 +17,17 @@ const block = registry.slice(
 );
 const registered = new Set([...block.matchAll(/^\s{4}([A-Z][A-Za-z0-9]*),$/gm)].map((m) => m[1]));
 
-describe("every component a page uses is registered", () => {
-  for (const page of [...localPages(), ...packagePages()]) {
+/** What a page brought with it. */
+function imported(mdx: string): Set<string> {
+  const names = new Set<string>();
+  for (const m of mdx.matchAll(/^import \{([^}]+)\} from/gm)) {
+    for (const name of m[1].split(",")) names.add(name.trim());
+  }
+  return names;
+}
+
+describe("a local page uses only what this host registers", () => {
+  for (const page of localPages()) {
     it(page, () => {
       const used = componentsUsed(prose(readFileSync(page, "utf8")));
       expect(used.filter((c) => !registered.has(c))).toEqual([]);
@@ -27,23 +35,32 @@ describe("every component a page uses is registered", () => {
   }
 });
 
-/**
- * The other direction is only checked against the figure modules, not against
- * the pages. A figure is written here and used from a package, and between
- * those two steps there is a publish, so a figure with no caller is a normal
- * state of this repo rather than a mistake. Forgetting to register one is the
- * mistake, and it looks the same on the page as a typo in the tag.
- */
-describe("every figure is registered", () => {
-  for (const module of [
-    "components/docs/diagrams.tsx",
-    "components/docs/spendgraph-diagrams.tsx",
-  ]) {
-    it(module, () => {
-      const src = readFileSync(module, "utf8");
-      const exported = [...src.matchAll(/^export function ([A-Z][A-Za-z0-9]*)/gm)].map((m) => m[1]);
-      expect(exported.length).toBeGreaterThan(0);
-      expect(exported.filter((c) => !registered.has(c))).toEqual([]);
+describe("a package page brings its own figures", () => {
+  const pages = packagePages();
+
+  it("finds the installed pages at all", () => {
+    expect(pages.length).toBeGreaterThan(0);
+  });
+
+  for (const page of pages) {
+    it(page, () => {
+      const src = readFileSync(page, "utf8");
+      const brought = imported(src);
+      const used = componentsUsed(prose(src));
+      // Callout is the one thing a package page still leans on the host for.
+      expect(used.filter((c) => !brought.has(c) && !registered.has(c))).toEqual([]);
     });
   }
+});
+
+/**
+ * A figure written and never registered looks, on the page, exactly like a typo
+ * in the tag. Only the host's own figures are checked here; the ones in
+ * `@spendgraph/docs` are held by that package's own tests.
+ */
+it("every figure this host draws is registered", () => {
+  const src = readFileSync("components/docs/spendgraph-section-diagrams.tsx", "utf8");
+  const exported = [...src.matchAll(/^export function ([A-Z][A-Za-z0-9]*)/gm)].map((m) => m[1]);
+  expect(exported.length).toBeGreaterThan(0);
+  expect(exported.filter((c) => !registered.has(c))).toEqual([]);
 });

@@ -123,24 +123,26 @@ export function prose(mdx: string): string {
 }
 
 /**
- * Every `.mdx` a package ships, as a path.
+ * Every `.mdx` in `@spendgraph/docs`, as a path.
  *
- * These are not ours to edit, but they are ours to render, so anything they
- * reference has to exist here.
+ * Not ours to edit, but ours to render, so anything they reference has to
+ * resolve. They sit one folder per package inside the one docs package, and
+ * `evals` nests a folder deeper, so this walks rather than globbing.
  */
 export function packagePages(): string[] {
-  const root = "node_modules/@spendgraph";
+  const root = "node_modules/@spendgraph/docs";
   const out: string[] = [];
-  for (const pkg of readdirSync(root)) {
-    const dir = join(root, pkg, "docs");
-    try {
-      if (!statSync(dir).isDirectory()) continue;
-    } catch {
-      continue;
-    }
+  const walk = (dir: string) => {
     for (const name of readdirSync(dir)) {
-      if (name.endsWith(".mdx")) out.push(join(dir, name));
+      const full = join(dir, name);
+      if (statSync(full).isDirectory()) walk(full);
+      else if (full.endsWith(".mdx")) out.push(full);
     }
+  };
+  try {
+    walk(root);
+  } catch {
+    return [];
   }
   return out;
 }
