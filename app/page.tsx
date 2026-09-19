@@ -35,7 +35,7 @@ export default function DocsHome() {
     <div className="flex min-h-screen flex-col bg-[radial-gradient(ellipse_70%_45%_at_50%_0%,rgba(42,120,214,0.07),transparent_70%)] dark:bg-[radial-gradient(ellipse_70%_45%_at_50%_0%,rgba(57,135,229,0.09),transparent_70%)]">
       <SiteHeader />
 
-      <main className="flex-1 px-6 pt-16 pb-20">
+      <main className="flex-1 px-6 pt-10 pb-8">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-balance text-5xl font-semibold leading-[1.06] tracking-tighter sm:text-6xl">
             Everything we ship, <span className="text-s1">written down</span>.
@@ -48,7 +48,7 @@ export default function DocsHome() {
 
         <Tape />
 
-        <div className="mx-auto mt-14 grid w-full max-w-4xl gap-4 md:grid-cols-2">
+        <div className="mx-auto mt-10 grid w-full max-w-4xl gap-4 md:grid-cols-2">
           {live.map((product) => {
             const { title, blurb } = PRODUCT_INFO[product];
             const entries = treesFor(product).flatMap(pagesOf).slice(0, 3);
@@ -97,7 +97,7 @@ export default function DocsHome() {
         </div>
 
         {soon.length > 0 ? (
-          <p className="mx-auto mt-10 max-w-4xl text-center text-sm text-faint">
+          <p className="mx-auto mt-8 max-w-4xl text-center text-sm text-faint">
             {soon.map((product, i) => (
               <span key={product}>
                 {i > 0 ? " · " : null}

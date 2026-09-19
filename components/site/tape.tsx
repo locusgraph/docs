@@ -50,7 +50,7 @@ export function Tape() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none mx-auto mt-14 h-16 w-full max-w-5xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
+      className="pointer-events-none mx-auto mt-10 h-14 w-full max-w-5xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]"
     >
       <div className="tape flex h-full w-max items-end gap-[3px]">
         <Strip bars={bars} />

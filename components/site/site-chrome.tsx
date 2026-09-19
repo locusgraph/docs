@@ -69,7 +69,10 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-line/60">
       <div className="px-6">
-        <div className="mx-auto flex w-full max-w-4xl items-center justify-center py-6 text-sm text-faint">
+        {/* A `p`, not the flex row itself: as direct children of a flex
+            container the label, the space and the link each become their own
+            flex item, and the whitespace-only one collapses to nothing. */}
+        <p className="mx-auto w-full max-w-4xl py-5 text-center text-sm text-faint">
           Made with care by{" "}
           <a
             href="https://www.effortlesslabs.xyz"
@@ -79,7 +82,7 @@ export function SiteFooter() {
           >
             Effortless Labs
           </a>
-        </div>
+        </p>
       </div>
     </footer>
   );
