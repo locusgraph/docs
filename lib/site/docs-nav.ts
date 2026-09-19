@@ -1,4 +1,15 @@
+import { ENDPOINTS } from "../api/endpoints";
 import type { Product } from "./products";
+
+/**
+ * One nav item per endpoint, from the spec. Written out here rather than in
+ * `LG_API` so the tree reads like the others.
+ */
+const API_NAV_ITEMS: DocsLink[] = ENDPOINTS.map((endpoint) => ({
+  title: endpoint.name,
+  href: `/locusgraph/api/${endpoint.slug}`,
+  blurb: endpoint.summary,
+}));
 
 export interface DocsLink {
   title: string;
@@ -989,6 +1000,27 @@ const VIGIL: DocsTree = {
  * `content/spendgraph/overview.mdx` lists the same ten in the same order. Two
  * orders that disagree read as no order at all.
  */
+/**
+ * The API reference, generated from `lib/api/endpoints.ts` rather than written.
+ *
+ * It sits in the nav beside the written groups because a reader looking for an
+ * endpoint does not care which of the two produced the page. The manifest does
+ * not know these pages, so `tests/nav.test.ts` exempts `/api/` from the check
+ * that every href has a manifest entry: that check exists to catch a page the
+ * manifest forgot, and these were never its to remember.
+ */
+const LG_API: DocsTree = {
+  title: "API",
+  href: "/locusgraph/api/search-memories",
+  blurb: "Every endpoint a key reaches, with a playground on each one.",
+  sections: [
+    {
+      title: "Reference",
+      items: API_NAV_ITEMS,
+    },
+  ],
+};
+
 const SPENDGRAPH_TREES: DocsTree[] = [
   SPENDGRAPH,
   SDK,
@@ -1021,6 +1053,7 @@ export const NAV: Record<Product, DocsTree[]> = {
     LG_CONTEXTS,
     LG_REVIEW,
     LG_GRAPHS,
+    LG_API,
     LG_ENTERPRISE,
   ],
   spendgraph: SPENDGRAPH_TREES,

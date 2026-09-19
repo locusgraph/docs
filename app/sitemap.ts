@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { ENDPOINTS } from "@/lib/api/endpoints";
 import { DOCS } from "@/lib/site/docs-manifest";
 import { PRODUCT_INFO, PRODUCTS } from "@/lib/site/products";
 import { SITE_URL } from "@/lib/site/seo";
@@ -36,5 +37,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
           priority: 0.5,
         }))
     ),
+    // The API reference is generated from `lib/api/endpoints.ts` rather than
+    // loaded from the manifest, so it is listed from its own source. Leaving it
+    // out would mean the only pages a crawler never sees are the ones a search
+    // for an endpoint name should land on.
+    ...ENDPOINTS.map((endpoint) => ({
+      url: `${SITE_URL}/locusgraph/api/${endpoint.slug}`,
+      priority: 0.5,
+    })),
   ];
 }
