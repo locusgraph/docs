@@ -40,8 +40,14 @@ export default async function ProductLayout({
           data-docs-scroll
           className="no-scrollbar w-full flex-1 overflow-y-auto px-6 pt-7 pb-8 lg:px-8"
         >
-          <div className="mx-auto flex w-full max-w-5xl gap-10">
-            <article className="typeset typeset-docs min-w-0 max-w-3xl flex-1">
+          {/* `docs-body` and `docs-article` are the two hooks a page needs to
+              widen the shell. A reference page carrying `data-wide` wants the
+              whole width and its own right-hand column, so globals.css drops the
+              article's cap and hides the outline for that page only, with
+              `:has()` rather than a prop, because the layout is a server
+              component that never sees which page rendered inside it. */}
+          <div className="docs-body mx-auto flex w-full max-w-5xl gap-10">
+            <article className="docs-article typeset typeset-docs min-w-0 max-w-3xl flex-1">
               {children}
               <PageNav />
             </article>

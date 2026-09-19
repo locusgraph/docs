@@ -107,3 +107,28 @@
     animation: none;
   }
 }
+
+/**
+ * A page that asks for the whole width.
+ *
+ * The docs shell caps the article at `max-w-3xl` and spends its right side on
+ * the outline, which is right for prose and wrong for an API reference: that
+ * page carries its own right-hand column, the playground, and at the default
+ * width the prose beside it is about 220px and every parameter note wraps to
+ * four lines.
+ *
+ * `:has()` rather than a prop because `app/[product]/layout.tsx` is a server
+ * component that receives only the product, never which page rendered inside
+ * it. Scoped to the one page that sets the attribute, so nothing else moves.
+ */
+.docs-body:has([data-wide]) {
+  max-width: 78rem;
+}
+
+.docs-body:has([data-wide]) .docs-article {
+  max-width: none;
+}
+
+.docs-body:has([data-wide]) > aside {
+  display: none;
+}
