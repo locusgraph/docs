@@ -40,10 +40,10 @@ export function SiteHeader() {
               Website
             </a>
             <a
-              href="https://github.com/fnLog0"
+              href="https://github.com/locusgraph"
               target="_blank"
               rel="noreferrer"
-              aria-label="GitHub organisation"
+              aria-label="LocusGraph on GitHub"
               className="text-soft hover:text-foreground"
             >
               <GithubMark />

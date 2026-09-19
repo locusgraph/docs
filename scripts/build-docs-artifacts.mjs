@@ -234,6 +234,8 @@ const map = [
   "",
   "Every page is also concatenated into `/llms-full.txt` for reading the whole corpus in one request. That file is a convention rather than part of this format.",
   "",
+  "Source and issues: https://github.com/locusgraph",
+  "",
 ];
 
 const ordered = new Map();
