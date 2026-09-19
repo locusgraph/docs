@@ -24,7 +24,7 @@ import { pageMeta } from "@/lib/site/seo";
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
   description:
-    "Store what your app learns, and know what every model call costs. LocusGraph and Spendgraph, documented in full.",
+    "Two things your AI app loses: what it learned, and what it cost. LocusGraph keeps the first, Spendgraph accounts for the second.",
   path: "/",
 });
 
@@ -38,11 +38,15 @@ export default function DocsHome() {
 
       <main className="flex-1 px-6 pt-10 pb-8">
         <div className="mx-auto max-w-2xl text-center">
+          {/* The accent falls on the two losses, not on the product names: the
+              names mean nothing to a reader who has not met them, and the
+              losses are what they recognise. */}
           <h1 className="text-balance text-5xl font-semibold leading-[1.06] tracking-tighter sm:text-6xl">
-            Everything we ship, <span className="text-s1">written down</span>.
+            Two things your AI app loses: <span className="text-s1">what it learned</span>, and{" "}
+            <span className="text-s1">what it cost</span>.
           </h1>
-          <p className="mx-auto mt-5 max-w-[46ch] text-pretty text-lg text-soft">
-            Written beside the code, and published with it.
+          <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-lg text-soft">
+            LocusGraph keeps the first. Spendgraph accounts for the second.
           </p>
           <div className="mt-7 flex justify-center">
             <AgentPrompt />
