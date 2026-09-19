@@ -469,3 +469,212 @@ export function LinkTypes() {
     </figure>
   );
 }
+
+/** What a chunking pipeline returns against what ingest returns. */
+export function ChunkVsStatement() {
+  return (
+    <Fig caption="A chunk is a slice of a page. A statement is a thing the document said.">
+      <svg
+        viewBox="0 0 640 150"
+        className="w-full"
+        role="img"
+        aria-label="Chunking against ingesting"
+      >
+        <title>Chunking against ingesting</title>
+        <defs>
+          <Arrow id="cv-a" />
+        </defs>
+
+        {[
+          { y: 30, label: "chunking", mid: "400-token slices", end: "the nearest slices" },
+          { y: 100, label: "ingesting", mid: "statements it makes", end: "the ones that answer" },
+        ].map((row) => (
+          <g key={row.label}>
+            <text x="20" y={row.y + 5} className={`${LABEL} text-faint`}>
+              {row.label}
+            </text>
+            <rect x="96" y={row.y - 14} width="92" height="28" rx="6" className="fill-ghost" />
+            <text x="142" y={row.y + 4} textAnchor="middle" className={`${MONO} text-foreground`}>
+              document
+            </text>
+            <line
+              x1="196"
+              y1={row.y}
+              x2="240"
+              y2={row.y}
+              className="stroke-line"
+              strokeWidth="1.5"
+              markerEnd="url(#cv-a)"
+            />
+            <rect x="250" y={row.y - 14} width="168" height="28" rx="6" className="fill-ghost" />
+            <text x="334" y={row.y + 4} textAnchor="middle" className={`${LABEL} text-soft`}>
+              {row.mid}
+            </text>
+            <line
+              x1="426"
+              y1={row.y}
+              x2="470"
+              y2={row.y}
+              className="stroke-line"
+              strokeWidth="1.5"
+              markerEnd="url(#cv-a)"
+            />
+            <text x="482" y={row.y + 4} className={`${LABEL} text-s1`}>
+              {row.end}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </Fig>
+  );
+}
+
+/** Two graphs holding the same names and reaching nothing of each other's. */
+export function GraphIsolation() {
+  const rows = ["policy:deploys", "user:alice", "project:billing"];
+  return (
+    <Fig caption="The same context names in two graphs. No query crosses the gap.">
+      <svg viewBox="0 0 640 190" className="w-full" role="img" aria-label="Two isolated graphs">
+        <title>Two isolated graphs</title>
+
+        {[
+          { x: 40, name: "graph: acme" },
+          { x: 360, name: "graph: globex" },
+        ].map((g) => (
+          <g key={g.name}>
+            <rect
+              x={g.x}
+              y="20"
+              width="240"
+              height="150"
+              rx="10"
+              className="fill-none stroke-line"
+              strokeDasharray="4 4"
+            />
+            <text x={g.x + 16} y="42" className={`${MONO} text-soft`}>
+              {g.name}
+            </text>
+            {rows.map((r, i) => (
+              <text key={r} x={g.x + 16} y={70 + i * 26} className={`${MONO} text-s1`}>
+                {r}
+              </text>
+            ))}
+          </g>
+        ))}
+
+        <line
+          x1="300"
+          y1="30"
+          x2="300"
+          y2="160"
+          className="stroke-line"
+          strokeWidth="1"
+          strokeDasharray="2 5"
+        />
+        <text x="320" y="182" textAnchor="middle" className={`${LABEL} text-faint`}>
+          no relationship
+        </text>
+      </svg>
+    </Fig>
+  );
+}
+
+/** The two ways into a graph, and what each promises. */
+export function TwoDoors() {
+  return (
+    <Fig caption="One writes. The other proposes, and waits for a person.">
+      <svg
+        viewBox="0 0 640 130"
+        className="w-full"
+        role="img"
+        aria-label="storeEvent against observe"
+      >
+        <title>storeEvent against observe</title>
+        <defs>
+          <Arrow id="td-a" />
+        </defs>
+
+        {[
+          { y: 34, call: "storeEvent", end: "in the graph, immediately", tone: "text-s1" },
+          { y: 96, call: "observe", end: "a finding, waiting on a person", tone: "text-soft" },
+        ].map((row) => (
+          <g key={row.call}>
+            <rect x="20" y={row.y - 16} width="150" height="32" rx="8" className="fill-ghost" />
+            <text x="95" y={row.y + 4} textAnchor="middle" className={`${MONO} text-foreground`}>
+              {row.call}
+            </text>
+            <line
+              x1="182"
+              y1={row.y}
+              x2="250"
+              y2={row.y}
+              className="stroke-line"
+              strokeWidth="1.5"
+              markerEnd="url(#td-a)"
+            />
+            <text x="264" y={row.y + 4} className={`${LABEL} ${row.tone}`}>
+              {row.end}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </Fig>
+  );
+}
+
+/** The two multi-write calls, split by guarantee rather than by size. */
+export function BatchVsTransaction() {
+  const cards = [
+    {
+      call: "storeEventsBatch",
+      headline: "each item stands alone",
+      detail: "One result per item. A rejection takes nothing else with it.",
+    },
+    {
+      call: "transaction",
+      headline: "all of them, or none",
+      detail: "One bad operation returns 400 and writes nothing at all.",
+    },
+  ];
+  return (
+    <figure className="not-prose my-6 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2">
+      {cards.map((c) => (
+        <div key={c.call} className="bg-surface px-5 py-4">
+          <p className="font-mono text-sm text-s1">{c.call}</p>
+          <p className="mt-2 text-sm font-medium">{c.headline}</p>
+          <p className="mt-1 text-sm text-soft">{c.detail}</p>
+        </div>
+      ))}
+    </figure>
+  );
+}
+
+/** How much each removal call takes with it. */
+export function RemovalLevels() {
+  const levels = [
+    { call: "deleteLocus", takes: "One memory, and its links", width: "22%" },
+    {
+      call: "forgetContext",
+      takes: "A context, its links, and any memory it was the last thread holding",
+      width: "58%",
+    },
+    { call: "archive", takes: "A whole graph, reversibly. There is no hard delete", width: "100%" },
+  ];
+  return (
+    <figure className="not-prose my-6 overflow-hidden rounded-xl border border-line bg-surface">
+      <ol className="divide-y divide-line">
+        {levels.map((l) => (
+          <li key={l.call} className="px-5 py-3.5">
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-mono text-sm text-foreground">{l.call}</span>
+              <span className="text-right text-sm text-soft">{l.takes}</span>
+            </div>
+            <div className="mt-2 h-1 w-full rounded-full bg-ghost">
+              <div className="h-1 rounded-full bg-s1" style={{ width: l.width }} />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </figure>
+  );
+}

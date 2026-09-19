@@ -28,10 +28,7 @@ decision.
 Its `source` ladder is narrower than the one on a write: `policy`, `verified`, `tool` or `turn`,
 and nothing else. See [Send an observation](/locusgraph/review/observe).
 
-```
-   storeEvent   ──►  in the graph, immediately
-   observe      ──►  a finding, waiting on a person
-```
+<TwoDoors />
 
 ## Review the inbox
 
@@ -58,12 +55,12 @@ Approval is the moment it becomes real. Everything the team asks afterwards can 
 
 ## What a team graph looks like
 
-```
-  policy:deployments      what we will and will not do
-  convention:api_design   how we do things here
-  system:billing          how a part of the product works
-  incident:2026_03_outage what happened, and what it taught us
-```
+| Context | What it holds |
+| --- | --- |
+| `policy:deployments` | What we will and will not do |
+| `convention:api_design` | How we do things here |
+| `system:billing` | How a part of the product works |
+| `incident:2026_03_outage` | What happened, and what it taught us |
 
 Contexts named for the subject, not the person. `user:alice` belongs in Alice's graph; `convention:api_design` belongs to everyone.
 

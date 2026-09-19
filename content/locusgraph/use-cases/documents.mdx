@@ -14,10 +14,7 @@ The familiar pipeline splits a document into chunks, embeds each one, and return
 
 Ingesting into LocusGraph produces memories instead: statements the document makes, filed under contexts. The unit is the fact, not the fragment.
 
-```
-   chunking        document ──► 400-token slices ──► nearest slices
-   ingesting       document ──► statements       ──► the ones that answer
-```
+<ChunkVsStatement />
 
 ## Sending a document
 

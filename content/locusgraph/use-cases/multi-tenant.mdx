@@ -12,13 +12,7 @@ You are building for many customers, and none of them may ever see another's mem
 
 A graph is an isolated memory space. A search in one graph cannot return a memory from another, not ranked lower, not filtered out afterwards. It cannot reach it.
 
-```
-   graph: acme          graph: globex
-   ───────────          ─────────────
-   policy:deploys       policy:deploys        same context name,
-   user:alice           user:alice            different graphs,
-   project:billing      project:billing       no relationship
-```
+<GraphIsolation />
 
 Context names may repeat freely across graphs. They are addresses within a graph, not global identifiers.
 
@@ -52,11 +46,11 @@ Mint one scoped token per tenant and hand your request path nothing else. See [A
 
 One per customer is the common shape. One per user *within* a customer is also reasonable when memories are genuinely personal and never shared, but then team knowledge has nowhere to live, so most products end up with both:
 
-```
-   acme            the shared graph — conventions, policies, systems
-   acme:alice      one person's preferences and history
-   acme:bob
-```
+| Graph | Holds |
+| --- | --- |
+| `acme` | The shared graph: conventions, policies, systems |
+| `acme:alice` | One person's preferences and history |
+| `acme:bob` | |
 
 Your app decides which to read from. A question about how the team deploys goes to the shared graph; a question about what Alice prefers goes to hers.
 

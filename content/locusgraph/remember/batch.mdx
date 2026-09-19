@@ -8,13 +8,7 @@ export const meta = {
 
 Two calls, and the difference is not size. Both take up to 1000 items. The difference is what happens when one of them is wrong.
 
-```
-   storeEventsBatch    each item succeeds or fails on its own
-                       you get a result per item
-
-   transaction         all of them apply, or none do
-                       one bad operation returns 400 and writes nothing
-```
+<BatchVsTransaction />
 
 ## Batch
 

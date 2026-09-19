@@ -58,10 +58,10 @@ More candidates, better recall on questions about a known thing.
 `semanticWeight` decides which way a query leans: `0` is keyword-only, `1` is meaning-only. Omit it for the server default, which is a blend.
 
 ```typescript
-// an exact module name — keyword knows best
+// an exact module name: keyword knows best
 await client.retrieveMemories({ query: "billing_ui/settings.tsx", semanticWeight: 0 });
 
-// a question in prose — meaning knows best
+// a question in prose: meaning knows best
 await client.retrieveMemories({ query: "why did we move off DynamoDB?", semanticWeight: 1 });
 ```
 

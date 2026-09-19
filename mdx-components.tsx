@@ -4,15 +4,20 @@ import { isValidElement } from "react";
 import { Callout } from "@/components/docs/callout";
 import { CodeBlock } from "@/components/docs/code-block";
 import {
+  BatchVsTransaction,
+  ChunkVsStatement,
   ConceptTree,
   ContextGraph,
   ExperienceVsConclusion,
+  GraphIsolation,
   LinkTypes,
   MeaningMatch,
   MemoryFlow,
   QuickstartSteps,
+  RemovalLevels,
   SlugAnatomy,
   TrustLadder,
+  TwoDoors,
 } from "@/components/docs/diagrams";
 import { EarlyAccess } from "@/components/docs/early-access";
 
@@ -54,16 +59,21 @@ function Heading({ as: Tag, children }: { as: "h2" | "h3"; children?: React.Reac
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     Callout,
+    BatchVsTransaction,
+    ChunkVsStatement,
     ConceptTree,
     EarlyAccess,
     ContextGraph,
     ExperienceVsConclusion,
+    GraphIsolation,
     LinkTypes,
     MeaningMatch,
     MemoryFlow,
     QuickstartSteps,
+    RemovalLevels,
     SlugAnatomy,
     TrustLadder,
+    TwoDoors,
     h2: ({ children }) => <Heading as="h2">{children}</Heading>,
     h3: ({ children }) => <Heading as="h3">{children}</Heading>,
     /**
