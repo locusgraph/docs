@@ -4,7 +4,7 @@
   <g transform="translate(80 96)">
     <text x="0" y="0" font-family="Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="-2" fill="#fafafa">LocusGraph <tspan fill="#a1a1aa">docs</tspan></text>
     <text x="0" y="52" font-family="Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="400" fill="#a1a1aa">Everything we ship, written down.</text>
-    <text x="0" y="108" font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#71717a">two products  ·  113 pages  ·  one host</text>
+    <text x="0" y="108" font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#71717a">reference  ·  guides  ·  api surface</text>
   </g>
 
   <!-- Two stacks of pages, one per section, in that section's own accent.

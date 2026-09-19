@@ -11,9 +11,8 @@
 
 ---
 
-Documentation for every LocusGraph product, on one host. 113 pages across two
-sections. Marketing lives on `www.locusgraph.com`; a page here is documentation
-or it does not belong here.
+Documentation for every LocusGraph product, on one host. Marketing lives on
+`www.locusgraph.com`; a page here is documentation or it does not belong here.
 
 ## [LocusGraph](https://docs.locusgraph.com/locusgraph)
 
@@ -59,8 +58,8 @@ Ten packages, listed in the order each is built on the one above it.
 
 ## For agents
 
-[`/llms.txt`](https://docs.locusgraph.com/llms.txt) maps all 113 pages, each
-with its own description. Append `.md` to any documentation URL for that page as
+[`/llms.txt`](https://docs.locusgraph.com/llms.txt) maps every page, each with
+its own description. Append `.md` to any documentation URL for that page as
 markdown rather than a page of HTML, or take
 [`/llms-full.txt`](https://docs.locusgraph.com/llms-full.txt) for the whole
 corpus in one request.
