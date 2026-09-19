@@ -20,6 +20,16 @@ import {
   TwoDoors,
 } from "@/components/docs/diagrams";
 import { EarlyAccess } from "@/components/docs/early-access";
+import {
+  CliOverSdk,
+  GraphToRollout,
+  OneShapeBack,
+  ParkAndResume,
+  PromptSources,
+  ScoreNotAssert,
+  SevenShapes,
+  ToolShortlist,
+} from "@/components/docs/spendgraph-diagrams";
 
 /** The Spendgraph dashboard, for the few package links that point at it. */
 const SPENDGRAPH_APP = "https://spendgraph.locusgraph.com";
@@ -72,18 +82,26 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Callout,
     BatchVsTransaction,
     ChunkVsStatement,
+    CliOverSdk,
     ConceptTree,
     EarlyAccess,
     ContextGraph,
     ExperienceVsConclusion,
     GraphIsolation,
+    GraphToRollout,
+    OneShapeBack,
+    ParkAndResume,
+    PromptSources,
     LinkTypes,
     MeaningMatch,
     MemoryFlow,
     QuickstartSteps,
     RemovalLevels,
+    ScoreNotAssert,
+    SevenShapes,
     SlugAnatomy,
     TrustLadder,
+    ToolShortlist,
     TwoDoors,
     h2: ({ children }) => <Heading as="h2">{children}</Heading>,
     h3: ({ children }) => <Heading as="h3">{children}</Heading>,

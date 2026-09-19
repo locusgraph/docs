@@ -121,3 +121,31 @@ export function prose(mdx: string): string {
     .filter((_, i) => i % 2 === 0)
     .join("");
 }
+
+/**
+ * Every `.mdx` a package ships, as a path.
+ *
+ * These are not ours to edit, but they are ours to render, so anything they
+ * reference has to exist here.
+ */
+export function packagePages(): string[] {
+  const root = "node_modules/@spendgraph";
+  const out: string[] = [];
+  for (const pkg of readdirSync(root)) {
+    const dir = join(root, pkg, "docs");
+    try {
+      if (!statSync(dir).isDirectory()) continue;
+    } catch {
+      continue;
+    }
+    for (const name of readdirSync(dir)) {
+      if (name.endsWith(".mdx")) out.push(join(dir, name));
+    }
+  }
+  return out;
+}
+
+/** Components a page uses, by the JSX tags it opens. */
+export function componentsUsed(mdx: string): string[] {
+  return [...new Set([...mdx.matchAll(/<([A-Z][A-Za-z0-9]*)[\s/>]/g)].map((m) => m[1]))];
+}
