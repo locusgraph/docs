@@ -11,10 +11,18 @@
   // Keep the workers.dev hostname. Declaring `routes` alone turns it off, which
   // takes the site offline the moment a custom domain fails to attach.
   "workers_dev": true,
-  // doc.locusgraph.com is attached here once its existing DNS records are gone.
-  // Cloudflare refuses to create the record while another one holds the name:
-  //   Hostname 'doc.locusgraph.com' already has externally managed DNS records
-  // "routes": [{ "pattern": "doc.locusgraph.com", "custom_domain": true }],
+  // Attached here rather than in the dashboard so the hostname is versioned with
+  // the worker that serves it. Cloudflare provisions the certificate and the DNS
+  // record itself, which it will only do for a name nothing else holds.
+  //
+  // `doc.locusgraph.com` is not that name: a CNAME to Vercel still owns it, and
+  // Cloudflare refuses with `already has externally managed DNS records`.
+  "routes": [
+    {
+      "pattern": "docs.locusgraph.com",
+      "custom_domain": true
+    }
+  ],
   "observability": {
     "enabled": true
   }

@@ -1,7 +1,7 @@
 # LocusGraph Docs
 
 The documentation host for every LocusGraph product, served from one Next.js app
-at `doc.locusgraph.com`.
+at `docs.locusgraph.com`.
 
 Marketing pages and articles are not here — those live on `www.locusgraph.com`,
 and each product signs its users in on its own subdomain. A page on this host is

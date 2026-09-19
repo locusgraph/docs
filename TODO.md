@@ -5,6 +5,11 @@ The SEO items trace back to `handbook/SEO-SOURCE.md` and carry its Sl numbers.
 
 ## Crawlability — Sl 6
 
+The spec names `doc.locusgraph.com`. That hostname is still held by a CNAME to
+Vercel, which Cloudflare refuses to create a custom domain over, so this host
+serves `docs.locusgraph.com` instead. Redirecting `doc.` here is worth doing
+once the Vercel side is untangled.
+
 The docs host is meant to be indexed and to carry its own sitemap. Three of the
 four pieces do not exist yet.
 
@@ -20,7 +25,7 @@ four pieces do not exist yet.
       resolved against `metadataBase` in `app/layout.tsx`
 - [x] **Title template** — `{Page} | LocusGraph Docs`, Sl 11
 
-Submit `https://doc.locusgraph.com/sitemap.xml` in the existing Search Console
+Submit `https://docs.locusgraph.com/sitemap.xml` in the existing Search Console
 property once the sitemap ships. Do not submit anything for the app subdomains.
 
 ## Content

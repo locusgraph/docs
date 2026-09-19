@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 /**
  * The docs host, and the only host these pages canonicalise to.
  *
- * `doc.locusgraph.com` is a shared host: it serves every product's docs, and
+ * `docs.locusgraph.com` is a shared host: it serves every product's docs, and
  * nothing else public lives on it. Marketing pages and articles are on
  * `www.locusgraph.com`; each product's app is on its own noindex subdomain.
  * Pointing a canonical at either would hand Google a URL it is being told not
  * to index.
  */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://doc.locusgraph.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docs.locusgraph.com";
 
 /**
  * Canonical, Open Graph and Twitter tags for one docs page.

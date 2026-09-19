@@ -1,7 +1,7 @@
 # Working in this repo
 
 The documentation host for every LocusGraph product. One Next.js app, served at
-`doc.locusgraph.com`. Read `README.md` first for the URL shape and the layout.
+`docs.locusgraph.com`. Read `README.md` first for the URL shape and the layout.
 
 ## Commands
 
@@ -94,7 +94,7 @@ Loaders stop at the `node_modules` edge, so without the list every package page
 fails with `Unknown module type` on a `.mdx` file. A new package needs adding
 there as well as to the manifest.
 
-**Canonical host.** `SITE_URL` in `lib/site/seo.ts` is `https://doc.locusgraph.com`,
+**Canonical host.** `SITE_URL` in `lib/site/seo.ts` is `https://docs.locusgraph.com`,
 and `metadataBase` in `app/layout.tsx` resolves every relative canonical against
 it. Pointing it at a product subdomain would canonicalise these pages onto a
 host that is deliberately `noindex`.
