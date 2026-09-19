@@ -14,6 +14,8 @@ Underneath, it made nineteen model calls. Four were retries after a model replie
 
 At the end you have an answer and a number. The number is wrong, and nothing in the stack can tell you by how much.
 
+<TheGap />
+
 ## Why the usual stack cannot close it
 
 Not because anyone did anything wrong. Because of where the seams fall.
@@ -30,19 +32,7 @@ Not because anyone did anything wrong. Because of where the seams fall.
 
 Put the price in the return value and the rest follows. Every layer keeps its own receipt, and the receipts add up.
 
-```
-  stage
-   ├─ pull the wording        ──►  prompt   rollout · model · price
-   ├─ send it with a schema   ──►  llms     reply · usage · latency
-   ├─ wrong shape? ask again  ──►  a second rollout, priced
-   └─ hand back ─────────────────► { data, usage, pricing }
-                                          │
-   graph                                  │
-   ┌──────────────────────────────────────┘
-   │  walks nodes · branches on fields stage guaranteed exist
-   │  stops to ask a person · resumes at the node that asked
-   └──────►  a rollout: every step, every price
-```
+<ReceiptsStack />
 
 The retry sits *outside* the thing that records the rollout. That is the whole design in one decision: a reply that came back as prose is a priced row somebody can see, not a number that quietly went up.
 

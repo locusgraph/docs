@@ -30,6 +30,11 @@ import {
   SevenShapes,
   ToolShortlist,
 } from "@/components/docs/spendgraph-diagrams";
+import {
+  ReceiptsStack,
+  TheGap,
+  TwoCredentials,
+} from "@/components/docs/spendgraph-section-diagrams";
 
 /** The Spendgraph dashboard, for the few package links that point at it. */
 const SPENDGRAPH_APP = "https://spendgraph.locusgraph.com";
@@ -96,12 +101,15 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     MeaningMatch,
     MemoryFlow,
     QuickstartSteps,
+    ReceiptsStack,
     RemovalLevels,
     ScoreNotAssert,
     SevenShapes,
     SlugAnatomy,
+    TheGap,
     TrustLadder,
     ToolShortlist,
+    TwoCredentials,
     TwoDoors,
     h2: ({ children }) => <Heading as="h2">{children}</Heading>,
     h3: ({ children }) => <Heading as="h3">{children}</Heading>,

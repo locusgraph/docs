@@ -40,13 +40,7 @@ The workflow patterns an LLM app keeps rediscovering: **refine**, **route**, **c
 
 ## The two credentials
 
-```
-  sg_… API key      ──▶  usage · stats · events · prompts · tools
-                         read and write, in the one pinned project
-
-  session / sgc_…   ──▶  keys · projects · pricing · credentials
-                         gated on a signed-in user, server-side
-```
+<TwoCredentials />
 
 An `sg_` key names no project of its own: the pin is the whole of its authority, and `projectId` is optional on every write it makes. Omitting it asks for the pin.
 

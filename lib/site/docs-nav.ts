@@ -1035,9 +1035,21 @@ export function treesFor(product: string): DocsTree[] {
 const baseOf = (tree: DocsTree): string => tree.href.split("/").slice(0, 3).join("/");
 
 export function treeFor(pathname: string): DocsTree | undefined {
-  return treesFor(productOf(pathname)).find(
-    (tree) => pathname === baseOf(tree) || pathname.startsWith(`${baseOf(tree)}/`)
-  );
+  const trees = treesFor(productOf(pathname));
+
+  /**
+   * A tree that lists the page owns it, whatever the path looks like.
+   *
+   * `baseOf` reads the first three segments, which is right for a tree under
+   * its own folder, `/spendgraph/evals/...`, and wrong for one whose pages sit
+   * directly under the product. There the base came out as the first page's
+   * own path, `/spendgraph/overview`, so its siblings matched no tree at all:
+   * the header fell back to "Docs" and the footer lost its prev and next.
+   */
+  const listed = trees.find((tree) => pagesOf(tree).some((item) => item.href === pathname));
+  if (listed) return listed;
+
+  return trees.find((tree) => pathname === baseOf(tree) || pathname.startsWith(`${baseOf(tree)}/`));
 }
 
 /**
