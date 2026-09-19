@@ -59,11 +59,15 @@ winner and bounce everyone else. The root is an indexable index instead.
       `content/spendgraph/` is down to the three pages that belong to no
       package: overview, getting-started, concepts
 - [x] **`workflows` and `examples` need no section.** Both are `private: true`,
-      so they are not installable and not meant to be documented publicly
-- [ ] **`@spendgraph/workflows` 0.6.0 is public on npm.** Published 2026-08-29,
-      before the package was made private. 31 downloads last week. Past npm's
-      72-hour unpublish window, so `npm deprecate` is the likely route.
-      Needs `npm login` as `effortlesslabs`
+      so neither publishes anything new and neither is meant to be documented
+      here. `workflows` 0.2.0 to 0.6.0 are still on npm from before that flag,
+      and stay there
+- [x] **`@spendgraph/workflows` 0.6.0 stays up, undeprecated.** Decided
+      2026-09-19: the package may be worth shipping again, and a deprecation
+      notice on every install is the wrong signal for something that is only
+      paused. Versions 0.2.0 to 0.6.0 remain public and installable; the package
+      is `private: true` in the repo, so nothing new publishes until that
+      changes. Revisit only if it is abandoned for good
 
 ## Build and tooling
 
