@@ -79,4 +79,7 @@ winner and bounce everyone else. The root is an indexable index instead.
       effect's re-run key, not a value it reads, and taking the suggested fix
       would leave the outline showing the previous page's headings. Suppressed
       with the reason on the line
-- [ ] **Section roots are thin.** `/{product}` lists its groups and nothing else
+- [x] **Section roots rebuilt.** The section's own pages first, then one card
+      per group with its blurb and page count, and a line saying how much is
+      there. The old page flattened every tree's sections, so Spendgraph showed
+      "Start here" twice and rendered all 73 pages as one wall
