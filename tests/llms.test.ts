@@ -143,3 +143,39 @@ describe("the .md pages", () => {
     }
   });
 });
+
+/**
+ * An agent arriving at the site, rather than at `/llms.txt`, has to be told the
+ * file exists.
+ *
+ * Two places, because they are read by different things. `alternates.types` in
+ * `pageMeta` puts a `<link rel="alternate">` in the head, which is the shape a
+ * standards-following client looks for. The footer says it again in the body,
+ * because a crawler that reads rendered text never opens `head`.
+ *
+ * The footer copy is `sr-only`, not `hidden`: it is a real link to a real file,
+ * so a screen reader announcing it is correct, and `display: none` would take
+ * it out of the accessibility tree and read as something being concealed.
+ */
+describe("the pointer for agents", () => {
+  it("is in the page metadata, where a canonical cannot drop it", () => {
+    const seo = readFileSync("lib/site/seo.ts", "utf8");
+    expect(seo).toContain('"text/plain"');
+    expect(seo).toContain("/llms.txt");
+    // `alternates` from a page replaces the layout's whole object rather than
+    // merging, so this has to sit beside the canonical or it never renders.
+    const block = seo.slice(seo.indexOf("alternates: {"), seo.indexOf("openGraph:"));
+    expect(block).toContain("canonical");
+    expect(block).toContain("types");
+  });
+
+  it("is in the body, and invisible", () => {
+    const chrome = readFileSync("components/site/site-chrome.tsx", "utf8");
+    const footer = chrome.slice(chrome.indexOf("export function SiteFooter"));
+    expect(footer).toContain('href="/llms.txt"');
+    expect(footer).toContain("sr-only");
+    // The attribute, not the word: the comment above it explains why `hidden`
+    // is the wrong tool here, and matching on the substring caught that.
+    expect(footer).not.toMatch(/<[a-z]+[^>]*\shidden(\s|>|=)/);
+  });
+});

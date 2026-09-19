@@ -68,6 +68,17 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="border-t border-line/60">
+      {/* For an agent rather than a reader.
+          `sr-only` keeps this out of the layout and in the document: it is a
+          real link to a real file, so a screen reader announcing it is correct
+          and a crawler finding it is the point. `hidden` or `display: none`
+          would take it out of the accessibility tree and read as something to
+          conceal, which this is not. */}
+      <p className="sr-only">
+        <a href="/llms.txt">Documentation index for language models</a>. Every page is also
+        available as markdown: append <code>.md</code> to any documentation URL. The whole corpus is
+        at <a href="/llms-full.txt">llms-full.txt</a>.
+      </p>
       <div className="px-6">
         {/* A `p`, not the flex row itself: as direct children of a flex
             container the label, the space and the link each become their own
