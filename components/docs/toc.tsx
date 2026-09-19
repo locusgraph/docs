@@ -22,6 +22,10 @@ export function Toc() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [active, setActive] = useState("");
 
+  // `pathname` is the re-run key, not a value the effect reads. Dropping it,
+  // which is what the rule suggests, leaves the outline showing the previous
+  // page's headings after a client-side navigation.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-run key
   useEffect(() => {
     const scroller = document.querySelector<HTMLElement>("[data-docs-scroll]");
     const article = document.querySelector("article");

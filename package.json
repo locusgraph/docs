@@ -54,13 +54,13 @@
     "start": "next start --port 3100",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare populateCache local && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare populateCache local && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv types/worker-configuration.d.ts",
     "search:index": "node scripts/build-search-index.mjs",
     "prebuild": "node scripts/build-search-index.mjs",
     "predev": "node scripts/build-search-index.mjs",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy:cf": "opennextjs-cloudflare build && opennextjs-cloudflare populateCache local && opennextjs-cloudflare deploy",
+    "preview:cf": "opennextjs-cloudflare build && opennextjs-cloudflare populateCache local && opennextjs-cloudflare preview"
   }
 }

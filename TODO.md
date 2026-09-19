@@ -67,14 +67,16 @@ winner and bounce everyone else. The root is an indexable index instead.
       from `pnpm-workspace.yaml` and still refuses; `pnpm rebuild sharp` refuses
       too. It wants `pnpm approve-builds`, which is interactive. Only affects
       Next image optimisation
-- [ ] **`pnpm deploy` collides with pnpm's own command.** It fails with
-      `ERR_PNPM_INVALID_DEPLOY_TARGET` and needs `pnpm run deploy`. Renaming the
+- [ ] **`pnpm run deploy:cf` collides with pnpm's own command.** It fails with
+      `ERR_PNPM_INVALID_DEPLOY_TARGET` and needs `pnpm run deploy:cf`. Renaming the
       script to `deploy:cf` removes the trap before CI finds it
 - [ ] **`app/apple-icon.png`**: 180x180, for iOS home-screen bookmarks.
       `app/icon.svg` covers every other surface
 
 ## Known rough edges
 
-- [ ] **`components/docs/toc.tsx:68`**: `useExhaustiveDependencies` warning,
-      inherited with the component. Biome marks the fix unsafe
+- [x] **`toc.tsx` warning resolved.** The rule was wrong: `pathname` is the
+      effect's re-run key, not a value it reads, and taking the suggested fix
+      would leave the outline showing the previous page's headings. Suppressed
+      with the reason on the line
 - [ ] **Section roots are thin.** `/{product}` lists its groups and nothing else
