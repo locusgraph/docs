@@ -1019,6 +1019,44 @@ const VIGIL: DocsTree = {
  * that every href has a manifest entry: that check exists to catch a page the
  * manifest forgot, and these were never its to remember.
  */
+const LG_MCP: DocsTree = {
+  title: "MCP",
+  href: "/locusgraph/mcp/overview",
+  blurb: "Give an agent a memory it keeps between sessions.",
+  sections: [
+    {
+      title: "Model Context Protocol",
+      items: [
+        {
+          title: "Overview",
+          href: "/locusgraph/mcp/overview",
+          blurb: "One endpoint, six tools, and what the server tells the model",
+        },
+        {
+          title: "Connecting a client",
+          href: "/locusgraph/mcp/connecting",
+          blurb: "Claude, Cursor, VS Code and Codex, each with its own format",
+        },
+        {
+          title: "Authentication",
+          href: "/locusgraph/mcp/authentication",
+          blurb: "OAuth, and the clients that will not register themselves",
+        },
+        {
+          title: "The six tools",
+          href: "/locusgraph/mcp/tools",
+          blurb: "Every argument, and when an agent should reach for each",
+        },
+        {
+          title: "Resources and prompts",
+          href: "/locusgraph/mcp/resources",
+          blurb: "What resources/list and prompts/list advertise",
+        },
+      ],
+    },
+  ],
+};
+
 const LG_API: DocsTree = {
   title: "API",
   href: "/locusgraph/api/search-memories",
@@ -1075,6 +1113,7 @@ export const NAV: Record<Product, DocsTree[]> = {
     LG_RECALL,
     LG_CONTEXTS,
     LG_REVIEW,
+    LG_MCP,
     LG_GRAPHS,
     LG_API,
     LG_ENTERPRISE,

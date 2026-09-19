@@ -1,0 +1,99 @@
+export const meta = {
+  title: "The six tools | LocusGraph docs",
+  description:
+    "What an agent can do over MCP: store, observe, retrieve, deep recall, list contexts and delete, with every argument and the scope each one needs.",
+};
+
+# The six tools
+
+Six, not thirty-seven. A tool a model rarely picks correctly costs tokens on every turn and earns nothing, so the catalogue is the handful an agent reaches for and the rest stays on the [HTTP API](/locusgraph/api/search-memories).
+
+| Tool | Needs | For |
+| --- | --- | --- |
+| `retrieve_memories` | read | Answering from what is already known |
+| `deep_recall` | read | A question no single memory answers |
+| `list_contexts` | read | Finding the id to file something under |
+| `store_event` | read and write | Writing down something durable |
+| `observe` | read and write | Proposing a memory for a person to approve |
+| `delete_memory` | read and write | Forgetting one thing, when asked |
+
+## `retrieve_memories`
+
+Search by meaning. The one an agent should call before answering anything about the user, the project or past work.
+
+| Argument | |
+| --- | --- |
+| `query` | **Required.** The question, in natural language |
+| `limit` | Maximum results. Defaults to 5, and anything above 100 is clamped |
+| `context_ids` | Narrows: results restricted to these contexts |
+| `boost_context_ids` | Widens: also pulls in memories linked to these |
+| `coverage_context_ids` | Widens, and reserves a share of the window for them |
+| `coverage_group_prefix` | How coverage spreads its picks, a context-id prefix of yours |
+| `context_types` | Filter by type. Keys are type names, values arrays of names |
+| `sources` | Filter by trust tier, for example `["verified", "tool"]` |
+| `format` | `markdown` (default), `toon` or `json` |
+
+## `deep_recall`
+
+Walks the graph rather than matching once, then answers in prose with the evidence behind it.
+
+| Argument | |
+| --- | --- |
+| `question` | **Required.** One focused question, not the whole user message |
+| `context_ids` | Contexts you already believe are relevant |
+
+## `list_contexts`
+
+What ids the graph already holds, so a new memory lands on an existing node rather than a near-duplicate one letter apart.
+
+| Argument | |
+| --- | --- |
+| `context_type` | Filter to one type, for example `fact` or `constraint` |
+| `context_name` | Filter to one name. With `context_type`, an exact match |
+| `limit` | Maximum results. Defaults to 100 |
+| `page` | Which page. Defaults to 0 |
+
+## `store_event`
+
+Write something down. The argument that matters is `context_id`: reuse the same one for the same thing and repeated mentions accrete on one node, where they can be reinforced or corrected later.
+
+| Argument | |
+| --- | --- |
+| `event_kind` | **Required.** `fact`, `knowledge`, `action`, `decision`, `observation` or `feedback` |
+| `context_id` | The stable address, in `type:name` form, for example `preference:dark_mode` |
+| `source` | Provenance, which sets how far it is trusted |
+| `payload` | The memory. A concise statement in `payload.data` is what search matches on |
+| `related_to` | Associated contexts |
+| `extends` | Contexts this adds detail to |
+| `reinforces` | Contexts this supports with new evidence |
+| `contradicts` | Contexts this conflicts with |
+| `timestamp` | Unix timestamp, as a string |
+
+<Callout tone="trap" title="An id invented per mention is a graph of near-duplicates">
+  `preference:dark_mode` and `preference:darkMode` are two drawers, each half full, and nothing downstream says the same idea landed twice. Call `list_contexts` first, or keep the naming deterministic.
+</Callout>
+
+## `observe`
+
+Propose rather than write. What comes back is an id, not a memory: the engine distils a statement and a person approves it before anything is stored.
+
+| Argument | |
+| --- | --- |
+| `source` | **Required.** `policy`, `verified`, `tool` or `turn` |
+| `payload` | **Required.** The raw observation, string or object, stored verbatim |
+| `stream` | A name keeping concurrent workflows apart |
+| `at` | When the observed thing happened, in unix seconds |
+
+Its `source` list is narrower than `store_event`'s on purpose. `derived` is refused outright: the engine does not re-observe its own output.
+
+## `delete_memory`
+
+One memory, by id. The narrowest of the removal calls, and the only one on the catalogue.
+
+| Argument | |
+| --- | --- |
+| `locus_id` | **Required.** The exact memory, for example `L9f3a1c42e7b85d10` |
+
+## Next
+
+[Resources and prompts](/locusgraph/mcp/resources): what else the server advertises.

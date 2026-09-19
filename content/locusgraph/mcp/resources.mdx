@@ -1,0 +1,58 @@
+export const meta = {
+  title: "Resources and prompts | LocusGraph docs",
+  description:
+    "What resources/list and prompts/list advertise: one resource for discovering context ids, and one prompt that tells a model to capture what it learns as it goes.",
+};
+
+# Resources and prompts
+
+Tools are what an agent calls. Resources are what it reads, and prompts are instructions a client can hand the model on purpose rather than hoping it behaves.
+
+## The resource
+
+```
+locusgraph://contexts
+```
+
+The context types a graph holds, with their names, as `application/json`. It exists so an agent filtering a search has somewhere to get real ids from instead of inventing one that matches nothing.
+
+Reach it with `resources/read`. `resources/list` advertises it.
+
+<Callout tone="note" title="It answers the same question `list_contexts` does">
+  Both exist because clients differ: some surface resources to the model as attachable context, others only ever call tools. Whichever your client does, the ids come back.
+</Callout>
+
+## The prompt
+
+```
+auto_capture
+```
+
+Tells the model to store new knowledge as it goes, using `store_event`, rather than waiting to be asked. One optional argument:
+
+| Argument | |
+| --- | --- |
+| `focus` | An area to narrow to, for example `auth` or `database`. Omit to capture everything |
+
+Fetched with `prompts/get`. Without a focus the model is told to capture everything it learns, which is a great deal on a long session: name an area when you have one.
+
+## The methods
+
+Seven, over one endpoint.
+
+| | |
+| --- | --- |
+| `initialize` | The handshake. Returns what this server supports, and the instructions |
+| `tools/list` | The six tools, with their schemas |
+| `tools/call` | Run one |
+| `resources/list` | What can be read |
+| `resources/read` | Read it |
+| `prompts/list` | What can be fetched |
+| `prompts/get` | Fetch one |
+
+All of it is JSON-RPC 2.0 over `POST /mcp`. A request whose `jsonrpc` is not `"2.0"` is refused with what it expected and what it got, which is usually a client sending a bare body rather than an envelope.
+
+## Where to go next
+
+- [The HTTP API](/locusgraph/api/search-memories): the thirty-one endpoints not on the catalogue
+- [Review](/locusgraph/review/observe): what happens to an `observe` after the agent sends it

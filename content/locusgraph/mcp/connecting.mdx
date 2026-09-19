@@ -1,0 +1,85 @@
+export const meta = {
+  title: "Connecting a client | LocusGraph docs",
+  description:
+    "Config for Claude, Cursor, VS Code and Codex. One URL, and four formats that differ more than they look: the key name, the top-level object and the type field are not the same in any two.",
+};
+
+import { Client } from "@/components/docs/client-marks";
+
+# Connecting a client
+
+One endpoint, four config formats. They differ more than they look, so copying one into another does not work: the top-level key, the `type` field and the file all change.
+
+```
+https://api.locusgraph.com/mcp
+```
+
+<Client mark="claude" name="Claude Code" where="claude mcp add" />
+
+```bash
+claude mcp add --transport http locusgraph https://api.locusgraph.com/mcp
+```
+
+`--transport http` is not optional. Without it the argument is read as a command to run, and the server is registered as a local process that does not exist.
+
+<Client mark="claude" name="Claude.ai and Claude Desktop" where="Customize → Connectors" />
+
+Go to **Customize → Connectors**, click **+**, then **Add custom connector**, and paste the URL. On Team and Enterprise an owner adds it once under **Organization settings → Connectors** and everyone else finds it under Customize.
+
+Custom connectors are available on Free, Pro, Max, Team and Enterprise. Free is limited to one.
+
+<Client mark="cursor" name="Cursor" where="~/.cursor/mcp.json" />
+
+```json
+{
+  "mcpServers": {
+    "locusgraph": {
+      "url": "https://api.locusgraph.com/mcp"
+    }
+  }
+}
+```
+
+`.cursor/mcp.json` in a project instead, when the memory belongs to that project rather than to you. There is no `type` field: Cursor reads the transport off the endpoint.
+
+<Client mark="vscode" name="VS Code" where=".vscode/mcp.json" />
+
+```json
+{
+  "servers": {
+    "locusgraph": {
+      "type": "http",
+      "url": "https://api.locusgraph.com/mcp"
+    }
+  }
+}
+```
+
+<Callout tone="trap" title="VS Code is the one that looks like Cursor and is not">
+  The top-level key is `servers`, not `mcpServers`, and `"type": "http"` is required rather than inferred. A Cursor block pasted here loads as nothing, with no error to say why.
+</Callout>
+
+<Client mark="codex" name="Codex" where="~/.codex/config.toml" />
+
+```toml
+[mcp_servers.locusgraph]
+url = "https://api.locusgraph.com/mcp"
+```
+
+Or from the terminal, which writes the same block:
+
+```bash
+codex mcp add locusgraph --url https://api.locusgraph.com/mcp
+```
+
+`auth` defaults to `oauth`, so a stored credential is used when there is one.
+
+## What happens on first use
+
+The client sends you to a browser to sign in, you approve it, and the token it gets back is stored by the client. No key is pasted into any of the files above.
+
+A client that cannot do that needs a key set by hand instead, which [Authentication](/locusgraph/mcp/authentication) covers.
+
+## Next
+
+[Authentication](/locusgraph/mcp/authentication): what a key reaches, and the clients that will not register themselves.

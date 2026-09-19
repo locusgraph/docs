@@ -1,0 +1,42 @@
+export const meta = {
+  title: "MCP | LocusGraph docs",
+  description:
+    "Give an agent a memory it keeps between sessions: one endpoint, six tools, and the instructions the server ships telling a model when to reach for each one.",
+};
+
+# MCP
+
+An agent forgets everything when the conversation ends. Connecting it to LocusGraph over MCP gives it somewhere to put what it learned, and somewhere to look before it answers.
+
+One endpoint:
+
+```
+https://api.locusgraph.com/mcp
+```
+
+That is the whole setup. The server speaks JSON-RPC over streamable HTTP, and a client that supports remote MCP needs nothing else from you but a sign-in.
+
+## What the agent gets
+
+| | |
+| --- | --- |
+| Six tools | Storing, searching, walking and forgetting, described at the model rather than at you |
+| One resource | `locusgraph://contexts`, so the agent can discover context ids rather than guess them |
+| One prompt | `auto_capture`, which tells the model to store what it learns as it goes |
+
+## The server tells the model when to use them
+
+Most of the work is not the tools. It is the instructions the server hands a client on connect, which are what stop an agent either ignoring its memory or writing to it constantly.
+
+They say, in short: call `retrieve_memories` before answering questions about the user, the project or past work, rather than trusting the current conversation. Call `store_event` when you learn something durable, with a stable `context_id` in `type:name` form so repeated mentions of the same thing land on one node. Use `deep_recall` when the answer spans several memories, and `delete_memory` only when asked to forget.
+
+<Callout tone="note" title="The tools are a curated subset, not the whole API">
+  The [HTTP API](/locusgraph/api/search-memories) has thirty-seven endpoints. Six of them are here, because a tool a model rarely picks correctly is a tool that costs tokens on every turn and earns nothing. Everything else stays reachable over HTTP.
+</Callout>
+
+## Where to go next
+
+- [Connecting a client](/locusgraph/mcp/connecting): config for Claude, Cursor, VS Code and Codex
+- [Authentication](/locusgraph/mcp/authentication): what a key reaches, and what to do when a client will not register itself
+- [The six tools](/locusgraph/mcp/tools): arguments, and when an agent should reach for each
+- [Resources and prompts](/locusgraph/mcp/resources): what `resources/list` and `prompts/list` advertise

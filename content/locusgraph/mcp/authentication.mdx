@@ -1,0 +1,84 @@
+export const meta = {
+  title: "MCP authentication | LocusGraph docs",
+  description:
+    "The server is a full OAuth provider, so most clients sign in and register themselves. What to do about the ones that do not, and why tools/list can succeed where tools/call fails.",
+};
+
+import { Client } from "@/components/docs/client-marks";
+
+# Authentication
+
+The server is an OAuth 2.0 provider, not a URL that takes a key in a header. A client discovers what it needs and signs you in.
+
+```
+/.well-known/oauth-authorization-server
+/.well-known/oauth-protected-resource
+/.well-known/openid-configuration
+```
+
+A client that reads those needs nothing from you but a browser. It registers itself at `/oauth/register`, sends you to `/oauth/authorize`, and keeps the token it gets back.
+
+## When a client will not register itself
+
+Dynamic registration is offered. Not every client uses it, and the ones that do not want a client id and secret you supply.
+
+<Client mark="claude" name="Claude.ai and Claude Desktop" where="Advanced settings" />
+
+The connector dialog has an **Advanced settings** section taking an OAuth Client ID and Client Secret. Fill it only if connecting without them fails.
+
+<Client mark="claude" name="Claude Code" where="--client-id" />
+
+```bash
+claude mcp add --transport http locusgraph https://api.locusgraph.com/mcp \
+  --client-id <id> --client-secret
+```
+
+`--client-secret` prompts rather than taking the value, so it stays out of your shell history. `MCP_CLIENT_SECRET` works too. `--callback-port` pins the local redirect port, for a client registered against a fixed redirect URI.
+
+<Client mark="cursor" name="Cursor" where="auth" />
+
+```json
+{
+  "mcpServers": {
+    "locusgraph": {
+      "url": "https://api.locusgraph.com/mcp",
+      "auth": {
+        "CLIENT_ID": "<id>"
+      }
+    }
+  }
+}
+```
+
+`CLIENT_ID` is required in that object, `CLIENT_SECRET` and `scopes` are not.
+
+<Client mark="codex" name="Codex" where="bearer_token_env_var" />
+
+```toml
+[mcp_servers.locusgraph]
+url = "https://api.locusgraph.com/mcp"
+bearer_token_env_var = "LOCUSGRAPH_API_KEY"
+```
+
+The one place a plain API key fits: Codex reads it from the environment rather than the file, so the key is not in your dotfiles.
+
+<Callout tone="warn" title="A key in a config file is a key in your dotfiles">
+  Every format above except Codex's takes a client id rather than a key. Where a header is the only way in, put the key in an environment variable and reference it. A config file is committed far more often than anyone intends.
+</Callout>
+
+## What a token reaches
+
+Whatever the key behind it reaches, and no more. Read permission gates every graph-scoped method, so a read-only credential lists all six tools and fails on the two that write.
+
+| | |
+| --- | --- |
+| `memory.read` | `retrieve_memories`, `deep_recall`, `list_contexts` |
+| `memory.read` and `memory.write` | `store_event`, `observe`, `delete_memory` |
+
+<Callout tone="trap" title="`tools/list` succeeding says nothing about `tools/call`">
+  The catalogue is the same for everyone: a read-only credential is still shown `store_event`, because what a server advertises is fixed and what a caller may run is not. The refusal arrives when the agent tries, which reads to a model as the tool being broken rather than as the key being narrow.
+</Callout>
+
+## Next
+
+[The six tools](/locusgraph/mcp/tools): arguments, and when an agent should reach for each.

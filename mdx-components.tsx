@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import Link from "next/link";
 import { isValidElement } from "react";
 import { Callout } from "@/components/docs/callout";
+import { Client } from "@/components/docs/client-marks";
 import { CodeBlock } from "@/components/docs/code-block";
 import {
   BatchVsTransaction,
@@ -80,6 +81,7 @@ function Heading({ as: Tag, children }: { as: "h2" | "h3"; children?: React.Reac
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     Callout,
+    Client,
     BatchVsTransaction,
     ChunkVsStatement,
     ConceptTree,
