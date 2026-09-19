@@ -263,3 +263,34 @@ describe("what Copy page fetches", () => {
     }
   });
 });
+
+/**
+ * The landing page's prompt names files that have to exist.
+ *
+ * It is copied into somebody else's agent, which will fetch what it is given
+ * and has no way to tell a moved page from a broken one. A prompt pointing at
+ * a 404 is worse than no prompt: the agent reports that the docs are missing.
+ */
+describe("the agent prompt", () => {
+  const source = readFileSync("components/site/agent-prompt.tsx", "utf8");
+  const prompt = source.slice(
+    source.indexOf("const PROMPT = `"),
+    source.indexOf("`;\n\ntype State")
+  );
+
+  it("names something to fetch", () => {
+    expect(prompt).toContain("/llms.txt");
+    expect(prompt.match(/https:\/\/docs\.locusgraph\.com\S+/g)?.length ?? 0).toBeGreaterThan(3);
+  });
+
+  it("points at files that exist", () => {
+    for (const url of prompt.match(/https:\/\/docs\.locusgraph\.com(\/\S*?)(?=[\s,)]|$)/g) ?? []) {
+      const path = url.replace("https://docs.locusgraph.com", "");
+      if (path === "/llms.txt" || path === "/llms-full.txt") {
+        expect(existsSync(`public${path}`), `${path} is named and not generated`).toBe(true);
+        continue;
+      }
+      expect(existsSync(`public${path}`), `${path} is named and does not exist`).toBe(true);
+    }
+  });
+});

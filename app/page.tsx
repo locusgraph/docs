@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AgentPrompt } from "@/components/site/agent-prompt";
 import { ProductMark } from "@/components/site/product-mark";
 import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
 import { Tape } from "@/components/site/tape";
@@ -43,6 +44,9 @@ export default function DocsHome() {
           <p className="mx-auto mt-5 max-w-[46ch] text-pretty text-lg text-soft">
             Written beside the code, and published with it.
           </p>
+          <div className="mt-7 flex justify-center">
+            <AgentPrompt />
+          </div>
         </div>
 
         <Tape />
