@@ -10,6 +10,10 @@ public/search-index.json
 public/llms.txt
 public/llms-full.txt
 
+# A .md beside every page, generated from the manifest in `prebuild`.
+public/locusgraph/
+public/spendgraph/
+
 # Skills are local to each clone, not part of the repo.
 .agents/
 skills-lock.json

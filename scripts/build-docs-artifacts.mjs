@@ -15,7 +15,7 @@
  * One traversal for all three, because each page is read from disk and a
  * package page resolves through `node_modules`.
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -50,6 +50,40 @@ function resolve(specifier) {
   return specifier.startsWith("@/")
     ? join(root, specifier.slice(2))
     : join(root, "node_modules", specifier);
+}
+
+/**
+ * The page as markdown a model can read, keeping what `readable()` throws away.
+ *
+ * `readable()` exists to feed a search index, so it flattens everything to one
+ * line and drops code. This keeps the headings, the tables, the links and the
+ * fences, because an agent that followed a link here wants the call signature
+ * as much as the explanation. What goes is only what markdown has no meaning
+ * for: the `meta` export, the figure imports, and the component tags.
+ *
+ * A `Callout` becomes a blockquote with its title in bold, since that is what
+ * it renders as and a model reading `<Callout tone="trap">` learns nothing.
+ */
+function markdownOf(mdx) {
+  return `${mdx
+    .replace(/^export const meta = \{[\s\S]*?\n\};\n/, "")
+    .replace(/^import .*?;\n/gm, "")
+    .replace(/^<[A-Z][A-Za-z0-9]*\s*\/>\n/gm, "")
+    .replace(
+      /<Callout[^>]*title="((?:[^"\\]|\\.)*)"[^>]*>([\s\S]*?)<\/Callout>/g,
+      (_all, title, inner) =>
+        [
+          `> **${title}**`,
+          ">",
+          ...inner
+            .trim()
+            .split("\n")
+            .map((line) => `> ${line.trim()}`),
+        ].join("\n")
+    )
+    .replace(/<\/?[A-Za-z][^>]*>/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()}\n`;
 }
 
 /** What a reader would actually read, with the machinery taken out. */
@@ -94,13 +128,38 @@ for (const { product, slug, specifier } of entries()) {
     description: meta?.[2] ?? "",
     headings: headings.slice(1).join(" "),
     body: readable(raw).slice(0, 4000),
+    markdown: markdownOf(raw),
   });
 }
 
 mkdirSync(join(root, "public"), { recursive: true });
 
 const searchIndex = join(root, "public/search-index.json");
-writeFileSync(searchIndex, JSON.stringify(docs));
+writeFileSync(
+  searchIndex,
+  // `markdown` is for the .md files below. The palette downloads this index,
+  // so shipping the whole corpus inside it would be a quarter of a megabyte a
+  // reader pays for and never uses.
+  JSON.stringify(docs.map(({ markdown, ...rest }) => rest))
+);
+
+/**
+ * A `.md` beside every page, which is what llmstxt.org asks for.
+ *
+ * An agent following a link from the map used to get 167KB of HTML — nav,
+ * sidebar, search palette, theme script — to read five hundred words. These sit
+ * at the page's own path with `.md` appended, so `/locusgraph/concepts.md` is
+ * the markdown of `/locusgraph/concepts`, and Cloudflare serves them as static
+ * assets with no route to resolve.
+ */
+for (const { slug: product } of ready) {
+  rmSync(join(root, "public", product), { recursive: true, force: true });
+}
+for (const page of docs) {
+  const file = join(root, "public", `${page.id.slice(1)}.md`);
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, page.markdown);
+}
 
 /**
  * The site's own blurb, from `products.ts`, so the description an agent reads
@@ -162,48 +221,86 @@ function groupsOf(product) {
  * One line per page with its own description, in the order the sidebar shows
  * them, so an agent sees the whole surface and fetches only what it needs.
  */
+/**
+ * Groups whose pages an agent can skip when context is short. They go under
+ * `## Optional`, which is what llmstxt.org reserves that heading for.
+ */
+const OPTIONAL = new Set(["Enterprise"]);
+
 const map = [
   "# LocusGraph Docs",
   "",
-  "> Documentation for every LocusGraph product. Each link below is a page on this host; append nothing, the URLs are complete.",
+  "> Documentation for every LocusGraph product. Each link below is a page on this host, and appending `.md` to any of them returns that page as markdown.",
   "",
-  "Every page is also served as Markdown-ish prose in `/llms-full.txt` if you would rather read the whole corpus in one request.",
+  "Every page is also concatenated into `/llms-full.txt` for reading the whole corpus in one request. That file is a convention rather than part of this format.",
   "",
 ];
 
 const ordered = new Map();
+const optional = [];
 
 for (const { slug: product, title } of ready) {
   const pages = docs.filter((d) => d.product === product);
   if (pages.length === 0) continue;
   const byId = new Map(pages.map((page) => [page.id, page]));
-
-  map.push(`## ${title}`, "");
-  const blurb = blurbOf(product);
-  if (blurb) map.push(blurb, "");
-  map.push(`- [${title}](${SITE}/${product}): the section index, with every group`, "");
-
   const seen = [];
+
+  // One H2 per group, because the format delimits file lists on H2 and says
+  // nothing about H3. Nesting the groups under the product read better and put
+  // eighteen headings inside two sections, where a strict reader sees stray
+  // headings in a file list rather than sections of their own.
+  const line = (page) => `- [${page.title}](${SITE}${page.id}): ${page.description || page.title}`;
+
+  const blurb = blurbOf(product);
+  map.push(`## ${title}`, "");
+  if (blurb) map.push(blurb, "");
+  map.push(`- [${title}](${SITE}/${product}): the section index, with every group`);
+
   for (const group of groupsOf(product)) {
     const inGroup = group.slugs.map((slug) => byId.get(`/${product}/${slug}`)).filter(Boolean);
     if (inGroup.length === 0) continue;
-    if (group.title) map.push(`### ${group.title}`, "");
+
+    if (!group.title) {
+      // The tree with no title of its own is the product's own pages.
+      for (const page of inGroup) {
+        map.push(line(page));
+        seen.push(page);
+      }
+      continue;
+    }
+
+    const target = OPTIONAL.has(group.title) ? optional : null;
+    if (target) {
+      target.push(`### ${title}: ${group.title}`, "");
+      for (const page of inGroup) {
+        target.push(line(page));
+        seen.push(page);
+      }
+      target.push("");
+      continue;
+    }
+
+    map.push("", `## ${title}: ${group.title}`, "");
     for (const page of inGroup) {
-      map.push(`- [${page.title}](${SITE}${page.id}): ${page.description || page.title}`);
+      map.push(line(page));
       seen.push(page);
     }
-    map.push("");
   }
+  map.push("");
 
   // A page the manifest has and no tree lists would be invisible here, the way
   // it is invisible in the sidebar. `tests/nav.test.ts` holds that the two
   // agree, so this is a belt on braces rather than a fallback to rely on.
   for (const page of pages) {
     if (seen.includes(page)) continue;
-    map.push(`- [${page.title}](${SITE}${page.id}): ${page.description || page.title}`);
+    map.push(line(page));
     seen.push(page);
   }
   ordered.set(product, seen);
+}
+
+if (optional.length > 0) {
+  map.push("## Optional", "", "Skip these when context is short.", "", ...optional);
 }
 
 const llms = join(root, "public/llms.txt");
