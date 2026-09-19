@@ -84,9 +84,17 @@ async function withRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
 }
 ```
 
-Retrying a write is not free of consequence: there is no caller-supplied idempotency key, so a
-retry that succeeds after a timeout you never saw stores the memory twice. Two identical memories
-are not fatal, repetition is signal here, but if exactness matters, use a
+Retrying a write that names a `context_id` is safe. The memory's id is derived from the
+context rather than from what you sent, so a retry after a timeout you never saw lands on
+the same memory and replaces it with itself. You get one memory, not two.
+
+The exception is a write with no `context_id`. There the id is derived from the payload and
+the timestamp, and an absent timestamp is filled in by the server at the moment it arrives.
+A retry a second later is a different timestamp, so it stores a second memory.
+
+Worth knowing either way: because the id is the context, a later write to the same context
+takes the place of what was there. That makes a retry harmless and makes two different facts
+sent to one context a memory you no longer have. If exactness matters, use a
 [transaction](/locusgraph/remember/batch), which is rejected whole or applied whole.
 
 ## Next
