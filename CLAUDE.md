@@ -15,6 +15,21 @@ pnpm build
 Run `pnpm lint` and `pnpm typecheck` before saying a change is done. `pre-push`
 runs both, so a push fails on anything they catch.
 
+## Skills
+
+`skills-lock.json` records which skills this repo leans on and where they come
+from. The skill files themselves live in `.agents/`, which is **gitignored**: a
+clone fetches them rather than inheriting them.
+
+```bash
+curl -sL -o .agents/skills/human-voice/SKILL.md \
+  https://raw.githubusercontent.com/zircote/human-voice/HEAD/skills/human-voice/SKILL.md
+```
+
+`human-voice` is the one that matters here. Prose on this host is written to its
+character rules: no em dashes, no smart quotes, no ellipsis characters. Code
+samples and diagrams are exempt.
+
 ## Commits
 
 `.githooks/commit-msg` enforces the format, and it is not advisory — a commit

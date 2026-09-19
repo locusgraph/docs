@@ -7,3 +7,6 @@ next-env.d.ts
 .open-next/
 .wrangler/
 public/search-index.json
+
+# Skills are fetched per clone from skills-lock.json, not committed.
+.agents/
