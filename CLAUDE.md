@@ -52,7 +52,7 @@ Enable the hooks with `git config core.hooksPath .githooks`.
 
 A page is three things that must agree:
 
-1. The `.mdx` file — in the package it documents, or `content/<product>/`
+1. The `.mdx` file — in `@spendgraph/docs`, or `content/<product>/`
 2. An entry in `lib/site/docs-manifest.ts`, under that product's key
 3. An entry in the product's tree in `lib/site/docs-nav.ts`
 
@@ -70,12 +70,17 @@ believe the export exists.
 
 ## Do not edit package docs here
 
-Most Spendgraph pages live in `node_modules/@spendgraph/<pkg>/docs/`. Editing
-one there changes an installed dependency and is lost on the next install. The
-source is the package's own repository; this host only renders what is
-installed.
+Every Spendgraph package page lives in `node_modules/@spendgraph/docs/<pkg>/`,
+along with the figures it draws with. Editing one there changes an installed
+dependency and is lost on the next install. The source is the spendgraph repo,
+under `packages/docs/`; this host only renders what is installed, so a change to
+a page needs a publish before it appears here.
 
-A page that belongs to no package goes in `content/<product>/` instead.
+A page there brings its own figures with an import. The only component it takes
+from this host is `Callout`. `tests/components.test.ts` holds that line.
+
+A page that belongs to no package goes in `content/<product>/` instead. Those
+take whatever `mdx-components.tsx` registers.
 
 ## Adding a section
 
@@ -96,12 +101,19 @@ matching the products.
 Dark mode is a `.dark` class on `<html>`, set by `next-themes`. Anything using
 `prefers-color-scheme` directly will disagree with the toggle.
 
-## Two things that bite
+## Three things that bite
 
-**`transpilePackages`.** `next.config.ts` lists every `@spendgraph/*` package.
-Loaders stop at the `node_modules` edge, so without the list every package page
-fails with `Unknown module type` on a `.mdx` file. A new package needs adding
-there as well as to the manifest.
+**`transpilePackages`.** `next.config.ts` lists `@spendgraph/docs`. Loaders stop
+at the `node_modules` edge, so without it every package page fails with
+`Unknown module type` on a `.mdx` file.
+
+**pnpm withholds a fresh release.** `minimumReleaseAge` refuses a version
+published in the last day, so a `pnpm update` straight after a publish silently
+resolves the previous one. `pnpm-workspace.yaml` excludes `'@spendgraph/*'`,
+because these docs and the code they describe ship in the same hour; everything
+else keeps the wait. npm's own propagation adds a few minutes on top, and it
+lands on the abbreviated packument last, which is the one pnpm asks for — so a
+404 from pnpm while `curl` on the package URL says 200 is that, not a mistake.
 
 **Canonical host.** `SITE_URL` in `lib/site/seo.ts` is `https://docs.locusgraph.com`,
 and `metadataBase` in `app/layout.tsx` resolves every relative canonical against
