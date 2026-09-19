@@ -17,18 +17,20 @@ runs both, so a push fails on anything they catch.
 
 ## Skills
 
-`skills-lock.json` records which skills this repo leans on and where they come
-from. The skill files themselves live in `.agents/`, which is **gitignored**: a
-clone fetches them rather than inheriting them.
+Prose on this host follows the **human-voice** rules: no em dashes, no smart
+quotes, no ellipsis characters, no AI buzzwords or hedging. Code samples and
+diagrams are exempt, since a dash in an ASCII figure is not an AI tell.
+
+The skill itself is not in this repo. `.agents/` and `skills-lock.json` are both
+gitignored, so each clone fetches what it wants:
 
 ```bash
+mkdir -p .agents/skills/human-voice
 curl -sL -o .agents/skills/human-voice/SKILL.md \
   https://raw.githubusercontent.com/zircote/human-voice/HEAD/skills/human-voice/SKILL.md
 ```
 
-`human-voice` is the one that matters here. Prose on this host is written to its
-character rules: no em dashes, no smart quotes, no ellipsis characters. Code
-samples and diagrams are exempt.
+The rules are written down here so they survive without it.
 
 ## Commits
 

@@ -8,5 +8,6 @@ next-env.d.ts
 .wrangler/
 public/search-index.json
 
-# Skills are fetched per clone from skills-lock.json, not committed.
+# Skills are local to each clone, not part of the repo.
 .agents/
+skills-lock.json
