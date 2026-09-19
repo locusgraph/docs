@@ -74,10 +74,8 @@ https://docs.locusgraph.com/locusgraph/concepts.md
 `BrainStorm` and `Locus Skill` have routes and no pages. They stay off the host
 index while `ready: false` in `lib/site/products.ts`.
 
-## Where the pages live
+## License
 
-Spendgraph pages ship in [`@spendgraph/docs`](https://www.npmjs.com/package/@spendgraph/docs)
-and are written in the spendgraph repo, so a change there reaches this host on
-the next publish. LocusGraph pages are local, under `content/locusgraph/`.
-Either way `lib/site/docs-manifest.ts` is the list of what this host serves, and
-the sidebar, sitemap, search index and `llms.txt` are all generated from it.
+[Apache 2.0](./LICENSE). The prose and the diagrams are documentation for
+LocusGraph products; the site that renders them is yours to read, fork and
+learn from.
