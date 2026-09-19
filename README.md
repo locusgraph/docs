@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/banner.svg" alt="LocusGraph Docs — everything we ship, written down" width="100%">
+  <img src="./public/banner.svg" alt="LocusGraph docs: store what your app learns, and know what every model call costs" width="100%">
 </p>
 
 <p align="center">
@@ -11,8 +11,9 @@
 
 ---
 
-Documentation for every LocusGraph product, on one host. Marketing lives on
-`www.locusgraph.com`; a page here is documentation or it does not belong here.
+Store what your app learns, and know what every model call costs. Two products,
+documented on one host. Marketing lives on `www.locusgraph.com`; a page here is
+documentation or it does not belong here.
 
 ## [LocusGraph](https://docs.locusgraph.com/locusgraph)
 
