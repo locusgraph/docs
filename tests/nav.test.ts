@@ -82,8 +82,10 @@ describe("every reachable page resolves to a tree", () => {
  * through.
  */
 it("the overview lists the packages in sidebar order", () => {
+  // `SPENDGRAPH` is the section's own pages and `SG_API` is the generated
+  // reference; neither is a package, and the overview table lists packages.
   const sidebar = treesFor("spendgraph")
-    .filter((tree) => tree !== "SPENDGRAPH")
+    .filter((tree) => tree !== "SPENDGRAPH" && tree !== "SG_API")
     .map((tree) => tree.toLowerCase());
 
   const overview = readFileSync("content/spendgraph/overview.mdx", "utf8");

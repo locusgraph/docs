@@ -7,7 +7,7 @@
  * screenshot, and a reader has no way to see what their own question looks like
  * going over the wire.
  */
-import type { Endpoint } from "./endpoints";
+import { API_BASE, API_KEY_ENV, type Endpoint } from "./endpoints";
 
 export const LANGS = ["curl", "node", "python", "go"] as const;
 export type SampleLang = (typeof LANGS)[number];
@@ -19,7 +19,8 @@ export const LANG_LABEL: Record<SampleLang, string> = {
   go: "Go",
 };
 
-export const BASE_URL = "https://api.locusgraph.com";
+/** Kept for the copy that names one host; a sample reads it per endpoint. */
+export const BASE_URL = API_BASE.locusgraph;
 
 /** The path with `:params` filled from the body, and those keys taken out. */
 function resolve(endpoint: Endpoint, body: Record<string, unknown>) {
@@ -45,14 +46,15 @@ export function sampleFor(
   lang: SampleLang
 ): string {
   const { path, rest } = resolve(endpoint, body);
-  const url = `${BASE_URL}${path}`;
+  const url = `${API_BASE[endpoint.product]}${path}`;
+  const keyEnv = API_KEY_ENV[endpoint.product];
   const hasBody = endpoint.method !== "GET" && endpoint.method !== "DELETE";
   const payload = hasBody ? rest : {};
 
   if (lang === "curl") {
     const lines = [
       `curl -X ${endpoint.method} ${url} \\`,
-      `  -H "Authorization: Bearer $LOCUSGRAPH_API_KEY"${hasBody ? " \\" : ""}`,
+      `  -H "Authorization: Bearer $${keyEnv}"${hasBody ? " \\" : ""}`,
     ];
     if (hasBody) {
       lines.push(`  -H "Content-Type: application/json" \\`, `  -d '${json(payload, 2)}'`);
@@ -65,7 +67,7 @@ export function sampleFor(
       `const res = await fetch("${url}", {`,
       `  method: "${endpoint.method}",`,
       `  headers: {`,
-      `    Authorization: \`Bearer \${process.env.LOCUSGRAPH_API_KEY}\`,`,
+      `    Authorization: \`Bearer \${process.env.${keyEnv}}\`,`,
       ...(hasBody ? [`    "Content-Type": "application/json",`] : []),
       `  },`,
       ...(hasBody ? [`  body: JSON.stringify(${json(payload, 2)}),`] : []),
@@ -82,7 +84,7 @@ export function sampleFor(
       ``,
       `res = requests.${endpoint.method.toLowerCase()}(`,
       `    "${url}",`,
-      `    headers={"Authorization": f"Bearer {os.environ['LOCUSGRAPH_API_KEY']}"},`,
+      `    headers={"Authorization": f"Bearer {os.environ['${keyEnv}']}"},`,
       ...(hasBody ? [`    json=${json(payload, 4)},`] : []),
       `)`,
       ``,
@@ -96,7 +98,7 @@ export function sampleFor(
     `    "${url}",`,
     hasBody ? `    bytes.NewReader(body))` : `    nil)`,
     `req.Header.Set("Authorization",`,
-    `    "Bearer "+os.Getenv("LOCUSGRAPH_API_KEY"))`,
+    `    "Bearer "+os.Getenv("${keyEnv}"))`,
     ``,
     `res, err := http.DefaultClient.Do(req)`,
   ].join("\n");

@@ -44,12 +44,20 @@ export interface ApiError {
 }
 
 export interface Endpoint {
+  /** Which section's reference this belongs to. The two do not share a URL
+   * space, a base url or a credential, so they do not share a list either. */
+  readonly product: "locusgraph" | "spendgraph";
   readonly slug: string;
   readonly group: string;
   readonly name: string;
   readonly method: "GET" | "POST" | "DELETE";
   readonly path: string;
-  readonly scope: "memory.read" | "memory.write";
+  /**
+   * What a key must carry. The two sections name these differently because
+   * their engines do: LocusGraph checks `memory.read`, Spendgraph checks
+   * whether the key may read or write the project it is pinned to.
+   */
+  readonly scope: "memory.read" | "memory.write" | "read" | "write";
   readonly summary: string;
   readonly description: string;
   readonly params: readonly ApiParam[];
@@ -61,8 +69,31 @@ export interface Endpoint {
 
 export const ENDPOINTS: readonly Endpoint[] = spec as readonly Endpoint[];
 
-export const API_GROUPS = [...new Set(ENDPOINTS.map((e) => e.group))];
+/** The base url a section's requests go to. */
+export const API_BASE: Record<string, string> = {
+  locusgraph: "https://api.locusgraph.com",
+  spendgraph: "https://spendgraph.locusgraph.com",
+};
 
-export function endpointBySlug(slug: string): Endpoint | undefined {
-  return ENDPOINTS.find((e) => e.slug === slug);
+/** The environment variable each section's samples read the key from. */
+export const API_KEY_ENV: Record<string, string> = {
+  locusgraph: "LOCUSGRAPH_API_KEY",
+  spendgraph: "SPENDGRAPH_API_KEY",
+};
+
+export function endpointsFor(product: string): Endpoint[] {
+  return ENDPOINTS.filter((endpoint) => endpoint.product === product);
+}
+
+export function groupsFor(product: string): string[] {
+  return [...new Set(endpointsFor(product).map((endpoint) => endpoint.group))];
+}
+
+/**
+ * Slugs are unique per section, not across the host: both sections have an
+ * endpoint about listing things, and `/spendgraph/api/list-prompts` should not
+ * have to avoid a name `/locusgraph/api/…` already took.
+ */
+export function endpointBySlug(product: string, slug: string): Endpoint | undefined {
+  return ENDPOINTS.find((e) => e.product === product && e.slug === slug);
 }

@@ -7,7 +7,7 @@ import { DocsSearch } from "@/components/docs/search";
 import { ThemeSwitch } from "@/components/site/theme-switch";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ENDPOINTS, endpointBySlug } from "@/lib/api/endpoints";
+import { endpointBySlug, endpointsFor } from "@/lib/api/endpoints";
 import { pagesOf, productOf, treeFor } from "@/lib/site/docs-nav";
 import { isProduct, PRODUCT_INFO } from "@/lib/site/products";
 
@@ -40,7 +40,7 @@ export function DocsHeader() {
    * "Docs".
    */
   const endpoint = pathname.includes("/api/")
-    ? endpointBySlug(pathname.split("/api/")[1] ?? "")
+    ? endpointBySlug(product, pathname.split("/api/")[1] ?? "")
     : undefined;
 
   /**
@@ -49,7 +49,7 @@ export function DocsHeader() {
    * crumb of its own: "LocusGraph / Overview" already says it.
    */
   const group = endpoint
-    ? { label: "API reference", href: `/${product}/api/${ENDPOINTS[0].slug}` }
+    ? { label: "API reference", href: `/${product}/api/${endpointsFor(product)[0]?.slug ?? ""}` }
     : tree?.title
       ? { label: tree.title, href: tree.href }
       : undefined;

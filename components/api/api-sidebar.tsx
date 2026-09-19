@@ -16,7 +16,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { ENDPOINTS } from "@/lib/api/endpoints";
+import { API_BASE, endpointsFor, groupsFor } from "@/lib/api/endpoints";
 
 /**
  * A sidebar of its own for the API reference.
@@ -39,7 +39,8 @@ const METHOD_INK: Record<string, string> = {
 
 export function ApiSidebar({ product }: { product: string }) {
   const pathname = usePathname();
-  const groups = [...new Set(ENDPOINTS.map((e) => e.group))];
+  const endpoints = endpointsFor(product);
+  const groups = groupsFor(product);
 
   return (
     <Sidebar variant="inset" collapsible="icon">
@@ -47,7 +48,7 @@ export function ApiSidebar({ product }: { product: string }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg">
-              <Link href={`/${product}/api/${ENDPOINTS[0].slug}`}>
+              <Link href={`/${product}/api/${endpoints[0]?.slug ?? ""}`}>
                 <span className="grid size-8 shrink-0 place-items-center rounded-md bg-s1 font-mono text-[11px] font-semibold text-background">
                   {"{}"}
                 </span>
@@ -55,7 +56,9 @@ export function ApiSidebar({ product }: { product: string }) {
                   <span className="truncate text-sm font-semibold tracking-tight">
                     API reference
                   </span>
-                  <span className="truncate text-xs text-soft">v1 · api.locusgraph.com</span>
+                  <span className="truncate text-xs text-soft">
+                    v1 · {API_BASE[product]?.replace("https://", "")}
+                  </span>
                 </span>
               </Link>
             </SidebarMenuButton>
@@ -69,29 +72,31 @@ export function ApiSidebar({ product }: { product: string }) {
             <SidebarGroupLabel>{group}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {ENDPOINTS.filter((endpoint) => endpoint.group === group).map((endpoint) => {
-                  const href = `/${product}/api/${endpoint.slug}`;
-                  return (
-                    <SidebarMenuItem key={endpoint.slug}>
-                      <SidebarMenuButton
-                        asChild
-                        isActive={pathname === href}
-                        tooltip={endpoint.name}
-                      >
-                        <Link href={href}>
-                          <span
-                            className={`w-9 shrink-0 font-mono text-[9px] font-semibold ${
-                              METHOD_INK[endpoint.method] ?? "text-faint"
-                            }`}
-                          >
-                            {endpoint.method === "DELETE" ? "DEL" : endpoint.method}
-                          </span>
-                          <span className="truncate">{endpoint.name}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
+                {endpoints
+                  .filter((endpoint) => endpoint.group === group)
+                  .map((endpoint) => {
+                    const href = `/${product}/api/${endpoint.slug}`;
+                    return (
+                      <SidebarMenuItem key={endpoint.slug}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={pathname === href}
+                          tooltip={endpoint.name}
+                        >
+                          <Link href={href}>
+                            <span
+                              className={`w-9 shrink-0 font-mono text-[9px] font-semibold ${
+                                METHOD_INK[endpoint.method] ?? "text-faint"
+                              }`}
+                            >
+                              {endpoint.method === "DELETE" ? "DEL" : endpoint.method}
+                            </span>
+                            <span className="truncate">{endpoint.name}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

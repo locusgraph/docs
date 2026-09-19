@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ENDPOINTS, endpointBySlug } from "../lib/api/endpoints";
+import { API_BASE, API_KEY_ENV, ENDPOINTS, endpointBySlug } from "../lib/api/endpoints";
 import { highlight, type Lang } from "../lib/api/highlight";
 import { LANGS, sampleFor } from "../lib/api/samples";
 
@@ -12,27 +12,40 @@ import { LANGS, sampleFor } from "../lib/api/samples";
  * instead.
  */
 describe("the endpoint spec", () => {
-  it("has a unique slug per endpoint", () => {
-    const slugs = ENDPOINTS.map((e) => e.slug);
-    expect(new Set(slugs).size).toBe(slugs.length);
+  it("has a unique slug within each section", () => {
+    // Across sections a repeat is fine: they do not share a URL space, and
+    // `list-prompts` should not have to dodge a name the other section took.
+    for (const product of ["locusgraph", "spendgraph"]) {
+      const slugs = ENDPOINTS.filter((e) => e.product === product).map((e) => e.slug);
+      expect(new Set(slugs).size, `${product} repeats a slug`).toBe(slugs.length);
+    }
   });
 
   it("finds every endpoint by its slug", () => {
     for (const endpoint of ENDPOINTS) {
-      expect(endpointBySlug(endpoint.slug)).toBe(endpoint);
+      expect(endpointBySlug(endpoint.product, endpoint.slug)).toBe(endpoint);
     }
-    expect(endpointBySlug("nothing-like-this")).toBeUndefined();
+    expect(endpointBySlug("locusgraph", "nothing-like-this")).toBeUndefined();
   });
 
   /**
-   * The public API is what a key with the default scopes reaches. The engine's
-   * `DEFAULT_KEY_SCOPES` is `["memory.read", "memory.write"]`, so an endpoint
-   * needing `key.manage`, `graph.admin`, `graph.create` or `analytics.read`
-   * documented here would invite a call that answers 403 to nearly everyone.
+   * Only what a key reaches, per section.
+   *
+   * LocusGraph's `DEFAULT_KEY_SCOPES` is `["memory.read", "memory.write"]`, so
+   * `key.manage`, `graph.admin`, `graph.create` and `analytics.read` are out.
+   * Spendgraph gates keys, projects, pricing and credentials on a dashboard
+   * session with no API-key path at all, so those are out for the same reason:
+   * a reference page for them invites a call that answers 403 to nearly
+   * everyone reading it.
    */
-  it("documents nothing outside the default key scopes", () => {
+  const REACHABLE: Record<string, string[]> = {
+    locusgraph: ["memory.read", "memory.write"],
+    spendgraph: ["read", "write"],
+  };
+
+  it("documents nothing a key cannot reach", () => {
     for (const endpoint of ENDPOINTS) {
-      expect(["memory.read", "memory.write"], `${endpoint.slug} is ${endpoint.scope}`).toContain(
+      expect(REACHABLE[endpoint.product], `${endpoint.slug} is ${endpoint.scope}`).toContain(
         endpoint.scope
       );
     }
@@ -81,8 +94,8 @@ describe("the code samples", () => {
           const body = Object.fromEntries(Object.entries(endpoint.sample).map(([k, v]) => [k, v]));
           const code = sampleFor(endpoint, body, lang);
 
-          expect(code).toContain("api.locusgraph.com");
-          expect(code).toContain("LOCUSGRAPH_API_KEY");
+          expect(code).toContain(API_BASE[endpoint.product].replace("https://", ""));
+          expect(code).toContain(API_KEY_ENV[endpoint.product]);
           expect(code, "a path parameter was left unfilled").not.toMatch(/\/:[a-z_]+/);
 
           const sent = endpoint.sample.query ?? endpoint.sample.question;
@@ -93,7 +106,9 @@ describe("the code samples", () => {
   }
 
   it("carries an edited value into every language", () => {
-    const search = ENDPOINTS.find((e) => e.slug === "search-memories");
+    const search = ENDPOINTS.find(
+      (e) => e.slug === "search-memories" && e.product === "locusgraph"
+    );
     if (!search) throw new Error("search-memories is gone");
 
     const edited = { ...search.sample, query: "what did we decide about churn?" };
@@ -163,7 +178,7 @@ describe("the nav", () => {
    * has a sidebar of its own, and listing all of them twice would bury the
    * written pages under the thing a reader reaches for second.
    */
-  it("has one door into the reference", async () => {
+  it("has one door into each reference", async () => {
     const { NAV } = await import("../lib/site/docs-nav");
     const hrefs = NAV.locusgraph.flatMap((tree) =>
       tree.sections.flatMap((section) => section.items.map((item) => item.href))
@@ -218,7 +233,7 @@ describe("the playground controls", () => {
   });
 
   it("keeps an object payload an object in every sample", () => {
-    const store = ENDPOINTS.find((e) => e.slug === "store-an-event");
+    const store = ENDPOINTS.find((e) => e.slug === "store-an-event" && e.product === "locusgraph");
     if (!store) throw new Error("store-an-event is gone");
 
     const payload = store.params.find((p) => p.name === "payload");

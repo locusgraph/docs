@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Playground } from "@/components/api/playground";
 import { ENDPOINTS, endpointBySlug } from "@/lib/api/endpoints";
+import { PRODUCT_INFO, type Product } from "@/lib/site/products";
 import { pageMeta } from "@/lib/site/seo";
 
 /**
@@ -13,13 +14,14 @@ import { pageMeta } from "@/lib/site/seo";
  * Next matches this before `[...slug]` because a literal segment outranks a
  * catch-all, so `/locusgraph/api/search-memories` never reaches the doc route.
  *
- * Only LocusGraph has an API reference today. The route is still keyed on
- * `product` so Spendgraph can take one without moving these URLs.
+ * Both sections have one, and they share nothing but this route: different base
+ * urls, different credentials, different slugs. `product` keys the lookup for
+ * that reason, so `list-prompts` under one cannot resolve under the other.
  */
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return ENDPOINTS.map((endpoint) => ({ product: "locusgraph", endpoint: endpoint.slug }));
+  return ENDPOINTS.map((endpoint) => ({ product: endpoint.product, endpoint: endpoint.slug }));
 }
 
 export async function generateMetadata({
@@ -28,19 +30,23 @@ export async function generateMetadata({
   params: Promise<{ product: string; endpoint: string }>;
 }): Promise<Metadata> {
   const { product, endpoint: slug } = await params;
-  const endpoint = endpointBySlug(slug);
+  const endpoint = endpointBySlug(product, slug);
   if (!endpoint) return { title: "Not found | LocusGraph Docs", robots: { index: false } };
 
   return pageMeta({
-    title: `${endpoint.name} | LocusGraph API`,
+    title: `${endpoint.name} | ${PRODUCT_INFO[product as Product]?.title ?? "LocusGraph"} API`,
     description: endpoint.summary,
     path: `/${product}/api/${slug}`,
   });
 }
 
-export default async function ApiEndpoint({ params }: { params: Promise<{ endpoint: string }> }) {
-  const { endpoint: slug } = await params;
-  const endpoint = endpointBySlug(slug);
+export default async function ApiEndpoint({
+  params,
+}: {
+  params: Promise<{ product: string; endpoint: string }>;
+}) {
+  const { product, endpoint: slug } = await params;
+  const endpoint = endpointBySlug(product, slug);
   if (!endpoint) notFound();
 
   /**

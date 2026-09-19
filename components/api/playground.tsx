@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import type { Endpoint } from "@/lib/api/endpoints";
+import { API_BASE } from "@/lib/api/endpoints";
 import { highlight, type Lang } from "@/lib/api/highlight";
-import { BASE_URL, LANG_LABEL, LANGS, type SampleLang, sampleFor } from "@/lib/api/samples";
+import { LANG_LABEL, LANGS, type SampleLang, sampleFor } from "@/lib/api/samples";
 
 /**
  * The key is kept in this browser and nowhere else.
@@ -13,7 +14,7 @@ import { BASE_URL, LANG_LABEL, LANGS, type SampleLang, sampleFor } from "@/lib/a
  * host would hide it from the address bar and put other people's credentials on
  * the docs server, which is worse: this host would then be worth attacking.
  */
-const KEY_STORE = "locusgraph.playground.key";
+const keyStore = (product: string) => `${product}.playground.key`;
 
 function Code({ text, lang }: { text: string; lang: Lang }) {
   return (
@@ -49,19 +50,19 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
    */
   useEffect(() => {
     try {
-      setApiKey(window.localStorage.getItem(KEY_STORE) ?? "");
+      setApiKey(window.localStorage.getItem(keyStore(endpoint.product)) ?? "");
     } catch {
       // A private window, or storage the browser refuses. The field still works
       // for this page; it simply will not be remembered.
     }
-  }, []);
+  }, [endpoint.product]);
 
   const remember = (value: string) => {
     setApiKey(value);
     setSent(false);
     try {
-      if (value) window.localStorage.setItem(KEY_STORE, value);
-      else window.localStorage.removeItem(KEY_STORE);
+      if (value) window.localStorage.setItem(keyStore(endpoint.product), value);
+      else window.localStorage.removeItem(keyStore(endpoint.product));
     } catch {
       // As above. Losing the convenience is not worth failing the input.
     }
@@ -117,7 +118,7 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
           type="password"
           value={apiKey}
           onChange={(e) => remember(e.target.value)}
-          placeholder="lg_live_…"
+          placeholder={endpoint.product === "spendgraph" ? "sg_…" : "lg_live_…"}
           className="min-w-0 grow rounded-md border border-line bg-background px-2.5 py-1.5 font-mono text-xs text-foreground"
         />
         <span className="shrink-0 text-[11px] text-faint">
@@ -250,7 +251,8 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
         ) : (
           <p className="m-0 p-3.5 text-xs text-faint">
             Send the request to see what comes back. It goes from this browser straight to{" "}
-            <span className="font-mono">{BASE_URL.replace("https://", "")}</span>.
+            <span className="font-mono">{API_BASE[endpoint.product]?.replace("https://", "")}</span>
+            .
           </p>
         )}
       </div>

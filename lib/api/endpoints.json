@@ -1,5 +1,6 @@
 [
   {
+    "product": "locusgraph",
     "slug": "search-memories",
     "group": "Memories",
     "name": "Search memories",
@@ -84,6 +85,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "deep-recall",
     "group": "Memories",
     "name": "Deep recall",
@@ -116,7 +118,7 @@
       "graph_id": "acme",
       "question": "What did we decide about churn, and why?"
     },
-    "response": "{\n  \"summary\": \"Churn was capped at 4% for Q3 …\",\n  \"facts\": [ … ],\n  \"coverage\": \"full\",\n  \"fallback\": false\n}",
+    "response": "{\n  \"summary\": \"Churn was capped at 4% for Q3 \u2026\",\n  \"facts\": [ \u2026 ],\n  \"coverage\": \"full\",\n  \"fallback\": false\n}",
     "errors": [
       {
         "status": 400,
@@ -136,6 +138,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "store-an-event",
     "group": "Events",
     "name": "Store an event",
@@ -235,6 +238,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "send-an-observation",
     "group": "Review",
     "name": "Send an observation",
@@ -306,6 +310,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-contexts",
     "group": "Contexts",
     "name": "List contexts",
@@ -366,6 +371,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "delete-a-memory",
     "group": "Memories",
     "name": "Delete a memory",
@@ -418,6 +424,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-a-memory",
     "group": "Memories",
     "name": "Read a memory",
@@ -470,6 +477,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-memories",
     "group": "Memories",
     "name": "List memories",
@@ -502,7 +510,7 @@
       "graph_id": "acme",
       "page": 0
     },
-    "response": "{\n  \"items\": [ … ],\n  \"total\": 128\n}",
+    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 128\n}",
     "errors": [
       {
         "status": 400,
@@ -522,6 +530,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-memories-in-a-context",
     "group": "Memories",
     "name": "List a context's memories",
@@ -554,7 +563,7 @@
       "graph_id": "acme",
       "context_type": "preference"
     },
-    "response": "{\n  \"items\": [ … ],\n  \"total\": 12\n}",
+    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 12\n}",
     "errors": [
       {
         "status": 400,
@@ -574,6 +583,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-memories-under-one-context",
     "group": "Memories",
     "name": "List one context's memories",
@@ -613,7 +623,7 @@
       "context_type": "preference",
       "context_name": "dark_mode"
     },
-    "response": "{\n  \"items\": [ … ],\n  \"total\": 3\n}",
+    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 3\n}",
     "errors": [
       {
         "status": 400,
@@ -638,6 +648,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "store-a-batch",
     "group": "Events",
     "name": "Store a batch",
@@ -693,6 +704,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-events",
     "group": "Events",
     "name": "List events",
@@ -740,7 +752,7 @@
       "graph_id": "acme",
       "page": 0
     },
-    "response": "{\n  \"items\": [ … ],\n  \"total\": 1284\n}",
+    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 1284\n}",
     "errors": [
       {
         "status": 400,
@@ -760,6 +772,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-rejected-events",
     "group": "Events",
     "name": "List rejected events",
@@ -806,6 +819,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-event-kinds",
     "group": "Events",
     "name": "List event kinds",
@@ -843,6 +857,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "run-a-transaction",
     "group": "Events",
     "name": "Run a transaction",
@@ -898,6 +913,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-a-context",
     "group": "Contexts",
     "name": "Read a context",
@@ -932,7 +948,7 @@
       "context_type": "preference",
       "context_name": "dark_mode"
     },
-    "response": "{\n  \"context_id\": \"preference:dark_mode\",\n  \"count\": 3,\n  \"links\": [ … ]\n}",
+    "response": "{\n  \"context_id\": \"preference:dark_mode\",\n  \"count\": 3,\n  \"links\": [ \u2026 ]\n}",
     "errors": [
       {
         "status": 400,
@@ -957,6 +973,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "look-up-a-context",
     "group": "Contexts",
     "name": "Look up a context",
@@ -1018,6 +1035,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "look-up-contexts-in-bulk",
     "group": "Contexts",
     "name": "Look up contexts in bulk",
@@ -1045,7 +1063,7 @@
       "graph_id": "acme",
       "context_ids": ["preference:dark_mode", "policy:deployments"]
     },
-    "response": "{\n  \"found\": [ … ],\n  \"missing\": []\n}",
+    "response": "{\n  \"found\": [ \u2026 ],\n  \"missing\": []\n}",
     "errors": [
       {
         "status": 400,
@@ -1065,6 +1083,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "link-two-contexts",
     "group": "Contexts",
     "name": "Link two contexts",
@@ -1127,6 +1146,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "unlink-two-contexts",
     "group": "Contexts",
     "name": "Unlink two contexts",
@@ -1189,6 +1209,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "forget-a-context",
     "group": "Contexts",
     "name": "Forget a context",
@@ -1248,6 +1269,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-relationships",
     "group": "Contexts",
     "name": "Read relationships",
@@ -1330,6 +1352,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "walk-a-context",
     "group": "Contexts",
     "name": "Walk from a context",
@@ -1370,7 +1393,7 @@
       "context_name": "alice",
       "depth": 2
     },
-    "response": "{\n  \"nodes\": [ … ],\n  \"edges\": [ … ]\n}",
+    "response": "{\n  \"nodes\": [ \u2026 ],\n  \"edges\": [ \u2026 ]\n}",
     "errors": [
       {
         "status": 400,
@@ -1395,6 +1418,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "walk-a-graph",
     "group": "Contexts",
     "name": "Walk a whole graph",
@@ -1426,7 +1450,7 @@
       "graph_id": "acme",
       "min_refs": 2
     },
-    "response": "{\n  \"nodes\": [ … ],\n  \"edges\": [ … ]\n}",
+    "response": "{\n  \"nodes\": [ \u2026 ],\n  \"edges\": [ \u2026 ]\n}",
     "errors": [
       {
         "status": 400,
@@ -1446,6 +1470,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-the-inbox",
     "group": "Review",
     "name": "Read the inbox",
@@ -1466,7 +1491,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"findings\": [\n    { \"id\": \"fnd_…\", \"statement\": \"no deploys on Friday afternoons\", \"status\": \"pending\" }\n  ]\n}",
+    "response": "{\n  \"findings\": [\n    { \"id\": \"fnd_\u2026\", \"statement\": \"no deploys on Friday afternoons\", \"status\": \"pending\" }\n  ]\n}",
     "errors": [
       {
         "status": 400,
@@ -1486,6 +1511,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-findings",
     "group": "Review",
     "name": "List findings",
@@ -1506,7 +1532,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"findings\": [\n    { \"id\": \"fnd_…\", \"status\": \"edited_promoted\" }\n  ]\n}",
+    "response": "{\n  \"findings\": [\n    { \"id\": \"fnd_\u2026\", \"status\": \"edited_promoted\" }\n  ]\n}",
     "errors": [
       {
         "status": 400,
@@ -1526,6 +1552,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "approve-a-finding",
     "group": "Review",
     "name": "Approve a finding",
@@ -1582,6 +1609,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "reject-a-finding",
     "group": "Review",
     "name": "Reject a finding",
@@ -1627,6 +1655,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-graphs",
     "group": "Graphs",
     "name": "List graphs",
@@ -1671,6 +1700,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-a-graph",
     "group": "Graphs",
     "name": "Read a graph",
@@ -1716,6 +1746,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-a-graph-shape",
     "group": "Graphs",
     "name": "Read a graph's shape",
@@ -1736,7 +1767,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"nodes\": [ … ],\n  \"edges\": [ … ]\n}",
+    "response": "{\n  \"nodes\": [ \u2026 ],\n  \"edges\": [ \u2026 ]\n}",
     "errors": [
       {
         "status": 400,
@@ -1761,6 +1792,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "resolve-a-context",
     "group": "Resolve",
     "name": "Resolve a context",
@@ -1818,6 +1850,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "resolve-in-bulk",
     "group": "Resolve",
     "name": "Resolve in bulk",
@@ -1870,6 +1903,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "list-unresolved",
     "group": "Resolve",
     "name": "List unresolved",
@@ -1910,6 +1944,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-unresolved",
     "group": "Resolve",
     "name": "Read one unresolved",
@@ -1937,7 +1972,7 @@
       "graph_id": "acme",
       "context_id": "acct_88213"
     },
-    "response": "{\n  \"waiting\": [ … ]\n}",
+    "response": "{\n  \"waiting\": [ \u2026 ]\n}",
     "errors": [
       {
         "status": 400,
@@ -1962,6 +1997,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "ingest-a-document",
     "group": "Ingest",
     "name": "Ingest a document",
@@ -2002,6 +2038,7 @@
     ]
   },
   {
+    "product": "locusgraph",
     "slug": "read-an-ingest-job",
     "group": "Ingest",
     "name": "Read an ingest job",
@@ -2043,6 +2080,1859 @@
         "status": 404,
         "code": "NOT_FOUND",
         "note": "Nothing with that id in this graph."
+      }
+    ]
+  },
+  {
+    "slug": "report-usage",
+    "group": "Ingest",
+    "name": "Report usage",
+    "method": "POST",
+    "path": "/api/v1/ingest",
+    "scope": "write",
+    "summary": "Send the tokens a model call consumed, and have them priced.",
+    "description": "Counts only. No prompt or response text leaves your app: the six token fields and a model id are the whole payload, and pricing happens here rather than in your process.",
+    "params": [
+      {
+        "name": "events",
+        "type": "object[]",
+        "required": true,
+        "note": "Between 1 and 100 per call. Each one is a single model call."
+      },
+      {
+        "name": "model",
+        "type": "string",
+        "required": true,
+        "note": "Inside an event. The provider's model id, up to 200 characters."
+      },
+      {
+        "name": "inputTokens",
+        "type": "integer",
+        "required": true,
+        "note": "Inside an event. Not negative, and below 1,000,000,000."
+      },
+      {
+        "name": "outputTokens",
+        "type": "integer",
+        "required": true,
+        "note": "Inside an event. Billed higher than input, usually three to five times."
+      },
+      {
+        "name": "cacheReadTokens",
+        "type": "integer",
+        "note": "Separate from inputTokens, following the Anthropic convention. Billed at a discount."
+      },
+      {
+        "name": "cacheWriteTokens",
+        "type": "integer",
+        "note": "Billed at a premium over input. This is the expensive first call."
+      },
+      {
+        "name": "citationTokens",
+        "type": "integer",
+        "note": "Billed separately by search-grounded providers, free on others."
+      },
+      {
+        "name": "reasoningTokens",
+        "type": "integer",
+        "note": "Billed as output, and invisible in the reply."
+      },
+      {
+        "name": "eventId",
+        "type": "string",
+        "note": "Your own id, 8 to 64 characters. Makes the write idempotent."
+      },
+      {
+        "name": "timestamp",
+        "type": "string",
+        "note": "ISO 8601. Defaults to now, and a future one is clamped to now."
+      },
+      {
+        "name": "metadata",
+        "type": "object",
+        "note": "Up to 1KB of string, number or boolean values. Cost by tenant and Cost by feature group on it."
+      }
+    ],
+    "returns": "How many landed, and the model ids that had no price.",
+    "sample": {
+      "events": [
+        {
+          "model": "claude-opus-5",
+          "inputTokens": 1240,
+          "outputTokens": 96
+        }
+      ]
+    },
+    "response": "{\n  \"stored\": 1,\n  \"unpricedModels\": []\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "list-events",
+    "group": "Usage",
+    "name": "List usage events",
+    "method": "GET",
+    "path": "/api/v1/events",
+    "scope": "read",
+    "summary": "The model calls this project reported, priced.",
+    "description": "The ledger rather than a total. Every row is one call with its six token counts and what it cost.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "from",
+        "type": "string",
+        "note": "ISO 8601. The start of the window."
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "note": "ISO 8601. The end of the window."
+      },
+      {
+        "name": "model",
+        "type": "string",
+        "note": "Only calls to this model."
+      },
+      {
+        "name": "key",
+        "type": "string",
+        "note": "Only calls reported by this API key."
+      },
+      {
+        "name": "q",
+        "type": "string",
+        "note": "Free text, matched against the metadata."
+      },
+      {
+        "name": "sort",
+        "type": "string",
+        "note": "Which column to order by."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many rows to return."
+      },
+      {
+        "name": "cursor",
+        "type": "string",
+        "note": "From the previous page's response."
+      },
+      {
+        "name": "format",
+        "type": "string",
+        "note": "csv exports the window instead of returning JSON."
+      }
+    ],
+    "returns": "The rows, and a cursor when there are more.",
+    "sample": {
+      "project": "prod",
+      "limit": 20
+    },
+    "response": "{\n  \"events\": [\n    { \"model\": \"claude-opus-5\", \"inputTokens\": 1240, \"costMicros\": 5000 }\n  ],\n  \"cursor\": null\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "list-alerts",
+    "group": "Usage",
+    "name": "List alerts",
+    "method": "GET",
+    "path": "/api/v1/alerts",
+    "scope": "read",
+    "summary": "Budget alerts that have fired.",
+    "description": "What tripped, when, and against which budget. Setting a budget is a dashboard action; reading what it did is not.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many to return."
+      }
+    ],
+    "returns": "The alerts, newest first.",
+    "sample": {
+      "project": "prod",
+      "limit": 10
+    },
+    "response": "{\n  \"alerts\": [\n    { \"budget\": \"monthly\", \"firedAt\": \"2026-09-19T11:02:00Z\", \"spentMicros\": 4200000 }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "usage-summary",
+    "group": "Stats",
+    "name": "Usage summary",
+    "method": "GET",
+    "path": "/api/v1/stats/summary",
+    "scope": "read",
+    "summary": "One number for the window, and the counts behind it.",
+    "description": "The headline the dashboard shows. Everything else under Stats is this broken down one way or another.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "from",
+        "type": "string",
+        "note": "ISO 8601. The start of the window."
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "note": "ISO 8601. The end of the window."
+      }
+    ],
+    "returns": "Total spend in micro-USD, with the token counts that produced it.",
+    "sample": {
+      "project": "prod"
+    },
+    "response": "{\n  \"costMicros\": 94000,\n  \"inputTokens\": 21790,\n  \"outputTokens\": 3220,\n  \"calls\": 19\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "usage-over-time",
+    "group": "Stats",
+    "name": "Usage over time",
+    "method": "GET",
+    "path": "/api/v1/stats/timeseries",
+    "scope": "read",
+    "summary": "Spend bucketed into a series you can chart.",
+    "description": "The same window as the summary, cut into buckets. Pick the bucket to match the window: hourly over a month is 720 points nobody reads.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "bucket",
+        "type": "string",
+        "note": "How wide each point is, for example hour or day."
+      },
+      {
+        "name": "from",
+        "type": "string",
+        "note": "ISO 8601. The start of the window."
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "note": "ISO 8601. The end of the window."
+      }
+    ],
+    "returns": "One point per bucket.",
+    "sample": {
+      "project": "prod",
+      "bucket": "day"
+    },
+    "response": "{\n  \"points\": [\n    { \"at\": \"2026-09-18\", \"costMicros\": 41000 }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "usage-by-model",
+    "group": "Stats",
+    "name": "Usage by model",
+    "method": "GET",
+    "path": "/api/v1/stats/by-model",
+    "scope": "read",
+    "summary": "Which models the money went to.",
+    "description": "Usually the first cut worth looking at: one model is normally most of the bill.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "from",
+        "type": "string",
+        "note": "ISO 8601. The start of the window."
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "note": "ISO 8601. The end of the window."
+      }
+    ],
+    "returns": "One row per model, sorted by spend.",
+    "sample": {
+      "project": "prod"
+    },
+    "response": "{\n  \"models\": [\n    { \"model\": \"claude-opus-5\", \"costMicros\": 71000, \"calls\": 12 }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "usage-by-key",
+    "group": "Stats",
+    "name": "Usage by key",
+    "method": "GET",
+    "path": "/api/v1/stats/by-key",
+    "scope": "read",
+    "summary": "Which credential reported the spend.",
+    "description": "A key per environment makes this the fastest way to tell staging from production without touching metadata.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "from",
+        "type": "string",
+        "note": "ISO 8601. The start of the window."
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "note": "ISO 8601. The end of the window."
+      }
+    ],
+    "returns": "One row per key.",
+    "sample": {
+      "project": "prod"
+    },
+    "response": "{\n  \"keys\": [\n    { \"name\": \"acme-production\", \"costMicros\": 88000 }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "usage-by-tag",
+    "group": "Stats",
+    "name": "Usage by tag",
+    "method": "GET",
+    "path": "/api/v1/stats/by-tag",
+    "scope": "read",
+    "summary": "Spend grouped by a metadata key.",
+    "description": "This is what metadata is for. Without it spend is one undifferentiated number and the only thing the dashboard can tell you is that it went up.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "key",
+        "type": "string",
+        "required": true,
+        "note": "Which metadata key to group on, for example feature or tenant."
+      },
+      {
+        "name": "from",
+        "type": "string",
+        "note": "ISO 8601. The start of the window."
+      },
+      {
+        "name": "to",
+        "type": "string",
+        "note": "ISO 8601. The end of the window."
+      }
+    ],
+    "returns": "One row per distinct value of that key.",
+    "sample": {
+      "project": "prod",
+      "key": "feature"
+    },
+    "response": "{\n  \"tag\": \"feature\",\n  \"rows\": [\n    { \"value\": \"summarise\", \"costMicros\": 52000 }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "list-prompts",
+    "group": "Prompts",
+    "name": "List prompts",
+    "method": "GET",
+    "path": "/api/v1/prompts",
+    "scope": "read",
+    "summary": "The stored prompts in a project.",
+    "description": "Stored wording, versioned, which is what makes a score reproducible. A prompt written in code has no row here.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "archived",
+        "type": "string",
+        "note": "Include archived prompts."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many to return."
+      },
+      {
+        "name": "cursor",
+        "type": "string",
+        "note": "From the previous page's response."
+      }
+    ],
+    "returns": "The prompts, with their published version.",
+    "sample": {
+      "project": "prod",
+      "limit": 20
+    },
+    "response": "{\n  \"prompts\": [\n    { \"id\": \"pr_123\", \"slug\": \"ctr-sum-a91\", \"publishedVersion\": \"pv_456\" }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "create-a-prompt",
+    "group": "Prompts",
+    "name": "Create a prompt",
+    "method": "POST",
+    "path": "/api/v1/prompts",
+    "scope": "write",
+    "summary": "Add a prompt to a project.",
+    "description": "Creating it is not publishing it. A new prompt has a version and no published one until you promote it.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "slug",
+        "type": "string",
+        "required": true,
+        "note": "The stable handle callers pull by."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "note": "For recognising it in the dashboard."
+      }
+    ],
+    "returns": "The prompt, with its first version.",
+    "sample": {
+      "project": "prod",
+      "slug": "ctr-sum-a91",
+      "name": "Contract summary"
+    },
+    "response": "{\n  \"id\": \"pr_123\",\n  \"slug\": \"ctr-sum-a91\"\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "read-a-prompt",
+    "group": "Prompts",
+    "name": "Read a prompt",
+    "method": "GET",
+    "path": "/api/v1/prompts/:id",
+    "scope": "read",
+    "summary": "One prompt, its fields and its published version.",
+    "description": "This is what `pullPrompt` fetches. `runs` folds recent rollouts into the same response.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path. The prompt."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "runs",
+        "type": "string",
+        "note": "Include recent rollouts alongside the prompt."
+      }
+    ],
+    "returns": "The prompt, its field spec and its published version.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod"
+    },
+    "response": "{\n  \"id\": \"pr_123\",\n  \"slug\": \"ctr-sum-a91\",\n  \"fields\": [ \u2026 ]\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "update-a-prompt",
+    "group": "Prompts",
+    "name": "Update a prompt",
+    "method": "PUT",
+    "path": "/api/v1/prompts/:id",
+    "scope": "write",
+    "summary": "Change a prompt's wording, as a new version.",
+    "description": "Editing never overwrites what ran: a change is a version, and the published one does not move until you publish.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "template",
+        "type": "string",
+        "note": "The wording, with its `{field}` placeholders."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "note": "A new display name."
+      }
+    ],
+    "returns": "The prompt, with the version that was created.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod",
+      "template": "Summarise: {document}"
+    },
+    "response": "{\n  \"id\": \"pr_123\",\n  \"versionId\": \"pv_457\"\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "publish-a-version",
+    "group": "Prompts",
+    "name": "Publish a version",
+    "method": "POST",
+    "path": "/api/v1/prompts/:id/publish",
+    "scope": "write",
+    "summary": "Make one version the one callers get.",
+    "description": "Until this, a new version exists and nothing pulls it. Publishing is the only call that changes what production is running.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "versionId",
+        "type": "string",
+        "required": true,
+        "note": "Which version to publish."
+      }
+    ],
+    "returns": "The prompt, with its published version.",
+    "sample": {
+      "id": "pr_123",
+      "versionId": "pv_457"
+    },
+    "response": "{\n  \"id\": \"pr_123\",\n  \"publishedVersion\": \"pv_457\"\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "list-versions",
+    "group": "Prompts",
+    "name": "List versions",
+    "method": "GET",
+    "path": "/api/v1/prompts/:id/versions",
+    "scope": "read",
+    "summary": "Every wording this prompt has had.",
+    "description": "What makes last month's score reproducible: the version that produced it is still here.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "origin",
+        "type": "string",
+        "note": "Where the version came from, for example an assay."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many to return."
+      }
+    ],
+    "returns": "The versions, newest first.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod"
+    },
+    "response": "{\n  \"versions\": [\n    { \"id\": \"pv_457\", \"createdAt\": \"2026-09-19T11:02:00Z\" }\n  ]\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "create-a-version",
+    "group": "Prompts",
+    "name": "Create a version",
+    "method": "POST",
+    "path": "/api/v1/prompts/:id/versions",
+    "scope": "write",
+    "summary": "Add a wording without publishing it.",
+    "description": "For preparing a change you want to score before it reaches anyone.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "template",
+        "type": "string",
+        "required": true,
+        "note": "The wording, with its `{field}` placeholders."
+      }
+    ],
+    "returns": "The new version.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod",
+      "template": "Summarise in three bullets: {document}"
+    },
+    "response": "{\n  \"versionId\": \"pv_458\"\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "run-a-prompt",
+    "group": "Prompts",
+    "name": "Run a prompt",
+    "method": "POST",
+    "path": "/api/v1/prompts/:id/run",
+    "scope": "read",
+    "summary": "Render a prompt, send it, and record what it cost.",
+    "description": "`record: false` renders and calls without writing a rollout, which is what you want while iterating rather than measuring.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "values",
+        "type": "object",
+        "note": "One entry per declared field."
+      },
+      {
+        "name": "model",
+        "type": "string",
+        "note": "Which model to call. Defaults to the prompt's."
+      },
+      {
+        "name": "maxTokens",
+        "type": "integer",
+        "note": "A ceiling for the reply."
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "note": "Passed to the provider as given."
+      },
+      {
+        "name": "record",
+        "type": "boolean",
+        "note": "false renders and calls without writing a rollout."
+      },
+      {
+        "name": "seed",
+        "type": "integer",
+        "note": "Passed through, for a provider that honours it."
+      }
+    ],
+    "returns": "The reply, its usage and its rollout id.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod",
+      "values": {
+        "document": "\u2026"
+      }
+    },
+    "response": "{\n  \"output\": \"\u2026\",\n  \"rolloutId\": \"ro_71b\",\n  \"usage\": { \"inputTokens\": 1240, \"outputTokens\": 96 }\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "list-rollouts",
+    "group": "Prompts",
+    "name": "List rollouts",
+    "method": "GET",
+    "path": "/api/v1/prompts/:id/rollouts",
+    "scope": "read",
+    "summary": "What this prompt has run, priced.",
+    "description": "Every call a stored prompt made, including the attempts that failed, each one separately addressable.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "evaluation",
+        "type": "string",
+        "note": "Only rollouts from this evaluation."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many to return."
+      },
+      {
+        "name": "cursor",
+        "type": "string",
+        "note": "From the previous page's response."
+      }
+    ],
+    "returns": "The rollouts, with their cost and status.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod",
+      "limit": 20
+    },
+    "response": "{\n  \"rollouts\": [\n    { \"id\": \"ro_71b\", \"status\": \"completed\", \"costMicros\": 5000 }\n  ]\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "record-a-rollout",
+    "group": "Prompts",
+    "name": "Record a rollout",
+    "method": "POST",
+    "path": "/api/v1/prompts/:id/rollouts",
+    "scope": "write",
+    "summary": "Report a call your own code made against a stored prompt.",
+    "description": "For when the model call happens in your process rather than here. The six token counts are the same ones ingest takes.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "versionId",
+        "type": "string",
+        "note": "Which wording ran."
+      },
+      {
+        "name": "model",
+        "type": "string",
+        "required": true,
+        "note": "The model that answered."
+      },
+      {
+        "name": "inputTokens",
+        "type": "integer",
+        "note": "What the call consumed."
+      },
+      {
+        "name": "outputTokens",
+        "type": "integer",
+        "note": "What came back."
+      },
+      {
+        "name": "cacheReadTokens",
+        "type": "integer",
+        "note": "Billed at a discount."
+      },
+      {
+        "name": "cacheWriteTokens",
+        "type": "integer",
+        "note": "Billed at a premium over input."
+      },
+      {
+        "name": "citationTokens",
+        "type": "integer",
+        "note": "Billed by some providers, free on others."
+      },
+      {
+        "name": "reasoningTokens",
+        "type": "integer",
+        "note": "Billed as output, invisible in the reply."
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "note": "Whether the call produced what was asked for."
+      },
+      {
+        "name": "output",
+        "type": "string",
+        "note": "What came back, if you want it kept."
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "note": "Why it failed, when it did."
+      },
+      {
+        "name": "latencyMs",
+        "type": "integer",
+        "note": "How long the call took."
+      },
+      {
+        "name": "caseId",
+        "type": "string",
+        "note": "Which evaluation case this was."
+      },
+      {
+        "name": "rolloutId",
+        "type": "string",
+        "note": "Your own id, making the write idempotent."
+      }
+    ],
+    "returns": "The recorded rollout.",
+    "sample": {
+      "id": "pr_123",
+      "model": "claude-opus-5",
+      "inputTokens": 1240,
+      "outputTokens": 96,
+      "status": "completed"
+    },
+    "response": "{\n  \"rolloutId\": \"ro_71c\"\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "list-runs",
+    "group": "Prompts",
+    "name": "List runs",
+    "method": "GET",
+    "path": "/api/v1/prompts/runs",
+    "scope": "read",
+    "summary": "Evaluation runs across a project's prompts.",
+    "description": "A run is a scored batch rather than one call. Comparing two of these is how a change is told from noise.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many to return."
+      }
+    ],
+    "returns": "The runs, newest first.",
+    "sample": {
+      "project": "prod",
+      "limit": 10
+    },
+    "response": "{\n  \"runs\": [\n    { \"id\": \"run_88\", \"mean\": 0.82, \"cases\": 40 }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "read-a-run",
+    "group": "Prompts",
+    "name": "Read a run",
+    "method": "GET",
+    "path": "/api/v1/prompts/runs/:id",
+    "scope": "read",
+    "summary": "One evaluation run, per case and per metric.",
+    "description": "Read it per case rather than by the mean: one free deterministic check moves the headline without anything about the app changing.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path. The run."
+      }
+    ],
+    "returns": "The run, its cases and its metrics.",
+    "sample": {
+      "id": "run_88"
+    },
+    "response": "{\n  \"id\": \"run_88\",\n  \"mean\": 0.82,\n  \"cases\": [ \u2026 ]\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "read-cases",
+    "group": "Prompts",
+    "name": "Read the dataset",
+    "method": "GET",
+    "path": "/api/v1/prompts/:id/cases",
+    "scope": "read",
+    "summary": "The cases a prompt is evaluated against.",
+    "description": "A case never moves between splits however often the dataset is re-imported: the split is derived from the case id.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      }
+    ],
+    "returns": "The cases, with their split.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod"
+    },
+    "response": "{\n  \"cases\": [\n    { \"id\": \"case_1\", \"split\": \"held_out\" }\n  ]\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "replace-cases",
+    "group": "Prompts",
+    "name": "Replace the dataset",
+    "method": "PUT",
+    "path": "/api/v1/prompts/:id/cases",
+    "scope": "write",
+    "summary": "Set the whole dataset in one call.",
+    "description": "A replace, not a merge: what you send is what the prompt is evaluated against afterwards.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "cases",
+        "type": "object[]",
+        "required": true,
+        "note": "The whole dataset. Each case carries its input and whatever a metric needs."
+      }
+    ],
+    "returns": "How many cases were stored.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod",
+      "cases": [
+        {
+          "id": "case_1",
+          "input": "\u2026"
+        }
+      ]
+    },
+    "response": "{\n  \"cases\": 1\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "run-an-assay",
+    "group": "Prompts",
+    "name": "Run an assay",
+    "method": "POST",
+    "path": "/api/v1/prompts/:id/assay",
+    "scope": "write",
+    "summary": "Search for a better wording, against a budget.",
+    "description": "This loop spends money until told to stop, so `budgetMicros` is required rather than defaulted: a default would be somebody else's guess at what you can afford.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "budgetMicros",
+        "type": "integer",
+        "required": true,
+        "note": "The ceiling in micro-USD, between 1 and 50,000,000. Not optional."
+      },
+      {
+        "name": "metrics",
+        "type": "object[]",
+        "required": true,
+        "note": "Between 1 and 10. What counts as better."
+      },
+      {
+        "name": "model",
+        "type": "string",
+        "note": "Which model to search with."
+      },
+      {
+        "name": "k",
+        "type": "integer",
+        "note": "Candidates per round, 1 to 10. Defaults to 3."
+      },
+      {
+        "name": "maxRollouts",
+        "type": "integer",
+        "note": "A second ceiling, in calls rather than money. 1 to 5000, defaults to 600."
+      }
+    ],
+    "returns": "The assay, and the versions it produced.",
+    "sample": {
+      "id": "pr_123",
+      "budgetMicros": 2000000,
+      "metrics": [
+        {
+          "metric": "answer_relevancy"
+        }
+      ]
+    },
+    "response": "{\n  \"assayId\": \"as_12\",\n  \"candidates\": 3\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "archive-a-prompt",
+    "group": "Prompts",
+    "name": "Archive a prompt",
+    "method": "POST",
+    "path": "/api/v1/prompts/:id/archive",
+    "scope": "write",
+    "summary": "Take a prompt out of the list without deleting it.",
+    "description": "Its versions and rollouts stay, so a score that referenced it still resolves.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      }
+    ],
+    "returns": "The prompt, archived.",
+    "sample": {
+      "id": "pr_123",
+      "project": "prod"
+    },
+    "response": "{\n  \"id\": \"pr_123\",\n  \"archived\": true\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "list-tools",
+    "group": "Tools",
+    "name": "List tools",
+    "method": "GET",
+    "path": "/api/v1/tools",
+    "scope": "read",
+    "summary": "The stored tools in a project.",
+    "description": "A stored tool keeps its description in the dashboard and its handler in your code, so the wording moves without a deploy.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "archived",
+        "type": "string",
+        "note": "Include archived tools."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "note": "How many to return."
+      },
+      {
+        "name": "cursor",
+        "type": "string",
+        "note": "From the previous page's response."
+      }
+    ],
+    "returns": "The tools, with their descriptions and effects.",
+    "sample": {
+      "project": "prod",
+      "limit": 20
+    },
+    "response": "{\n  \"tools\": [\n    { \"id\": \"tl_9\", \"name\": \"get_weather\", \"effect\": \"readonly\" }\n  ]\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "create-a-tool",
+    "group": "Tools",
+    "name": "Create a tool",
+    "method": "POST",
+    "path": "/api/v1/tools",
+    "scope": "write",
+    "summary": "Store a tool's description and args.",
+    "description": "The half that moves without a deploy. `run()` stays in your code, and that is where the argument types come from.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "note": "What the model sees and calls."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true,
+        "note": "What the model reads to decide whether to call it."
+      },
+      {
+        "name": "args",
+        "type": "object[]",
+        "note": "The arguments it declares."
+      },
+      {
+        "name": "effect",
+        "type": "enum",
+        "options": ["readonly", "idempotent", "destructive"],
+        "note": "What running it does to the world outside. There is no default, and unset is not readonly."
+      }
+    ],
+    "returns": "The stored tool.",
+    "sample": {
+      "project": "prod",
+      "name": "get_weather",
+      "description": "Current weather for a city.",
+      "effect": "readonly"
+    },
+    "response": "{\n  \"id\": \"tl_9\",\n  \"name\": \"get_weather\"\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      }
+    ]
+  },
+  {
+    "slug": "read-a-tool",
+    "group": "Tools",
+    "name": "Read a tool",
+    "method": "GET",
+    "path": "/api/v1/tools/:id",
+    "scope": "read",
+    "summary": "One tool, as the model would be shown it.",
+    "description": "The description and args a turn would carry, before selection narrows anything.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      }
+    ],
+    "returns": "The tool.",
+    "sample": {
+      "id": "tl_9",
+      "project": "prod"
+    },
+    "response": "{\n  \"id\": \"tl_9\",\n  \"name\": \"get_weather\",\n  \"effect\": \"readonly\"\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "update-a-tool",
+    "group": "Tools",
+    "name": "Update a tool",
+    "method": "PATCH",
+    "path": "/api/v1/tools/:id",
+    "scope": "write",
+    "summary": "Change a tool's wording or effect.",
+    "description": "Iterating on a description is the point of a stored tool: it reaches the next turn without shipping anything.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "note": "New wording for the model."
+      },
+      {
+        "name": "effect",
+        "type": "enum",
+        "options": ["readonly", "idempotent", "destructive"],
+        "note": "What running it does to the world outside."
+      }
+    ],
+    "returns": "The updated tool.",
+    "sample": {
+      "id": "tl_9",
+      "project": "prod",
+      "description": "Current weather for a city, in Celsius."
+    },
+    "response": "{\n  \"id\": \"tl_9\",\n  \"updated\": true\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "archive-a-tool",
+    "group": "Tools",
+    "name": "Archive a tool",
+    "method": "POST",
+    "path": "/api/v1/tools/:id/archive",
+    "scope": "write",
+    "summary": "Stop offering a tool without losing its record.",
+    "description": "The turns that called it keep resolving; new turns stop seeing it.",
+    "params": [
+      {
+        "name": "id",
+        "type": "string",
+        "required": true,
+        "note": "In the path."
+      },
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      }
+    ],
+    "returns": "The tool, archived.",
+    "sample": {
+      "id": "tl_9",
+      "project": "prod"
+    },
+    "response": "{\n  \"id\": \"tl_9\",\n  \"archived\": true\n}",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No such record in the pinned project."
+      }
+    ],
+    "product": "spendgraph"
+  },
+  {
+    "slug": "upload-a-file",
+    "group": "Files",
+    "name": "Upload a file",
+    "method": "POST",
+    "path": "/api/v1/files",
+    "scope": "write",
+    "summary": "Store a file a prompt or a case refers to.",
+    "description": "The call declares the size first and uploads against what comes back, so a file too large is refused before it is sent rather than after.",
+    "params": [
+      {
+        "name": "project",
+        "type": "string",
+        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+      },
+      {
+        "name": "byteLength",
+        "type": "integer",
+        "required": true,
+        "note": "How large the file is. Checked before the upload rather than after."
+      }
+    ],
+    "returns": "Where to put it, and the id to reference it by.",
+    "sample": {
+      "project": "prod",
+      "byteLength": 18422
+    },
+    "response": "{\n  \"fileId\": \"fl_4c7\",\n  \"uploadUrl\": \"https://\u2026\"\n}",
+    "product": "spendgraph",
+    "errors": [
+      {
+        "status": 400,
+        "code": "BAD_REQUEST",
+        "note": "A field failed its check. The message names the field."
+      },
+      {
+        "status": 401,
+        "code": "UNAUTHORIZED",
+        "note": "No key, or a key that has been revoked."
+      },
+      {
+        "status": 403,
+        "code": "FORBIDDEN",
+        "note": "The body names a project the key is not pinned to. A key cannot redirect a write."
       }
     ]
   }

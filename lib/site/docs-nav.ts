@@ -8,13 +8,18 @@ import type { Product } from "./products";
  * too would bury the guides under the thing a reader reaches for second. This
  * is the door; `components/api/api-sidebar.tsx` is what is behind it.
  */
-const API_NAV_ITEMS: DocsLink[] = [
-  {
-    title: "API reference",
-    href: `/locusgraph/api/${ENDPOINTS[0].slug}`,
-    blurb: "Every endpoint a key reaches, with a playground on each one.",
-  },
-];
+const apiDoor = (product: string): DocsLink[] => {
+  const first = ENDPOINTS.find((endpoint) => endpoint.product === product);
+  return first
+    ? [
+        {
+          title: "API reference",
+          href: `/${product}/api/${first.slug}`,
+          blurb: "Every endpoint a key reaches, with a playground on each one.",
+        },
+      ]
+    : [];
+};
 
 export interface DocsLink {
   title: string;
@@ -1021,7 +1026,19 @@ const LG_API: DocsTree = {
   sections: [
     {
       title: "Reference",
-      items: API_NAV_ITEMS,
+      items: apiDoor("locusgraph"),
+    },
+  ],
+};
+
+const SG_API: DocsTree = {
+  title: "API",
+  href: "/spendgraph/api/report-usage",
+  blurb: "Every endpoint an sg_ key reaches, with a playground on each one.",
+  sections: [
+    {
+      title: "Reference",
+      items: apiDoor("spendgraph"),
     },
   ],
 };
@@ -1038,6 +1055,7 @@ const SPENDGRAPH_TREES: DocsTree[] = [
   VIGIL,
   EVALS,
   CLI,
+  SG_API,
 ];
 
 /**

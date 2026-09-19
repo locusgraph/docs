@@ -94,7 +94,7 @@ describe("llms.txt", () => {
   it("lists every endpoint", () => {
     for (const endpoint of ENDPOINTS) {
       expect(map, `${endpoint.slug} is missing from llms.txt`).toContain(
-        `/locusgraph/api/${endpoint.slug})`
+        `/${endpoint.product}/api/${endpoint.slug})`
       );
     }
   });
@@ -212,7 +212,7 @@ describe("the api in the corpus", () => {
 
   it("carries every parameter, response and failure", () => {
     for (const endpoint of ENDPOINTS) {
-      const at = full.indexOf(`/locusgraph/api/${endpoint.slug}\n`);
+      const at = full.indexOf(`/${endpoint.product}/api/${endpoint.slug}\n`);
       expect(at, `${endpoint.slug} is missing`).toBeGreaterThan(-1);
 
       const entry = full.slice(at, full.indexOf("\nSource: ", at + 1));
@@ -226,7 +226,7 @@ describe("the api in the corpus", () => {
 
   it("gives each .md the whole page", () => {
     for (const endpoint of ENDPOINTS) {
-      const md = readFileSync(`public/locusgraph/api/${endpoint.slug}.md`, "utf8");
+      const md = readFileSync(`public/${endpoint.product}/api/${endpoint.slug}.md`, "utf8");
       expect(md).toContain(`${endpoint.method} ${endpoint.path}`);
       expect(md).toContain("## Parameters");
       expect(md.length, `${endpoint.slug}.md is a stub`).toBeGreaterThan(400);

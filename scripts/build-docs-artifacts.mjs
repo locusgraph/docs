@@ -67,7 +67,7 @@ function apiMarkdown(endpoint) {
 
   lines.push(
     "",
-    `A playground for this endpoint, with the request in cURL, Node, Python and Go: ${SITE}/locusgraph/api/${endpoint.slug}`
+    `A playground for this endpoint, with the request in cURL, Node, Python and Go: ${SITE}/${endpoint.product}/api/${endpoint.slug}`
   );
   return `${lines.join("\n")}\n`;
 }
@@ -210,7 +210,7 @@ for (const page of docs) {
 }
 
 for (const endpoint of API) {
-  const file = join(root, "public", "locusgraph", "api", `${endpoint.slug}.md`);
+  const file = join(root, "public", endpoint.product, "api", `${endpoint.slug}.md`);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, apiMarkdown(endpoint));
 }
@@ -354,14 +354,17 @@ for (const { slug: product, title } of ready) {
 }
 
 // The reference, grouped the way its own sidebar groups it.
-for (const group of [...new Set(API.map((e) => e.group))]) {
-  const inGroup = API.filter((e) => e.group === group);
-  if (inGroup.length === 0) continue;
-  map.push("", `## LocusGraph API: ${group}`, "");
-  for (const endpoint of inGroup) {
-    map.push(
-      `- [${endpoint.method} ${endpoint.path}](${SITE}/locusgraph/api/${endpoint.slug}): ${endpoint.summary}`
-    );
+for (const { slug: product, title } of ready) {
+  const mine = API.filter((endpoint) => endpoint.product === product);
+  for (const group of [...new Set(mine.map((e) => e.group))]) {
+    const inGroup = mine.filter((e) => e.group === group);
+    if (inGroup.length === 0) continue;
+    map.push("", `## ${title} API: ${group}`, "");
+    for (const endpoint of inGroup) {
+      map.push(
+        `- [${endpoint.method} ${endpoint.path}](${SITE}/${product}/api/${endpoint.slug}): ${endpoint.summary}`
+      );
+    }
   }
 }
 map.push("");
@@ -404,8 +407,8 @@ for (const endpoint of API) {
   full.push(
     `## ${endpoint.name}`,
     "",
-    `Source: ${SITE}/locusgraph/api/${endpoint.slug}`,
-    `Section: LocusGraph API, ${endpoint.group}`,
+    `Source: ${SITE}/${endpoint.product}/api/${endpoint.slug}`,
+    `Section: ${endpoint.product} API, ${endpoint.group}`,
     "",
     // The inner headings drop a level: in a file where each endpoint is an H2,
     // an H2 "Parameters" is a sibling of the endpoint rather than part of it.
