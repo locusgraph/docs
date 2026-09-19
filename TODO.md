@@ -23,10 +23,10 @@ winner and bounce everyone else. The root is an indexable index instead.
 
 ## Ship-blocking
 
-- [ ] **No social card.** `public/` holds only the search index, so `pageMeta`
-      emits no `og:image` and all 116 URLs unfurl blank. One 1200x630 PNG fixes
-      every page: add `public/opengraph-image.png`, restore the `images` key in
-      `openGraph`, and put Twitter back to `summary_large_image`
+- [x] **Social card.** `app/opengraph-image.tsx` draws it at build with
+      `next/og`, so there is no binary in the repo and the card carries the
+      site's own tokens. 119 of 120 pages emit it; the exception is the global
+      error page, which has no metadata
 - [ ] **Submit the sitemap.** `https://docs.locusgraph.com/sitemap.xml` in the
       existing Search Console property, per Sl 6. Do not submit app sitemaps
 - [ ] **`doc.locusgraph.com` still points at Vercel.** A CNAME to
@@ -70,8 +70,8 @@ winner and bounce everyone else. The root is an indexable index instead.
 - [ ] **`pnpm run deploy:cf` collides with pnpm's own command.** It fails with
       `ERR_PNPM_INVALID_DEPLOY_TARGET` and needs `pnpm run deploy:cf`. Renaming the
       script to `deploy:cf` removes the trap before CI finds it
-- [ ] **`app/apple-icon.png`**: 180x180, for iOS home-screen bookmarks.
-      `app/icon.svg` covers every other surface
+- [x] **Apple icon.** `app/apple-icon.tsx`, drawn the same way. iOS ignores
+      SVG for home-screen bookmarks and falls back to a screenshot without it
 
 ## Known rough edges
 

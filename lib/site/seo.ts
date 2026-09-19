@@ -12,6 +12,20 @@ import type { Metadata } from "next";
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docs.locusgraph.com";
 
 /**
+ * The social card, drawn at build time by `app/opengraph-image.tsx`.
+ *
+ * Named here rather than left to the file convention: that convention only
+ * applies to a route which does not declare its own `openGraph`, and every page
+ * here does. Without this, two pages of 120 carried an image.
+ */
+const CARD = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: "LocusGraph Docs",
+};
+
+/**
  * Canonical, Open Graph and Twitter tags for one docs page.
  *
  * Exists because Next merges metadata by *replacing* the whole `openGraph`
@@ -40,12 +54,14 @@ export function pageMeta(opts: {
       title,
       description,
       url: path,
+      images: [CARD],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       site: "@effortlesslabs",
       title,
       description,
+      images: [CARD.url],
     },
   };
 }
