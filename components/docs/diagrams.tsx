@@ -206,7 +206,7 @@ export function ExperienceVsConclusion() {
         <ul className="mt-4 space-y-3">
           {rows.map(([a]) => (
             <li key={a} className="font-mono text-sm text-foreground">
-              “{a}”
+              "{a}"
             </li>
           ))}
         </ul>
@@ -219,7 +219,7 @@ export function ExperienceVsConclusion() {
         <ul className="mt-4 space-y-3">
           {rows.map(([, b]) => (
             <li key={b} className="font-mono text-sm text-soft line-through decoration-faint">
-              “{b}”
+              "{b}"
             </li>
           ))}
         </ul>
@@ -233,8 +233,8 @@ export function QuickstartSteps() {
   const steps = [
     ["install", "npm install @locusgraph/client"],
     ["connect", "server url · agent secret · graph id"],
-    ["remember", "storeEvent(…)"],
-    ["recall", "retrieveMemories(…)"],
+    ["remember", "storeEvent(...)"],
+    ["recall", "retrieveMemories(...)"],
   ];
   return (
     <figure className="not-prose my-6 overflow-hidden rounded-xl border border-line bg-surface">
@@ -350,7 +350,7 @@ export function ConceptTree() {
               strokeWidth="1"
             />
             <text x="96" y={116 + i * 28} className={`${LABEL} text-soft`}>
-              “{m}”
+              "{m}"
             </text>
           </g>
         ))}

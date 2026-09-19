@@ -36,12 +36,9 @@ winner and bounce everyone else. The root is an indexable index instead.
 
 ## Correctness
 
-- [ ] **Nothing checks the nav reaches the manifest.** A tree can be declared
-      and never listed in `NAV`, which is how the whole Enterprise group was
-      invisible while every count still said 40. The check walks the array the
-      sidebar renders rather than grepping every `href:` in the file. It belongs
-      in `pre-push`, next to the manifest cross-check `CLAUDE.md` asks for
-- [ ] **No tests.** `pre-push` runs lint and typecheck only
+- [x] **Tests.** 207 of them, in `pre-push`: nav reachability, nav against the
+      manifest, dead internal links, page metadata, and the human-voice
+      character rules over both prose and interface copy
 
 ## Content
 

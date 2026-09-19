@@ -9,11 +9,12 @@ The documentation host for every LocusGraph product. One Next.js app, served at
 pnpm dev          # port 3100
 pnpm lint         # biome check .
 pnpm typecheck    # tsc --noEmit
+pnpm test         # vitest run
 pnpm build
 ```
 
-Run `pnpm lint` and `pnpm typecheck` before saying a change is done. `pre-push`
-runs both, so a push fails on anything they catch.
+Run `pnpm lint`, `pnpm typecheck` and `pnpm test` before saying a change is
+done. `pre-push` runs all three, so a push fails on anything they catch.
 
 ## Skills
 
@@ -55,21 +56,12 @@ A page is three things that must agree:
 2. An entry in `lib/site/docs-manifest.ts`, under that product's key
 3. An entry in the product's tree in `lib/site/docs-nav.ts`
 
-Nothing checks that the manifest and the nav agree. A nav href with no manifest
-key is a dead link; a manifest key with no nav entry is a page nobody can find.
-Check both after editing either:
+`pnpm test` checks that they agree, along with dead internal links and the
+prose rules below. It runs in `pre-push`, so a mismatch cannot reach the remote:
 
 ```bash
-node -e "
-const fs=require('fs');
-const nav=fs.readFileSync('lib/site/docs-nav.ts','utf8');
-const man=fs.readFileSync('lib/site/docs-manifest.ts','utf8');
-const navH=[...new Set([...nav.matchAll(/href: \"\/spendgraph\/([^\"]+)\"/g)].map(m=>m[1]))].sort();
-const spend=man.slice(man.indexOf('spendgraph: {'), man.indexOf('brainstorm: {'));
-const keys=[...new Set([...spend.matchAll(/^\s+\"?([a-z0-9\/-]+)\"?: \(\) =>/gm)].map(m=>m[1]))].sort();
-console.log('nav without page:', navH.filter(h=>!keys.includes(h)).join(', ')||'-');
-console.log('page without nav:', keys.filter(k=>!navH.includes(k)).join(', ')||'-');
-"
+pnpm test          # once
+pnpm test:watch    # while writing
 ```
 
 Every page must export `meta` with a `title` and a `description`. The route
