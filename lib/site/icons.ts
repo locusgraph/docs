@@ -220,6 +220,8 @@ const GROUP_ICONS: Record<string, LucideIcon> = {
   Vigil: Hourglass,
   Evals: Gauge,
   CLI: Terminal,
+  MCP: Plug,
+  API: Webhook,
 };
 
 /** The icon for a page, by its href. Falls back rather than throwing. */
