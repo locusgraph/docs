@@ -25,6 +25,15 @@ import { isProduct, PRODUCT_INFO } from "@/lib/site/products";
  * `\u203a` rather than `/`, because these pages are full of paths: a `/` in the
  * header beside `/v1/memories` in the body reads as part of the path rather
  * than as the trail describing it.
+ *
+ * Narrow screens keep the last crumb and drop the rest. The full trail plus the
+ * search button plus the group nav is around 800px of bar, so on a phone all of
+ * it used to run off the right edge and take the search button with it. The
+ * levels it drops are the ones the sidebar behind the trigger already lists.
+ *
+ * The group nav hides below `xl`, the same width the outline hides at: three
+ * group links and the More button are another 440px, and the sidebar is the way
+ * to those pages when the header has no room for them.
  */
 export function DocsHeader() {
   const pathname = usePathname();
@@ -78,7 +87,10 @@ export function DocsHeader() {
       <nav aria-label="Breadcrumb" className="min-w-0">
         <ol className="flex items-center gap-1.5 text-sm font-medium">
           {crumbs.map((crumb) => (
-            <li key={crumb.href ?? crumb.label} className="flex min-w-0 items-center gap-1.5">
+            <li
+              key={crumb.href ?? crumb.label}
+              className={`min-w-0 items-center gap-1.5 ${crumb.last ? "flex" : "hidden sm:flex"}`}
+            >
               {crumb.href ? (
                 <Link href={crumb.href} className="truncate text-soft hover:text-foreground">
                   {crumb.label}
@@ -97,10 +109,12 @@ export function DocsHeader() {
           ))}
         </ol>
       </nav>
-      <div className="ml-auto flex min-w-0 items-center gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-2">
         <DocsSearch />
-        <DocsGroupNav />
-        <Separator orientation="vertical" className="h-4" />
+        <div className="hidden items-center gap-2 xl:flex">
+          <DocsGroupNav />
+          <Separator orientation="vertical" className="h-4" />
+        </div>
         <ThemeSwitch />
       </div>
     </header>

@@ -18,20 +18,30 @@ import { ThemeSwitch } from "@/components/site/theme-switch";
  * The bar itself is full-bleed so the border and the blur reach both edges; the
  * row inside it takes the same measure as the page, which is what puts the
  * wordmark on the same line as the left edge of the content.
+ *
+ * On a phone the row is about 60px wider than the screen, which pushed the
+ * theme switch off the right edge. Three things buy that back: a narrower
+ * gutter and tighter gaps, the two social marks hidden below `sm`, and a
+ * wordmark that truncates rather than holding its full width. Search keeps its
+ * place because it is the only way into the content from here.
  */
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/60 bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/55">
-      <div className="px-6">
-        <div className="mx-auto flex w-full max-w-4xl items-center justify-between py-4">
-          <Link href="/" className="flex items-center gap-2 text-base font-semibold tracking-tight">
-            <span className="grid size-7 place-items-center rounded-md bg-foreground text-background">
+      <div className="px-4 sm:px-6">
+        <div className="mx-auto flex w-full max-w-4xl items-center justify-between gap-3 py-4 sm:gap-4">
+          <Link
+            href="/"
+            className="flex min-w-0 items-center gap-2 text-base font-semibold tracking-tight"
+          >
+            <span className="grid size-7 shrink-0 place-items-center rounded-md bg-foreground text-background">
               <LocusMark className="size-5" />
             </span>
-            LocusGraph
-            <span className="text-soft">docs</span>
+            <span className="truncate">
+              LocusGraph <span className="text-soft">docs</span>
+            </span>
           </Link>
-          <nav className="flex items-center gap-4">
+          <nav className="flex shrink-0 items-center gap-3 sm:gap-4">
             <DocsSearch />
             <a
               href="https://www.locusgraph.com"
@@ -44,7 +54,7 @@ export function SiteHeader() {
               target="_blank"
               rel="noreferrer"
               aria-label="LocusGraph on GitHub"
-              className="text-soft hover:text-foreground"
+              className="hidden text-soft hover:text-foreground sm:block"
             >
               <GithubMark />
             </a>
@@ -53,7 +63,7 @@ export function SiteHeader() {
               target="_blank"
               rel="noreferrer"
               aria-label="Follow on X"
-              className="text-soft hover:text-foreground"
+              className="hidden text-soft hover:text-foreground sm:block"
             >
               <XMark />
             </a>
