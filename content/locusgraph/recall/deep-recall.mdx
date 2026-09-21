@@ -42,7 +42,7 @@ await client.deepRecall({
   facts: [ … ],                          // the evidence behind it
   contexts_walked: ["session:retention_research", "metric:churn"],
   coverage: "full",                      // or "partial"
-  rounds_used: 2,                        // 0–3
+  rounds_used: 2,                        // 0–9, summed across subquestions
   fallback: false,
   usage: { llm_calls: 3, prompt_tokens: 4100, completion_tokens: 380, cost_usd: 0.012 },
 }
@@ -54,9 +54,9 @@ await client.deepRecall({
 {
   text: "churn rose 4 points after the pricing change",
   source: "verified",
-  locus: "loc_…",
+  locus: "L9f3a1c42…",
   contexts: ["metric:churn"],
-  score: 0.88,
+  match_score: 0.88,
 }
 ```
 
@@ -68,7 +68,7 @@ await client.deepRecall({
 | --- | --- |
 | `coverage` | `"full"`, the walk finished. `"partial"`, it was cut short |
 | `fallback` | `true` means the walk failed and these facts came from a plain search instead |
-| `rounds_used` | How many exploration rounds it took, `0` to `3` |
+| `rounds_used` | How many exploration rounds it took. **Summed across subquestions**, so `0` to `9`: up to three rounds for each of up to three subquestions. `0` means the walker went straight to retrieval, which on a small graph is the right call rather than a failure |
 
 <Callout tone="trap" title="Check `coverage` and `fallback` before trusting the summary">
   A `partial` answer is built on an incomplete walk, and `fallback: true` means you did not get a

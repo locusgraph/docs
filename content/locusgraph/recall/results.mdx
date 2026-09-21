@@ -19,7 +19,7 @@ const { memories, items_found } = await client.retrieveMemories({ query: "…" }
 | Field | What it is |
 | --- | --- |
 | `memories` | The rendered memories: markdown by default, TOON with `format: "toon"` |
-| `items_found` | How many matched |
+| `items_found` | How many came back **on this page**, not how many matched |
 
 Use this when the destination is a model. You are not parsing anything.
 
@@ -36,12 +36,13 @@ Each item:
 
 ```typescript
 {
-  locus_id: "loc_…",
+  locus_id: "L1a2b3c4…",
   context_ids: ["preference:theme", "person:alice"],
   text: "prefers dark mode",
-  score: 0.82,
+  match_score: 0.82,
   confidence: 0.7,
-  kind: "fact",
+  value: "high",
+  event_kind: "fact",
   source: "user",
   created: 1789726800,
 }
@@ -52,15 +53,46 @@ Each item:
 | `locus_id` | The memory's id. Use it with `getLocus` or `deleteLocus` |
 | `context_ids` | **Every** context this memory is enrolled in, not just the primary one |
 | `text` | The memory |
-| `score` | How well it answered, `0` to `1`. What the ranking sorted on |
+| `match_score` | How well it answered, `0` to `1`. What the ranking sorted on |
 | `confidence` | How much the memory is trusted, set from its [source](/locusgraph/remember/sources) |
-| `kind` | The [event kind](/locusgraph/remember/event-kinds) it was stored as |
+| `value` | How long it survives decay: `high`, `medium`, `low`, or `permanent` once promoted |
+| `event_kind` | The [event kind](/locusgraph/remember/event-kinds) it was stored as |
 | `source` | Provenance. May be `null` |
 | `created` | Unix seconds |
 
-## Score and confidence are different questions
+## Walking a larger result set
 
-`score` answers *"how well does this match what you asked?"*: it is about the query, and the same memory scores differently for different questions.
+`limit` caps at 100. `offset` walks past it, and `has_more` says whether there is anything left:
+
+```typescript
+let offset = 0;
+const all = [];
+
+for (;;) {
+  const page = await client.retrieveMemories({ query: "…", format: "json", limit: 50, offset });
+  all.push(...page.items);
+  if (!page.has_more) break;
+  offset += 50;
+}
+```
+
+`has_more` is deliberately not a total. The relevance floor is applied after ranking, so counting everything that would pass it means scoring every memory in the graph, a full scan to answer a question a boolean already answers.
+
+<Callout tone="trap" title="Paging deep is best-effort, not exact">
+  Each page is ranked against a pool of candidates sized from the window you asked for, so a
+  deeper page searches a wider pool than an earlier one. On a match set larger than that pool, a
+  memory can appear on two pages or on none.
+
+  It is exact for the first pages, which is what search is for. If you are **enumerating** rather
+  than searching, an export, an audit, everything in one context, use
+  [browsing](/locusgraph/contexts/browsing), which pages over a stable order.
+</Callout>
+
+`offset` is capped at 1000 for the same reason: every channel fetches a multiple of the window it has to cover, so an unbounded offset is an unbounded query.
+
+## Match and confidence are different questions
+
+`match_score` answers *"how well does this match what you asked?"*: it is about the query, and the same memory scores differently for different questions.
 
 `confidence` answers *"how much do we trust this?"*: it is about the memory, and does not move when the query changes.
 
