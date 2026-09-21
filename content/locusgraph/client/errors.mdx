@@ -58,12 +58,20 @@ try {
 | `400` | The request was malformed, or named a field that does not exist | No: fix the call |
 | `401` | No secret, or a secret the server does not accept | No |
 | `403` | The secret is valid but does not reach that graph | No. Check the token's scope |
-| `404` | The graph, context or locus is not there | No |
+| `404` | The graph, context or memory is not there, or the path does not exist | No |
+| `409` | The context already holds a different memory. The body carries `held`: what it would have written over | No. Send `replace: true` if replacing is what you meant |
 | `413` | The payload is over the size cap | No. See [Limits](/locusgraph/client/limits) |
 | `429` | Rate limited | Yes, after a pause |
 | `5xx` | The server failed | Yes, with backoff |
 
 The line is simple: **4xx means the request was wrong, 5xx and 429 mean the moment was wrong.** Only the second group is worth sending again.
+
+<Callout tone="trap" title="A `403` body is not always JSON">
+  Everything the engine itself refuses arrives in the envelope above. A request blocked before it
+  reaches the engine, an unrecognised client signature for instance, is answered by the edge as
+  plain text, `error code: 1010`. A handler that runs `JSON.parse` on every error body will throw
+  on that one, and the status is the same `403` a wrongly scoped key returns.
+</Callout>
 
 ## Retrying
 
@@ -93,9 +101,9 @@ the timestamp, and an absent timestamp is filled in by the server at the moment 
 A retry a second later is a different timestamp, so it stores a second memory.
 
 Worth knowing either way: because the id is the context, a later write to the same context
-takes the place of what was there. That makes a retry harmless and makes two different facts
-sent to one context a memory you no longer have. If exactness matters, use a
-[transaction](/locusgraph/remember/batch), which is rejected whole or applied whole.
+lands on the same memory. A retry is therefore harmless, answering `unchanged`, and two
+*different* facts sent to one context are refused with a `409` rather than silently becoming
+one memory. Send `replace: true` when replacing is what you meant.
 
 ## Next
 

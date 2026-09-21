@@ -18,10 +18,17 @@ The SDK talks to `v1`. Upgrading the package does not change which API version y
 ## Pin the client
 
 ```json
-{ "dependencies": { "@locusgraph/client": "0.10.1" } }
+{ "dependencies": { "@locusgraph/client": "1.0.0" } }
 ```
 
-The client is **pre-1.0**, which by convention means a minor bump may break. Pin exactly and upgrade deliberately, rather than taking whatever a fresh install resolves.
+The client is at **1.0**, so a minor bump will not break you. Pin exactly anyway and upgrade deliberately, rather than taking whatever a fresh install resolves.
+
+<Callout tone="trap" title="0.x clients do not work against the current engine">
+  1.0 renamed four response fields: `event_id` to `locus_id`, `kind` to `value`, `relevance` to
+  `confidence`, `score` to `match_score`. Nothing was added to replace them, so an 0.x client
+  reads `undefined` rather than failing, so the symptom is empty values spreading through your
+  code, not an exception. The package README carries the table.
+</Callout>
 
 ## The engine keeps old names working
 
@@ -36,14 +43,27 @@ The clearest evidence of how compatibility is handled is the [source](/locusgrap
 
 Nothing forces a rename. Old code keeps working, and the preferred names are for new code.
 
-## Unknown values are accepted, not guaranteed
+## Unknown values type-check and are then refused
 
-`event_kind` is typed as the known set **or any string**, so an unrecognised value type-checks and the request is accepted. What the server does with it is not specified.
+`event_kind` is typed as the known set **or any string**, so an unrecognised value compiles and sends. The server refuses it:
+
+```json
+400 { "error": { "code": "BAD_REQUEST",
+      "message": "unknown event_kind 'fct'; valid kinds: action, choice, completed, …" } }
+```
+
+A field the engine does not read is refused the same way, naming every unknown key at once:
+
+```json
+400 { "error": { "code": "BAD_REQUEST", "message": "unknown field: contex_id" } }
+```
 
 <Callout tone="trap" title="A type-check passing is not a contract">
-  `event_kind: "my_custom_kind"` compiles and sends. Stay inside the documented
-  [event kinds](/locusgraph/remember/event-kinds) unless you have agreed otherwise, or you are
-  relying on behaviour nothing promises to keep.
+  `event_kind: "my_custom_kind"` compiles and sends, and comes back a `400`. Stay inside the
+  documented [event kinds](/locusgraph/remember/event-kinds).
+
+  The refusal is deliberate. A misspelled `context_id` used to behave exactly like a correct one:
+  the write landed, joined to nothing, and reported success.
 </Callout>
 
 ## What is not published here

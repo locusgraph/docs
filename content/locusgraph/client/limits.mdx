@@ -46,16 +46,18 @@ Four buckets, counted per minute:
 | --- | --- | --- |
 | `spend` | **20/min** | `retrieveMemories`, `deepRecall` |
 | `ingest` | **10/min** | Document ingestion |
-| `write` | **120/min** | `storeEvent`, `storeEventsBatch`, `transaction`, `observe` |
-| `read` | **300/min** | Everything else |
+| `write` | **120/min** | `observe` |
+| `read` | **300/min** | Everything else, including `storeEvent`, `storeEventsBatch` and `transaction` |
 
 Searching is the tight one, and deliberately so: a recall is not a cheap lookup. Design around it:
 
 - **Search once per turn, not once per question.** One well-phrased query returns what several narrow ones would
-- **Writes are cheap by comparison.** 120/min, and a batch of 1000 is one request against it
+- **Writes are cheap by comparison.** 300/min, and a batch of 1000 is one request against it
 - **Reads that address a context by name**: `getContext`, `listContextsByType`: sit in the 300/min bucket, so walking a known structure is not constrained the way searching is
 
 Over the limit you get `429`. That one **is** worth retrying, after a pause. See [Errors](/locusgraph/client/errors).
+
+The count is shared across every server that answers you, so twenty searches is twenty searches however they arrive, in sequence or all at once. `X-RateLimit-Limit`, `X-RateLimit-Remaining` and `X-RateLimit-Reset` come back on every response, and `Retry-After` on a `429`.
 
 ## Next
 
