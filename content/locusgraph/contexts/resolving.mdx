@@ -45,12 +45,12 @@ Point the placeholder at the memory that fulfils it:
 const result = await client.resolve({
   graphId: "acme",
   context_id: "vendor:agreement",
-  locus_id: "loc_…",
+  locus_id: "L9f3a1c42e7b85d10",
 });
 ```
 
 ```typescript
-{ context_id: "vendor:agreement", locus_id: "loc_…", links_resolved: 6, success: true }
+{ context_id: "vendor:agreement", locus_id: "L9f3a1c42e7b85d10", links_resolved: 6, success: true }
 ```
 
 `links_resolved` is every link that was waiting on that context. One resolve call reconciles all of them.
@@ -61,8 +61,8 @@ const result = await client.resolve({
 const { results, total_resolved } = await client.batchResolve({
   graphId: "acme",
   resolutions: [
-    { context_id: "vendor:agreement", locus_id: "loc_a" },
-    { context_id: "policy:renewal", locus_id: "loc_b" },
+    { context_id: "vendor:agreement", locus_id: "L9f3a1c42e7b85d10" },
+    { context_id: "policy:renewal", locus_id: "L4c81b0d7fa2e6391" },
   ],
 });
 ```

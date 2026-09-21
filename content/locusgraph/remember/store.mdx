@@ -69,22 +69,74 @@ await client.storeEvent({
 
 ```typescript
 {
-  event_id: "loc_…",           // the stored memory's id
-  status: "recorded",          // or "filtered"
-  relevance: "high",           // high · medium · low
+  locus_id: "L1a2b3c4…",       // the memory this write landed on
+  status: "created",           // created · unchanged · replaced · filtered
+  confidence: 0.7,             // how far the engine trusts it, 0 to 1
   context_id: "person:alice",  // the normalized context, when you sent one
 }
 ```
 
+### What `status` tells you
+
+A context holds one memory, so a write to a context that already has one is not a second memory. `status` says which of the four things happened.
+
+| `status` | What happened | `locus_id` |
+| --- | --- | --- |
+| `created` | The context held nothing | The new memory |
+| `unchanged` | Byte-identical to what it held. A retry, not an edit | The memory that was there |
+| `replaced` | Different text, and the write sent `replace: true` | The memory, now rewritten |
+| `filtered` | The admission gate did not admit it | `null` |
+
+Writing text a context does not already hold **without** `replace: true` is refused with a `409`. See [Replacing a memory](#replacing-a-memory).
+
 ### `status: "filtered"` is not an error
 
-A filtered write **succeeded**. The memory was accepted and stored: it is simply kept out of ranking, so a search will not return it.
+A filtered write **succeeded** as a request: the event is recorded, and no memory was built from it. That is what happens to the Noise kinds: `noise`, `debug`, `log`.
 
-That is what happens to the Noise kinds: `noise`, `debug`, `log`. You get an id back, the row exists, nothing throws.
+`locus_id` is `null`, because there is no memory to name. The event itself is still in the log and readable at `GET /v1/events/{graph_id}/rejected`, which is what makes filtering rather than rejecting worth doing.
 
 <Callout tone="trap" title="Check `status`, not just the absence of a throw">
   If you store a `fact` and get `filtered`, something about that write is not what you expected. A
   call that does not throw has been accepted; it has not necessarily been made findable.
+</Callout>
+
+## Replacing a memory
+
+Changing what a context says is a decision, not something that should happen because you reused an id. So it has to be asked for:
+
+```typescript
+await client.storeEvent({
+  graph_id: "alice",
+  event_kind: "fact",
+  context_id: "preference:theme",
+  replace: true,
+  payload: { data: "switched to light mode for daytime work" },
+});
+```
+
+Without `replace: true`, the same write is refused, and the refusal says what it would have written over:
+
+```json
+409 {
+  "success": false,
+  "error": {
+    "code": "CONFLICT",
+    "message": "preference:theme already holds a memory; send replace: true to write over it",
+    "held": {
+      "locus_id": "L1a2b3c4…",
+      "text": "prefers dark mode",
+      "source": "user",
+      "confidence": 0.7
+    }
+  }
+}
+```
+
+`held` is there so you can decide in one round trip. A memory sourced `policy` at `0.95` is usually not one an agent's guess should overwrite; writing to a context of its own is the better answer.
+
+<Callout tone="note" title="Links you do not mention are kept">
+  A field the write omits is left alone, so correcting a typo does not cost the memory its
+  `reinforces` or `related_to`. Send `reinforces: []` to clear one deliberately.
 </Callout>
 
 ### `context_id` comes back normalized

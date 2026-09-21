@@ -55,7 +55,7 @@ You are not looking anything up by key. The query is the question your feature i
 
 ## When she changes her mind
 
-Store the new preference and mark what it replaces.
+A context holds one memory, so the correction goes to the same context and says it means to replace what is there.
 
 ```typescript
 await client.storeEvent({
@@ -63,12 +63,22 @@ await client.storeEvent({
   event_kind: "fact",
   context_id: "preference:theme",
   source: "user",
-  contradicts: ["preference:theme"],
+  replace: true,
   payload: { data: "switched to light mode for daytime work" },
 });
 ```
 
-`contradicts` is the difference between superseding a memory and merely outnumbering it. Without it you have two memories that disagree and nothing saying which came later.
+Now `preference:theme` says light mode, and a search for *"what theme do they like?"* has one answer rather than two that disagree.
+
+Without `replace: true` the write is refused with a `409` that carries the memory it would have written over, so a caller that did not expect to be correcting anything finds out before it does.
+
+<Callout tone="trap" title="`contradicts` does not point at its own context">
+  It names a **different** context whose memory this one supersedes, as in `contradicts:
+  ["policy:refunds_30_day"]` on a memory filed under `policy:refunds`. A link pointing at the
+  context being written into is refused, because a context holds one memory and the link would
+  name the very memory the write is replacing: it could never resolve, and would read as a
+  correction that was recorded and then did nothing.
+</Callout>
 
 ## Where this goes next
 
