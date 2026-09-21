@@ -34,8 +34,8 @@ They are processed **in order**, which is why the example puts `org:acme` before
   filtered: 0,
   failed: 0,
   results: [
-    { status: "recorded", event_id: "loc_…", relevance: "high" },
-    { status: "recorded", event_id: "loc_…", relevance: "medium" },
+    { status: "created", locus_id: "L1a2b3c4…", confidence: 0.9 },
+    { status: "created", locus_id: "L5d6e7f8…", confidence: 0.7 },
   ],
 }
 ```
@@ -74,10 +74,12 @@ const result = await client.transaction(
 ### What comes back
 
 ```typescript
-{ applied: 3, stored: 1, filtered: 0, results: [ … ] }
+{ committed: true, applied: 3, stored: 1, filtered: 0, results: [ … ] }
 ```
 
-There is **no `failed` count**, and that is the point. A rejected operation returns `400` naming its index, and nothing at all is written, not the operations before it, not the ones after.
+`committed` is `true` on every `200` from this route: the batch either landed whole or never ran.
+
+There is **no `failed` count**, and that is the point. A rejected operation returns `400` naming its index, and nothing at all is written, not the operations before it, not the ones after. An operation that would write over a memory a context already holds returns `409` instead, with the same index and the memory it would have replaced.
 
 ## Choosing between them
 
@@ -85,15 +87,21 @@ There is **no `failed` count**, and that is the point. A rejected operation retu
 
 **Use a transaction** when the items only make sense together: retiring a context and re-filing its memories, or moving a link and writing the memory that explains why.
 
-<Callout tone="note" title="Neither is idempotent">
-  There is no caller-supplied key, so sending the same batch twice stores everything twice.
-  Repetition is signal in this system, so duplicates are not corrupting, but if a retry after an
-  ambiguous timeout must not double-write, a transaction at least fails as one unit.
+<Callout tone="note" title="Items with a `context_id` are idempotent; items without one are not">
+  A context holds one memory, so re-sending an item that names a context lands on the same memory
+  and answers `unchanged`. Re-sending an item with **no** `context_id` stores a second memory: the
+  id is derived from the payload and the timestamp, and a retry a second later is a different
+  timestamp.
+
+  Sending a batch twice where the second copy carries *different* text for the same context does
+  not double-write either. It is refused with `409` unless the item sends `replace: true`.
 </Callout>
 
 ## Limits
 
 1000 items per request, either call. Past that, split the work, and if the split must not be observed half-applied, it should not have been split.
+
+A full 1000-item batch takes around **60 seconds**. That is past Vercel's default function timeout and past a Worker's CPU limit, so a maximum-size batch is not safe to send from a serverless handler without splitting it or moving it to a queue.
 
 ## Next
 

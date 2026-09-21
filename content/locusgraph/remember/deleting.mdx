@@ -13,11 +13,11 @@ Three levels, and they remove different amounts.
 ## One memory
 
 ```typescript
-const result = await client.deleteLocus("loc_...", "acme");
+const result = await client.deleteLocus("L9f3a1c42e7b85d10", "acme");
 ```
 
 ```typescript
-{ locus_id: "loc_...", affected_links: 3 }
+{ locus_id: "L9f3a1c42e7b85d10", affected_links: 3 }
 ```
 
 `affected_links` counts the edges removed with it, in both directions. A memory that several contexts referenced takes those references with it.
@@ -27,12 +27,12 @@ const result = await client.deleteLocus("loc_...", "acme");
 `locus_id` comes back from a search, so it is easy to delete the wrong one. Read it first:
 
 ```typescript
-const detail = await client.getLocus("loc_...", "acme");
+const detail = await client.getLocus("L9f3a1c42e7b85d10", "acme");
 ```
 
 ```typescript
 {
-  locus: { locus_id, kind, payload, source, created },
+  locus: { locus_id, value, payload, source, created },
   links: { outgoing: [...], incoming: [...] },
   metadata: { ... },
 }
