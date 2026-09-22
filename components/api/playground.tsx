@@ -16,6 +16,10 @@ import { LANG_LABEL, LANGS, requestFor, type SampleLang, sampleFor } from "@/lib
  */
 const keyStore = (product: string) => `${product}.playground.key`;
 
+/** Where a reader goes to mint a narrower key, or revoke the one they pasted. */
+const keyDocs = (product: string) =>
+  product === "spendgraph" ? "/spendgraph/cli/credentials" : "/locusgraph/graphs/keys";
+
 interface Result {
   readonly status: number;
   readonly ok: boolean;
@@ -189,24 +193,36 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
   return (
     <div className="flex flex-col gap-3">
       <div
-        className={`flex items-center gap-2 rounded-lg border bg-surface px-3 py-2.5 ${
+        className={`flex flex-col gap-2 rounded-lg border bg-surface px-3 py-2.5 ${
           hasKey ? "border-line" : "border-s2/60"
         }`}
       >
-        <label htmlFor="pg-key" className="shrink-0 text-xs text-soft">
-          Key
-        </label>
-        <input
-          id="pg-key"
-          type="password"
-          value={apiKey}
-          onChange={(e) => remember(e.target.value)}
-          placeholder={endpoint.product === "spendgraph" ? "sg_…" : "lg_live_…"}
-          className="min-w-0 grow rounded-md border border-line bg-background px-2.5 py-1.5 font-mono text-xs text-foreground"
-        />
-        <span className="shrink-0 text-[11px] text-faint">
-          {hasKey ? "kept in this browser" : "needed to send"}
-        </span>
+        <div className="flex items-center gap-2">
+          <label htmlFor="pg-key" className="shrink-0 text-xs text-soft">
+            Key
+          </label>
+          <input
+            id="pg-key"
+            type="password"
+            value={apiKey}
+            onChange={(e) => remember(e.target.value)}
+            placeholder={endpoint.product === "spendgraph" ? "sg_…" : "lg_live_…"}
+            className="min-w-0 grow rounded-md border border-line bg-background px-2.5 py-1.5 font-mono text-xs text-foreground"
+          />
+          <span className="shrink-0 text-[11px] text-faint">
+            {hasKey ? "kept in this browser" : "needed to send"}
+          </span>
+        </div>
+        {/* A password field hides the key from someone reading over your
+            shoulder and from nothing else. Said at the field rather than on a
+            page about keys, because this is where one gets pasted. */}
+        <p className="m-0 text-[11px] leading-relaxed text-faint">
+          Readable by anything running on this page. Paste a key scoped to one graph, and{" "}
+          <a href={keyDocs(endpoint.product)} className="underline underline-offset-2">
+            revoke it
+          </a>{" "}
+          when you are finished.
+        </p>
       </div>
 
       <div className="rounded-lg border border-line bg-surface p-3">
