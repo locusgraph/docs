@@ -894,7 +894,7 @@
         }
       ]
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"committed\": true,\n    \"applied\": 2,\n    \"stored\": 2,\n    \"filtered\": 0,\n    \"results\": [\n      {\n        \"op\": \"store\",\n        \"status\": \"recorded\",\n        \"locus_id\": \"L9f3a1c42e7b85d10\",\n        \"confidence\": 0.7\n      },\n      {\n        \"op\": \"unlink\",\n        \"removed\": true,\n        \"links_removed\": 1\n      }\n    ]\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"committed\": true,\n    \"applied\": 2,\n    \"stored\": 1,\n    \"filtered\": 0,\n    \"results\": [\n      {\n        \"op\": \"store\",\n        \"status\": \"recorded\",\n        \"locus_id\": \"L9f3a1c42e7b85d10\",\n        \"confidence\": 0.7\n      },\n      {\n        \"op\": \"unlink\",\n        \"removed\": true,\n        \"links_removed\": 1\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1580,12 +1580,12 @@
         "note": "A note kept with the decision."
       }
     ],
-    "returns": "The stored memory, and the status the finding ended at.",
+    "returns": "The finding id and its new status: `promoted` when approved as written, `edited_promoted` when `statement` replaced it.",
     "sample": {
       "finding_id": "fnd_7f2a9c",
       "statement": "No deploys after 14:00 on Fridays"
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"fnd_7f2a9c\",\n    \"status\": \"promoted\"\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"fnd_7f2a9c\",\n    \"status\": \"edited_promoted\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1970,7 +1970,7 @@
       "graph_id": "acme",
       "context_id": "acct_88213"
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_id\": \"person:alice\",\n    \"links_count\": 2,\n    \"links\": [\n      {\n        \"from\": \"org:acme\",\n        \"to\": \"person:alice\",\n        \"link_type\": \"extends\"\n      }\n    ]\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_id\": \"person:alice\",\n    \"links_count\": 2,\n    \"links\": [\n      {\n        \"from\": \"org:acme\",\n        \"to\": \"person:alice\",\n        \"link_type\": \"extends\"\n      },\n      {\n        \"from\": \"person:alice\",\n        \"to\": \"decision:use_postgres\",\n        \"link_type\": \"related_to\"\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2016,7 +2016,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"job_4c1f8e\",\n    \"status\": \"processing\",\n    \"deduplicated\": false\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"ing_4c1f8e20-9a77-4b31-88de-1f0a6c5d2e34\",\n    \"status\": \"processing\",\n    \"deduplicated\": false\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2053,11 +2053,11 @@
         "note": "In the path. From the ingest call."
       }
     ],
-    "returns": "The job's status, and its result once it has one.",
+    "returns": "The job and what it has done so far. `status` is `processing`, `completed` or `failed`. `completed_at` appears once it ends, `error` only on a failure, and `skipped` only when a context was held by another job.",
     "sample": {
       "job_id": "job_4c7a1f"
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"job_4c1f8e\",\n    \"graph_id\": \"acme\",\n    \"filename\": \"handbook.pdf\",\n    \"content_sha256\": \"9f2c1d…\",\n    \"source\": \"upload\",\n    \"status\": \"complete\",\n    \"chunk_count\": 12,\n    \"chunks_processed\": 12,\n    \"events_created\": 47,\n    \"contexts_reused\": 9,\n    \"contexts_created\": 5,\n    \"llm_calls\": 13,\n    \"prompt_tokens\": 18422,\n    \"completion_tokens\": 3140,\n    \"cost_usd\": 0.042\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"ing_4c1f8e20-9a77-4b31-88de-1f0a6c5d2e34\",\n    \"graph_id\": \"acme\",\n    \"filename\": \"handbook.pdf\",\n    \"content_sha256\": \"9f2c1d7b84e0a5c3\",\n    \"source\": \"upload\",\n    \"status\": \"completed\",\n    \"chunk_count\": 12,\n    \"chunks_processed\": 12,\n    \"events_created\": 47,\n    \"contexts_reused\": 9,\n    \"contexts_created\": 5,\n    \"llm_calls\": 13,\n    \"prompt_tokens\": 18422,\n    \"completion_tokens\": 3140,\n    \"cost_usd\": 0.042,\n    \"created_at\": 1790070864,\n    \"completed_at\": 1790071002\n  }\n}",
     "errors": [
       {
         "status": 400,
