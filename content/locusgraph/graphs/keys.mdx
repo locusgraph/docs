@@ -68,6 +68,27 @@ The client reads `LOCUSGRAPH_AGENT_SECRET` from the environment, so nothing has 
 const client = new LocusGraphClient({ graphId: tenant.graphId });
 ```
 
+## A key in a browser
+
+`api.locusgraph.com` answers requests from any origin, so a page in a browser can
+call it directly. The engine asks for no cookies on those routes: the key in the
+request is the whole credential, and it is the caller's own.
+
+That cuts both ways. A key pasted into a page is readable by everything running
+in that page, including the network tab, an extension and any script the page
+loads. The playground on these pages keeps yours in `localStorage` for this
+browser alone and sends it nowhere but the API, which does not make the page a
+safe place for a key that can do more than the call you are testing.
+
+<Callout tone="warn" title="Pick the key by what it may do">
+  Use a key scoped to one graph, with only the scopes the call needs, and revoke
+  it when you are finished. An unscoped key in a browser is an account in a
+  browser.
+</Callout>
+
+Anything user facing follows the same rule: a browser app authenticates with a
+key minted for that app, never the one your server holds.
+
 ## Next
 
 - **[Access and transfer](/locusgraph/graphs/access)**: granting people, rather than programs
