@@ -30,6 +30,36 @@ Elsewhere:
 - [ ] **Publish `@spendgraph/*` 0.8.3.** Needs `vault run`, which only you can
       start
 
+## Keep the reference honest
+
+Every example in `lib/api/endpoints.json` was checked against the live API on
+2026-09-22, and nothing stops it drifting again. The corpus test only asserts
+that a field is present, never that the API still answers that way.
+
+- [ ] **A daily job that replays the samples.** Read `endpoints.json`, send each
+      documented sample to the real API, and compare the **shape** of the answer
+      to the stored example: same keys, same nesting, same types, never the
+      values, because ids and timestamps change every run. Report a divergence
+      as one issue naming the endpoint, the expected shape and the actual one.
+      GitHub Actions on a cron in this repo is enough, with
+      `LOCUSGRAPH_API_KEY`, `LOCUSGRAPH_GRAPH_ID` and `SPENDGRAPH_API_KEY` as
+      secrets. Two things to decide first: the write endpoints need a scratch
+      graph or they leave junk in a real one daily, and `deep-recall`,
+      `run-a-prompt` and `run-an-assay` spend real money per run, so they want a
+      `skip` flag on the endpoint rather than a run every morning
+
+What this would have caught the day it broke, all of it found by hand instead:
+the Spendgraph pages documenting `Authorization: Bearer` when the API takes
+`x-api-key` and answers `401` to everything else, `usage-summary` documenting
+`{costMicros, calls}` when the answer is `{current, previous, pricing}`, three
+request samples that the API refuses with a `400` or `422`, and the event
+vocabulary changing from `UserFeedback` to `user` under the examples.
+
+- [ ] **Five Spendgraph endpoints are still unverified**, because they need a
+      provider key on the account: `run-a-prompt`, `run-an-assay`, and the three
+      that depend on a run existing. Their examples come from the zod schemas in
+      the spendgraph repo, not from a call
+
 ## Open
 
 Both need someone with an account this machine does not have.
