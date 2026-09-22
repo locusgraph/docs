@@ -2194,7 +2194,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "from",
@@ -2247,7 +2247,7 @@
       "project": "prod",
       "limit": 20
     },
-    "response": "{\n  \"events\": [\n    { \"model\": \"claude-opus-5\", \"inputTokens\": 1240, \"costMicros\": 5000 }\n  ],\n  \"cursor\": null\n}",
+    "response": "{\n  \"events\": [\n    {\n      \"id\": \"evt_c841a69b\",\n      \"projectId\": \"prj_8c41\",\n      \"model\": \"claude-sonnet-5\",\n      \"inputTokens\": 120000,\n      \"outputTokens\": 20000,\n      \"cacheReadTokens\": 0,\n      \"cacheWriteTokens\": 0,\n      \"costMicros\": 440000,\n      \"metadata\": \"{\\\"feature\\\":\\\"budget-test\\\",\\\"env\\\":\\\"test\\\"}\",\n      \"createdAt\": \"2026-09-22T04:22:59.000Z\",\n      \"keyLabel\": \"server\"\n    },\n    {\n      \"id\": \"evt_c841a69b\",\n      \"projectId\": \"prj_8c41\",\n      \"model\": \"claude-sonnet-5\",\n      \"inputTokens\": 120000,\n      \"outputTokens\": 20000,\n      \"cacheReadTokens\": 0,\n      \"cacheWriteTokens\": 0,\n      \"costMicros\": 440000,\n      \"metadata\": \"{\\\"feature\\\":\\\"budget-test\\\",\\\"env\\\":\\\"test\\\"}\",\n      \"createdAt\": \"2026-09-22T04:22:59.000Z\",\n      \"keyLabel\": \"server\"\n    }\n  ],\n  \"nextCursor\": null\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2280,7 +2280,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "limit",
@@ -2293,7 +2293,7 @@
       "project": "prod",
       "limit": 10
     },
-    "response": "{\n  \"alerts\": [\n    { \"budget\": \"monthly\", \"firedAt\": \"2026-09-19T11:02:00Z\", \"spentMicros\": 4200000 }\n  ]\n}",
+    "response": "{\n  \"alerts\": [\n    {\n      \"id\": \"evt_c841a69b\",\n      \"projectId\": \"prj_8c41\",\n      \"projectName\": \"prod\",\n      \"period\": \"2026-09\",\n      \"thresholdPct\": 80,\n      \"sentAt\": \"2026-09-22T06:01:01.000Z\"\n    }\n  ]\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2326,7 +2326,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "from",
@@ -2343,7 +2343,7 @@
     "sample": {
       "project": "prod"
     },
-    "response": "{\n  \"costMicros\": 94000,\n  \"inputTokens\": 21790,\n  \"outputTokens\": 3220,\n  \"calls\": 19\n}",
+    "response": "{\n  \"current\": {\n    \"costMicros\": 4280242,\n    \"inputTokens\": 1185515,\n    \"outputTokens\": 191712,\n    \"cacheReadTokens\": 10,\n    \"cacheWriteTokens\": 0,\n    \"requests\": 18\n  },\n  \"previous\": {\n    \"costMicros\": 0,\n    \"inputTokens\": 0,\n    \"outputTokens\": 0,\n    \"cacheReadTokens\": 0,\n    \"cacheWriteTokens\": 0,\n    \"requests\": 0\n  },\n  \"pricing\": {\n    \"catalogEmpty\": false,\n    \"zeroCostEvents\": 5,\n    \"pricesUpdatedAt\": \"2026-09-22T06:02:59.000Z\",\n    \"staleDays\": 0\n  }\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2376,7 +2376,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "bucket",
@@ -2399,7 +2399,7 @@
       "project": "prod",
       "bucket": "day"
     },
-    "response": "{\n  \"points\": [\n    { \"at\": \"2026-09-18\", \"costMicros\": 41000 }\n  ]\n}",
+    "response": "{\n  \"days\": [\n    {\n      \"day\": \"2026-08-23\",\n      \"costMicros\": 0,\n      \"inputTokens\": 0,\n      \"outputTokens\": 0,\n      \"requests\": 0\n    },\n    {\n      \"day\": \"2026-08-24\",\n      \"costMicros\": 0,\n      \"inputTokens\": 0,\n      \"outputTokens\": 0,\n      \"requests\": 0\n    }\n  ],\n  \"bucket\": \"day\"\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2432,7 +2432,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "from",
@@ -2449,7 +2449,7 @@
     "sample": {
       "project": "prod"
     },
-    "response": "{\n  \"models\": [\n    { \"model\": \"claude-opus-5\", \"costMicros\": 71000, \"calls\": 12 }\n  ]\n}",
+    "response": "{\n  \"models\": [\n    {\n      \"model\": \"claude-sonnet-5\",\n      \"costMicros\": 4280242,\n      \"inputTokens\": 1184411,\n      \"outputTokens\": 191142,\n      \"requests\": 14\n    },\n    {\n      \"model\": \"glm-4.7-flashx\",\n      \"costMicros\": 0,\n      \"inputTokens\": 1004,\n      \"outputTokens\": 520,\n      \"requests\": 3\n    }\n  ]\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2482,7 +2482,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "from",
@@ -2499,7 +2499,7 @@
     "sample": {
       "project": "prod"
     },
-    "response": "{\n  \"keys\": [\n    { \"name\": \"acme-production\", \"costMicros\": 88000 }\n  ]\n}",
+    "response": "{\n  \"keys\": [\n    {\n      \"id\": \"evt_c841a69b\",\n      \"label\": \"server\",\n      \"revoked\": null,\n      \"costMicros\": 4280242,\n      \"inputTokens\": 1185515,\n      \"outputTokens\": 191712,\n      \"requests\": 18\n    }\n  ],\n  \"totalKeys\": 1,\n  \"totalCostMicros\": 4280242\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2532,7 +2532,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "key",
@@ -2556,7 +2556,7 @@
       "project": "prod",
       "key": "feature"
     },
-    "response": "{\n  \"tag\": \"feature\",\n  \"rows\": [\n    { \"value\": \"summarise\", \"costMicros\": 52000 }\n  ]\n}",
+    "response": "{\n  \"key\": \"feature\",\n  \"keys\": [\n    {\n      \"key\": \"feature\",\n      \"costMicros\": 4280242\n    },\n    {\n      \"key\": \"env\",\n      \"costMicros\": 3980242\n    }\n  ],\n  \"tags\": [\n    {\n      \"tag\": \"feature: budget-test\",\n      \"key\": \"feature\",\n      \"value\": \"budget-test\",\n      \"costMicros\": 4260000,\n      \"requests\": 11\n    },\n    {\n      \"tag\": \"feature: sweep\",\n      \"key\": \"feature\",\n      \"value\": \"sweep\",\n      \"costMicros\": 14842,\n      \"requests\": 4\n    }\n  ],\n  \"totalValues\": 3,\n  \"totalCostMicros\": 4280242\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2589,7 +2589,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "archived",
@@ -2612,7 +2612,7 @@
       "project": "prod",
       "limit": 20
     },
-    "response": "{\n  \"prompts\": [\n    { \"id\": \"pr_123\", \"slug\": \"ctr-sum-a91\", \"publishedVersion\": \"pv_456\" }\n  ]\n}",
+    "response": "{\n  \"prompts\": [],\n  \"nextCursor\": null\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2643,29 +2643,48 @@
     "description": "Creating it is not publishing it. A new prompt has a version and no published one until you promote it.",
     "params": [
       {
-        "name": "project",
-        "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
-      },
-      {
-        "name": "slug",
-        "type": "string",
-        "required": true,
-        "note": "The stable handle callers pull by."
-      },
-      {
         "name": "name",
         "type": "string",
-        "note": "For recognising it in the dashboard."
+        "required": true,
+        "note": "1 to 120 characters. The slug is derived from it and cannot be sent."
+      },
+      {
+        "name": "blocks",
+        "type": "object[]",
+        "note": "Up to 20, each `{ title, body }`. The prompt's parts."
+      },
+      {
+        "name": "question",
+        "type": "string",
+        "note": "The closing instruction. Placeholders in `{braces}` become fields."
+      },
+      {
+        "name": "variables",
+        "type": "object",
+        "note": "Fixed values the blocks can interpolate."
+      },
+      {
+        "name": "models",
+        "type": "string[]",
+        "note": "Up to 5. A run with no model falls back to these."
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "note": "0 to 2. Defaults to 0.7."
+      },
+      {
+        "name": "maxTokens",
+        "type": "integer",
+        "note": "1 to 32000. Defaults to 1000."
       }
     ],
     "returns": "The prompt, with its first version.",
     "sample": {
-      "project": "prod",
-      "slug": "ctr-sum-a91",
-      "name": "Contract summary"
+      "name": "Contract summary",
+      "question": "Summarise in three bullets: {document}"
     },
-    "response": "{\n  \"id\": \"pr_123\",\n  \"slug\": \"ctr-sum-a91\"\n}",
+    "response": "{\n  \"prompt\": {\n    \"id\": \"pr_123\",\n    \"projectId\": \"prj_8c41\",\n    \"name\": \"Contract summary\",\n    \"slug\": \"ctr-sum-a91\",\n    \"blocks\": [],\n    \"variables\": {},\n    \"question\": \"{question}\",\n    \"models\": [],\n    \"temperature\": 70,\n    \"maxTokens\": 1000,\n    \"createdAt\": \"2026-09-22T10:07:56.181Z\",\n    \"updatedAt\": \"2026-09-22T10:07:56.181Z\",\n    \"currentVersionId\": \"pv_457\"\n  }\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2704,7 +2723,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "runs",
@@ -2717,7 +2736,7 @@
       "id": "pr_123",
       "project": "prod"
     },
-    "response": "{\n  \"id\": \"pr_123\",\n  \"slug\": \"ctr-sum-a91\",\n  \"fields\": [ … ]\n}",
+    "response": "{\n  \"prompt\": {\n    \"id\": \"pr_123\",\n    \"projectId\": \"prj_8c41\",\n    \"name\": \"Contract summary\",\n    \"slug\": \"ctr-sum-a91\",\n    \"blocks\": [],\n    \"variables\": {},\n    \"question\": \"{question}\",\n    \"models\": [],\n    \"temperature\": 70,\n    \"maxTokens\": 1000,\n    \"fieldSpec\": [\n      {\n        \"name\": \"question\",\n        \"type\": \"string\",\n        \"required\": false\n      }\n    ],\n    \"currentVersionId\": \"pv_457\",\n    \"archivedAt\": null,\n    \"createdAt\": \"2026-09-22T10:07:56.000Z\",\n    \"updatedAt\": \"2026-09-22T10:07:56.000Z\",\n    \"draft\": {\n      \"blocks\": [],\n      \"question\": \"{question}\",\n      \"fieldSpec\": [\n        {\n          \"name\": \"question\",\n          \"type\": \"string\",\n          \"required\": false\n        }\n      ]\n    },\n    \"unpublished\": false\n  },\n  \"runs\": []\n}",
     "errors": [
       {
         "status": 400,
@@ -2759,28 +2778,60 @@
         "note": "In the path."
       },
       {
-        "name": "project",
-        "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
-      },
-      {
-        "name": "template",
-        "type": "string",
-        "note": "The wording, with its `{field}` placeholders."
-      },
-      {
         "name": "name",
         "type": "string",
-        "note": "A new display name."
+        "required": true,
+        "note": "1 to 120 characters. The slug is derived from it and cannot be sent."
+      },
+      {
+        "name": "blocks",
+        "type": "object[]",
+        "note": "Up to 20, each `{ title, body }`. The prompt's parts."
+      },
+      {
+        "name": "question",
+        "type": "string",
+        "note": "The closing instruction. Placeholders in `{braces}` become fields."
+      },
+      {
+        "name": "variables",
+        "type": "object",
+        "note": "Fixed values the blocks can interpolate."
+      },
+      {
+        "name": "models",
+        "type": "string[]",
+        "note": "Up to 5. A run with no model falls back to these."
+      },
+      {
+        "name": "temperature",
+        "type": "number",
+        "note": "0 to 2. Defaults to 0.7."
+      },
+      {
+        "name": "maxTokens",
+        "type": "integer",
+        "note": "1 to 32000. Defaults to 1000."
+      },
+      {
+        "name": "projectId",
+        "type": "string",
+        "note": "Must match the prompt's own project. A different one answers 409 `project_immutable`."
       }
     ],
     "returns": "The prompt, with the version that was created.",
     "sample": {
       "id": "pr_123",
-      "project": "prod",
-      "template": "Summarise: {document}"
+      "name": "Contract summary",
+      "blocks": [
+        {
+          "title": "Role",
+          "body": "You summarise contracts for {audience}."
+        }
+      ],
+      "question": "Summarise in three bullets: {document}"
     },
-    "response": "{\n  \"id\": \"pr_123\",\n  \"versionId\": \"pv_457\"\n}",
+    "response": "{\n  \"prompt\": {\n    \"id\": \"pr_123\",\n    \"projectId\": \"prj_8c41\",\n    \"name\": \"Contract summary\",\n    \"slug\": \"ctr-sum-a91\",\n    \"blocks\": [\n      {\n        \"title\": \"Role\",\n        \"body\": \"You summarise contracts for {audience}.\"\n      }\n    ],\n    \"variables\": {},\n    \"question\": \"Summarise in three bullets: {document}\",\n    \"models\": [],\n    \"temperature\": 70,\n    \"maxTokens\": 1000,\n    \"updatedAt\": \"2026-09-22T10:09:19.945Z\",\n    \"currentVersionId\": \"pv_457\",\n    \"fieldSpec\": [\n      {\n        \"name\": \"audience\",\n        \"type\": \"string\",\n        \"required\": false\n      },\n      {\n        \"name\": \"document\",\n        \"type\": \"string\",\n        \"required\": false\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2833,7 +2884,7 @@
       "id": "pr_123",
       "versionId": "pv_457"
     },
-    "response": "{\n  \"id\": \"pr_123\",\n  \"publishedVersion\": \"pv_457\"\n}",
+    "response": "{\n  \"versionId\": \"pv_457\",\n  \"unchanged\": false,\n  \"fieldSpec\": [\n    {\n      \"name\": \"audience\",\n      \"type\": \"string\",\n      \"required\": false\n    },\n    {\n      \"name\": \"document\",\n      \"type\": \"string\",\n      \"required\": false\n    }\n  ]\n}",
     "errors": [
       {
         "status": 400,
@@ -2877,7 +2928,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "origin",
@@ -2895,7 +2946,7 @@
       "id": "pr_123",
       "project": "prod"
     },
-    "response": "{\n  \"versions\": [\n    { \"id\": \"pv_457\", \"createdAt\": \"2026-09-19T11:02:00Z\" }\n  ]\n}",
+    "response": "{\n  \"versions\": [\n    {\n      \"id\": \"pr_123\",\n      \"promptId\": \"pr_123\",\n      \"hash\": \"1d5f28939c40cc539f2ea7074e69c285142a0232f7e3b5238450a2cca3180ac3\",\n      \"blocks\": [],\n      \"question\": \"{question}\",\n      \"fieldSpec\": null,\n      \"origin\": \"user\",\n      \"candidateId\": null,\n      \"parentVersionId\": null,\n      \"servedAt\": \"2026-09-22T10:07:56.000Z\",\n      \"servedCount\": 1,\n      \"createdAt\": \"2026-09-22T10:07:56.000Z\",\n      \"isCurrent\": true\n    }\n  ],\n  \"currentVersionId\": \"pv_457\",\n  \"assayCount\": 0\n}",
     "errors": [
       {
         "status": 400,
@@ -2923,12 +2974,12 @@
   {
     "slug": "create-a-version",
     "group": "Prompts",
-    "name": "Create a version",
+    "name": "Promote a version",
     "method": "POST",
     "path": "/api/v1/prompts/:id/versions",
     "scope": "write",
-    "summary": "Add a wording without publishing it.",
-    "description": "For preparing a change you want to score before it reaches anyone.",
+    "summary": "Make an existing version the current one.",
+    "description": "Takes the id of a version this prompt already has and makes it current. It does not author a version: a new one is written by saving the prompt, and published with the publish route.",
     "params": [
       {
         "name": "id",
@@ -2937,24 +2988,18 @@
         "note": "In the path."
       },
       {
-        "name": "project",
-        "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
-      },
-      {
-        "name": "template",
+        "name": "versionId",
         "type": "string",
         "required": true,
-        "note": "The wording, with its `{field}` placeholders."
+        "note": "A version belonging to this prompt. One from elsewhere is refused."
       }
     ],
-    "returns": "The new version.",
+    "returns": "The promoted version id, and whether it was already current.",
     "sample": {
       "id": "pr_123",
-      "project": "prod",
-      "template": "Summarise in three bullets: {document}"
+      "versionId": "pv_457"
     },
-    "response": "{\n  \"versionId\": \"pv_458\"\n}",
+    "response": "{\n  \"promoted\": \"pv_457\",\n  \"unchanged\": true\n}",
     "errors": [
       {
         "status": 400,
@@ -2996,9 +3041,15 @@
         "note": "In the path."
       },
       {
+        "name": "rolloutId",
+        "type": "string",
+        "required": true,
+        "note": "The rollout this run belongs to. Without it the call answers 422 `invalid_body`."
+      },
+      {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "values",
@@ -3034,7 +3085,7 @@
     "returns": "The reply, its usage and its rollout id.",
     "sample": {
       "id": "pr_123",
-      "project": "prod",
+      "rolloutId": "ro_4f21",
       "values": {
         "document": "…"
       }
@@ -3083,7 +3134,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "evaluation",
@@ -3107,7 +3158,7 @@
       "project": "prod",
       "limit": 20
     },
-    "response": "{\n  \"rollouts\": [\n    { \"id\": \"ro_71b\", \"status\": \"completed\", \"costMicros\": 5000 }\n  ]\n}",
+    "response": "{\n  \"rollouts\": [\n    {\n      \"id\": \"ro_4f21\",\n      \"projectId\": \"prj_8c41\",\n      \"promptId\": \"pr_123\",\n      \"promptVersionId\": null,\n      \"runId\": null,\n      \"source\": \"report\",\n      \"candidateId\": null,\n      \"parentId\": null,\n      \"generation\": null,\n      \"caseId\": null,\n      \"split\": null,\n      \"seed\": 0,\n      \"model\": \"claude-opus-5\",\n      \"fields\": {},\n      \"rendered\": [\n        {\n          \"role\": \"user\",\n          \"content\": \"Summarise in three bullets: a one page contract\"\n        }\n      ],\n      \"output\": \"- one\\n- two\\n- three\",\n      \"steps\": null,\n      \"status\": \"completed\",\n      \"error\": null,\n      \"outcome\": null,\n      \"failure\": null,\n      \"judge\": null,\n      \"inputTokens\": 1240,\n      \"outputTokens\": 96,\n      \"cacheReadTokens\": 0,\n      \"cacheWriteTokens\": 0,\n      \"citationTokens\": 0,\n      \"reasoningTokens\": 0,\n      \"costMicros\": 8600,\n      \"latencyMs\": 0,\n      \"createdAt\": \"2026-09-22T10:09:11.000Z\"\n    }\n  ],\n  \"nextCursor\": null\n}",
     "errors": [
       {
         "status": 400,
@@ -3149,91 +3200,72 @@
         "note": "In the path."
       },
       {
-        "name": "project",
+        "name": "rolloutId",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
-      },
-      {
-        "name": "versionId",
-        "type": "string",
-        "note": "Which wording ran."
+        "required": true,
+        "note": "8 to 64 characters, and the dedupe key: a retry lands on the row it already wrote."
       },
       {
         "name": "model",
         "type": "string",
         "required": true,
-        "note": "The model that answered."
+        "note": "What answered."
       },
       {
-        "name": "inputTokens",
-        "type": "integer",
-        "note": "What the call consumed."
-      },
-      {
-        "name": "outputTokens",
-        "type": "integer",
-        "note": "What came back."
-      },
-      {
-        "name": "cacheReadTokens",
-        "type": "integer",
-        "note": "Billed at a discount."
-      },
-      {
-        "name": "cacheWriteTokens",
-        "type": "integer",
-        "note": "Billed at a premium over input."
-      },
-      {
-        "name": "citationTokens",
-        "type": "integer",
-        "note": "Billed by some providers, free on others."
-      },
-      {
-        "name": "reasoningTokens",
-        "type": "integer",
-        "note": "Billed as output, invisible in the reply."
-      },
-      {
-        "name": "status",
-        "type": "string",
-        "note": "Whether the call produced what was asked for."
+        "name": "rendered",
+        "type": "object[]",
+        "required": true,
+        "note": "1 to 50 messages, each `{ role, content }`. Roles are system, user, assistant or tool."
       },
       {
         "name": "output",
         "type": "string",
-        "note": "What came back, if you want it kept."
+        "note": "What came back."
       },
       {
-        "name": "error",
-        "type": "string",
-        "note": "Why it failed, when it did."
+        "name": "status",
+        "type": "enum",
+        "options": ["completed", "failed"],
+        "note": "Defaults to completed."
       },
       {
-        "name": "latencyMs",
+        "name": "inputTokens",
         "type": "integer",
-        "note": "How long the call took."
+        "note": "Defaults to 0."
+      },
+      {
+        "name": "outputTokens",
+        "type": "integer",
+        "note": "Defaults to 0."
+      },
+      {
+        "name": "versionId",
+        "type": "string",
+        "note": "Which version produced it."
       },
       {
         "name": "caseId",
         "type": "string",
-        "note": "Which evaluation case this was."
-      },
-      {
-        "name": "rolloutId",
-        "type": "string",
-        "note": "Your own id, making the write idempotent."
+        "note": "The dataset case this ran, when it ran one."
       }
     ],
     "returns": "The recorded rollout.",
     "sample": {
       "id": "pr_123",
+      "rolloutId": "ro_4f21",
       "model": "claude-opus-5",
+      "rendered": [
+        {
+          "role": "user",
+          "content": "Summarise in three bullets: …"
+        }
+      ],
+      "output": "- one\n- two\n- three",
       "inputTokens": 1240,
       "outputTokens": 96,
       "status": "completed"
     },
-    "response": "{\n  \"rolloutId\": \"ro_71c\"\n}",
+    "response": "{\n  \"rollout\": {\n    \"id\": \"ro_4f21\",\n    \"projectId\": \"prj_8c41\",\n    \"promptId\": \"pr_123\",\n    \"promptVersionId\": null,\n    \"candidateId\": null,\n    \"parentId\": null,\n    \"generation\": null,\n    \"caseId\": null,\n    \"split\": null,\n    \"seed\": 0,\n    \"model\": \"claude-opus-5\",\n    \"fields\": {},\n    \"rendered\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"Summarise in three bullets: a one page contract\"\n      }\n    ],\n    \"source\": \"report\",\n    \"output\": \"- one\\n- two\\n- three\",\n    \"steps\": null,\n    \"status\": \"completed\",\n    \"error\": null,\n    \"outcome\": null,\n    \"failure\": null,\n    \"judge\": null,\n    \"inputTokens\": 1240,\n    \"outputTokens\": 96,\n    \"cacheReadTokens\": 0,\n    \"cacheWriteTokens\": 0,\n    \"citationTokens\": 0,\n    \"reasoningTokens\": 0,\n    \"costMicros\": 8600,\n    \"latencyMs\": 0,\n    \"createdAt\": \"2026-09-22T10:09:11.686Z\"\n  },\n  \"priced\": true\n}",
     "errors": [
       {
         "status": 400,
@@ -3271,7 +3303,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "limit",
@@ -3284,7 +3316,7 @@
       "project": "prod",
       "limit": 10
     },
-    "response": "{\n  \"runs\": [\n    { \"id\": \"run_88\", \"mean\": 0.82, \"cases\": 40 }\n  ]\n}",
+    "response": "{\n  \"runs\": []\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -3369,7 +3401,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       }
     ],
     "returns": "The cases, with their split.",
@@ -3377,7 +3409,7 @@
       "id": "pr_123",
       "project": "prod"
     },
-    "response": "{\n  \"cases\": [\n    { \"id\": \"case_1\", \"split\": \"held_out\" }\n  ]\n}",
+    "response": "{\n  \"cases\": [\n    {\n      \"id\": \"pr_123\",\n      \"projectId\": \"prj_8c41\",\n      \"promptId\": \"pr_123\",\n      \"caseId\": \"contract-short\",\n      \"split\": \"held_out\",\n      \"fieldValues\": {\n        \"document\": \"a one page contract\"\n      },\n      \"expected\": \"three bullets\",\n      \"createdAt\": \"2026-09-22T10:09:11.000Z\"\n    }\n  ],\n  \"counts\": {\n    \"total\": 1,\n    \"feedback\": 0,\n    \"held_out\": 1\n  },\n  \"problem\": \"Every case is held out, so there is nothing to learn from.\"\n}",
     "errors": [
       {
         "status": 400,
@@ -3419,29 +3451,26 @@
         "note": "In the path."
       },
       {
-        "name": "project",
-        "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
-      },
-      {
         "name": "cases",
         "type": "object[]",
         "required": true,
-        "note": "The whole dataset. Each case carries its input and whatever a metric needs."
+        "note": "Up to 5000. Each carries `caseId` (required), `fieldValues`, and optionally `expected`. `id` and `input` are not fields."
       }
     ],
     "returns": "How many cases were stored.",
     "sample": {
       "id": "pr_123",
-      "project": "prod",
       "cases": [
         {
-          "id": "case_1",
-          "input": "…"
+          "caseId": "contract-short",
+          "fieldValues": {
+            "document": "a one page contract"
+          },
+          "expected": "three bullets"
         }
       ]
     },
-    "response": "{\n  \"cases\": 1\n}",
+    "response": "{\n  \"counts\": {\n    \"total\": 1,\n    \"feedback\": 0,\n    \"held_out\": 1\n  },\n  \"problem\": \"Every case is held out, so there is nothing to learn from.\"\n}",
     "errors": [
       {
         "status": 400,
@@ -3483,36 +3512,37 @@
         "note": "In the path."
       },
       {
+        "name": "model",
+        "type": "string",
+        "note": "Required in practice: with no model here and none saved on the prompt, the call answers 422 `no_model`."
+      },
+      {
         "name": "budgetMicros",
         "type": "integer",
         "required": true,
-        "note": "The ceiling in micro-USD, between 1 and 50,000,000. Not optional."
+        "note": "1 to 50,000,000 micro-USD. Not defaulted, because the loop spends until told to stop."
       },
       {
         "name": "metrics",
         "type": "object[]",
         "required": true,
-        "note": "Between 1 and 10. What counts as better."
-      },
-      {
-        "name": "model",
-        "type": "string",
-        "note": "Which model to search with."
+        "note": "1 to 10, each `{ metric }`."
       },
       {
         "name": "k",
         "type": "integer",
-        "note": "Candidates per round, 1 to 10. Defaults to 3."
+        "note": "1 to 10. Defaults to 3."
       },
       {
         "name": "maxRollouts",
         "type": "integer",
-        "note": "A second ceiling, in calls rather than money. 1 to 5000, defaults to 600."
+        "note": "1 to 5000. Defaults to 600."
       }
     ],
     "returns": "The assay, and the versions it produced.",
     "sample": {
       "id": "pr_123",
+      "model": "claude-opus-5",
       "budgetMicros": 2000000,
       "metrics": [
         {
@@ -3562,17 +3592,18 @@
         "note": "In the path."
       },
       {
-        "name": "project",
-        "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "name": "archived",
+        "type": "boolean",
+        "required": true,
+        "note": "true archives the prompt, false restores it. Sending neither answers 422 `invalid_body`."
       }
     ],
-    "returns": "The prompt, archived.",
+    "returns": "The prompt id and when it was archived, or `null` once restored.",
     "sample": {
       "id": "pr_123",
-      "project": "prod"
+      "archived": true
     },
-    "response": "{\n  \"id\": \"pr_123\",\n  \"archived\": true\n}",
+    "response": "{\n  \"id\": \"pr_123\",\n  \"archivedAt\": \"2026-09-22T10:10:07.494Z\"\n}",
     "errors": [
       {
         "status": 400,
@@ -3610,7 +3641,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "archived",
@@ -3633,7 +3664,7 @@
       "project": "prod",
       "limit": 20
     },
-    "response": "{\n  \"tools\": [\n    { \"id\": \"tl_9\", \"name\": \"get_weather\", \"effect\": \"readonly\" }\n  ]\n}",
+    "response": "{\n  \"tools\": [],\n  \"nextCursor\": null\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -3666,7 +3697,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       },
       {
         "name": "name",
@@ -3699,7 +3730,7 @@
       "description": "Current weather for a city.",
       "effect": "readonly"
     },
-    "response": "{\n  \"id\": \"tl_9\",\n  \"name\": \"get_weather\"\n}",
+    "response": "{\n  \"tool\": {\n    \"id\": \"pr_123\",\n    \"projectId\": \"prj_8c41\",\n    \"name\": \"get_weather\",\n    \"description\": \"Current weather for a city.\",\n    \"args\": [],\n    \"effect\": \"readonly\",\n    \"pinned\": false,\n    \"archivedAt\": null,\n    \"createdAt\": \"2026-09-22T10:07:59.064Z\",\n    \"updatedAt\": \"2026-09-22T10:07:59.064Z\"\n  }\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -3738,7 +3769,7 @@
       {
         "name": "project",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "note": "Which project. A key pinned to one must omit it: naming any other answers 403 `project_not_accessible`."
       }
     ],
     "returns": "The tool.",
@@ -3746,7 +3777,7 @@
       "id": "tl_9",
       "project": "prod"
     },
-    "response": "{\n  \"id\": \"tl_9\",\n  \"name\": \"get_weather\",\n  \"effect\": \"readonly\"\n}",
+    "response": "{\n  \"tool\": {\n    \"id\": \"pr_123\",\n    \"projectId\": \"prj_8c41\",\n    \"name\": \"get_weather\",\n    \"description\": \"Current weather for a city.\",\n    \"args\": [],\n    \"effect\": \"readonly\",\n    \"pinned\": false,\n    \"archivedAt\": null,\n    \"createdAt\": \"2026-09-22T10:07:59.000Z\",\n    \"updatedAt\": \"2026-09-22T10:07:59.000Z\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -3788,29 +3819,37 @@
         "note": "In the path."
       },
       {
-        "name": "project",
+        "name": "name",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "required": true,
+        "note": "Letters, digits and underscores, starting with a letter. Sent on every save, not only a rename."
       },
       {
         "name": "description",
         "type": "string",
-        "note": "New wording for the model."
+        "required": true,
+        "note": "The only thing the model reads to decide whether to call it."
+      },
+      {
+        "name": "args",
+        "type": "object[]",
+        "note": "Up to 20 declared arguments."
       },
       {
         "name": "effect",
         "type": "enum",
         "options": ["readonly", "idempotent", "destructive"],
-        "note": "What running it does to the world outside."
+        "note": "What calling it does."
       }
     ],
     "returns": "The updated tool.",
     "sample": {
       "id": "tl_9",
-      "project": "prod",
-      "description": "Current weather for a city, in Celsius."
+      "name": "get_weather",
+      "description": "Current weather for a city, in Celsius.",
+      "effect": "readonly"
     },
-    "response": "{\n  \"id\": \"tl_9\",\n  \"updated\": true\n}",
+    "response": "{\n  \"tool\": {\n    \"id\": \"pr_123\",\n    \"projectId\": \"prj_8c41\",\n    \"name\": \"get_weather\",\n    \"description\": \"Current weather for a city.\",\n    \"args\": [],\n    \"effect\": \"readonly\",\n    \"pinned\": false,\n    \"archivedAt\": null,\n    \"createdAt\": \"2026-09-22T10:07:59.000Z\",\n    \"updatedAt\": \"2026-09-22T10:09:11.955Z\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -3852,17 +3891,18 @@
         "note": "In the path."
       },
       {
-        "name": "project",
-        "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "name": "archived",
+        "type": "boolean",
+        "required": true,
+        "note": "true archives the tool, false restores it. Sending neither answers 422 `invalid_body`."
       }
     ],
-    "returns": "The tool, archived.",
+    "returns": "The tool id and when it was archived, or `null` once restored.",
     "sample": {
       "id": "tl_9",
-      "project": "prod"
+      "archived": true
     },
-    "response": "{\n  \"id\": \"tl_9\",\n  \"archived\": true\n}",
+    "response": "{\n  \"id\": \"tl_9\",\n  \"archivedAt\": \"2026-09-22T10:10:07.494Z\"\n}",
     "errors": [
       {
         "status": 400,
@@ -3898,23 +3938,39 @@
     "description": "The call declares the size first and uploads against what comes back, so a file too large is refused before it is sent rather than after.",
     "params": [
       {
-        "name": "project",
+        "name": "content",
         "type": "string",
-        "note": "Which project. A key is pinned to one and may omit it; omitting it asks for the pin."
+        "required": true,
+        "note": "The document itself, up to 2,000,000 characters."
       },
       {
-        "name": "byteLength",
-        "type": "integer",
+        "name": "from",
+        "type": "enum",
+        "options": ["text", "md", "html"],
         "required": true,
-        "note": "How large the file is. Checked before the upload rather than after."
+        "note": "What it is now."
+      },
+      {
+        "name": "to",
+        "type": "enum",
+        "options": ["md", "html", "txt", "pdf"],
+        "required": true,
+        "note": "What to convert it to."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "note": "Letters, numbers, spaces, dots and dashes. The extension is added."
       }
     ],
     "returns": "Where to put it, and the id to reference it by.",
     "sample": {
-      "project": "prod",
-      "byteLength": 18422
+      "content": "# Contract summary\n\nThree bullets.",
+      "from": "md",
+      "to": "html",
+      "name": "summary"
     },
-    "response": "{\n  \"fileId\": \"fl_4c7\",\n  \"uploadUrl\": \"https://…\"\n}",
+    "response": "{\n  \"file\": {\n    \"id\": \"pr_123\",\n    \"name\": \"summary.html\",\n    \"type\": \"text/html; charset=utf-8\",\n    \"bytes\": 154,\n    \"key\": \"spendgraph/prj_8c41/f_7815f396.html\",\n    \"url\": \"https://files.spendgraph.locusgraph.com/f_7815f396.html\"\n  }\n}",
     "product": "spendgraph",
     "errors": [
       {
