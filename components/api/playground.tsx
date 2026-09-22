@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { Endpoint } from "@/lib/api/endpoints";
 import { API_BASE } from "@/lib/api/endpoints";
 import { highlight, type Lang } from "@/lib/api/highlight";
-import { LANG_LABEL, LANGS, type SampleLang, sampleFor } from "@/lib/api/samples";
+import { LANG_LABEL, LANGS, requestFor, type SampleLang, sampleFor } from "@/lib/api/samples";
 
 /**
  * The key is kept in this browser and nowhere else.
@@ -15,6 +15,38 @@ import { LANG_LABEL, LANGS, type SampleLang, sampleFor } from "@/lib/api/samples
  * the docs server, which is worse: this host would then be worth attacking.
  */
 const keyStore = (product: string) => `${product}.playground.key`;
+
+interface Result {
+  readonly status: number;
+  readonly ok: boolean;
+  readonly body: string;
+  readonly headers: string;
+}
+
+/** Pretty when it is JSON, untouched when it is not. */
+function readable(text: string) {
+  try {
+    return JSON.stringify(JSON.parse(text), null, 2);
+  } catch {
+    return text || "(empty body)";
+  }
+}
+
+/**
+ * The headers this page is allowed to see.
+ *
+ * A cross origin response hands JavaScript the safelisted headers plus
+ * whatever the API names in `Access-Control-Expose-Headers`, so the rate limit
+ * counters show up here only if the API exposes them. Saying that is better
+ * than printing a fixed list that looks like it came off the wire.
+ */
+function visibleHeaders(res: Response) {
+  const lines: string[] = [];
+  res.headers.forEach((value, name) => lines.push(`${name}: ${value}`));
+  return lines.length > 0
+    ? lines.sort().join("\n")
+    : "The API exposes no headers to this page. Run the sample above to see them all.";
+}
 
 function Code({ text, lang }: { text: string; lang: Lang }) {
   return (
@@ -41,7 +73,23 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
     )
   );
   const [tab, setTab] = useState<"body" | "headers">("body");
-  const [sent, setSent] = useState(false);
+
+  /**
+   * What came back, or why nothing did.
+   *
+   * `sent` used to be a boolean that swapped in the response recorded in
+   * `endpoints.json`, which meant the button printed a 200 whatever the API
+   * would have answered. It performs the call now, so the panel holds the real
+   * status, the headers the browser will let it read, and the body as sent.
+   */
+  const [result, setResult] = useState<Result | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  const forget = () => {
+    setResult(null);
+    setFailure(null);
+  };
 
   /**
    * Reading it on mount, not during render: the server has no localStorage, so
@@ -59,7 +107,7 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
 
   const remember = (value: string) => {
     setApiKey(value);
-    setSent(false);
+    forget();
     try {
       if (value) window.localStorage.setItem(keyStore(endpoint.product), value);
       else window.localStorage.removeItem(keyStore(endpoint.product));
@@ -96,12 +144,47 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
   const code = sampleFor(endpoint, parsed, lang);
   const hasKey = apiKey.trim().length > 0;
 
-  const headers = [
-    "content-type: application/json",
-    "x-ratelimit-limit: 600",
-    "x-ratelimit-remaining: 597",
-    "x-request-id: req_9fKd2mQ8Lc",
-  ].join("\n");
+  const send = async () => {
+    const request = requestFor(endpoint, parsed);
+    setPending(true);
+    setResult(null);
+    setFailure(null);
+
+    try {
+      const res = await fetch(request.url, {
+        method: request.method,
+        headers: {
+          Authorization: `Bearer ${apiKey.trim()}`,
+          ...(request.payload ? { "Content-Type": "application/json" } : {}),
+        },
+        body: request.payload ? JSON.stringify(request.payload) : undefined,
+      });
+
+      setResult({
+        status: res.status,
+        ok: res.ok,
+        body: readable(await res.text()),
+        headers: visibleHeaders(res),
+      });
+    } catch {
+      /**
+       * A fetch that throws rather than answering never reached the API, or
+       * reached it and the browser refused the answer. The usual cause is the
+       * API not returning `Access-Control-Allow-Origin` for this host, and no
+       * detail of it is readable from here, so the message says where to look
+       * rather than guessing.
+       */
+      setFailure(
+        `The browser blocked this call before any answer arrived. That is normally CORS: ${
+          API_BASE[endpoint.product]?.replace("https://", "") ?? "the API"
+        } has to return Access-Control-Allow-Origin for ${
+          typeof window === "undefined" ? "this host" : window.location.origin
+        }. The sample above still works from a terminal.`
+      );
+    } finally {
+      setPending(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -135,7 +218,7 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
               "min-w-0 grow rounded-md border border-line bg-background px-2.5 py-1.5 font-mono text-xs text-foreground";
             const edit = (value: string) => {
               setBody({ ...body, [field]: value });
-              setSent(false);
+              forget();
             };
 
             return (
@@ -213,19 +296,28 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
 
       <button
         type="button"
-        disabled={!hasKey}
-        onClick={() => setSent(true)}
+        disabled={!hasKey || pending}
+        onClick={send}
         className="h-10 rounded-lg bg-s1 text-sm font-semibold text-background disabled:cursor-not-allowed disabled:bg-ghost disabled:text-faint"
       >
-        {sent ? "Send again" : "Send request"}
+        {pending ? "Sending" : result || failure ? "Send again" : "Send request"}
       </button>
 
       <div className="overflow-hidden rounded-lg border border-line bg-surface">
         <div className="flex items-center gap-2 border-b border-line py-1.5 pr-1.5 pl-3">
           <span className="text-[11px] font-semibold">Response</span>
-          {sent ? (
-            <span className="rounded bg-s3/15 px-1.5 py-0.5 font-mono text-[10.5px] font-medium text-s3">
-              200 OK
+          {result ? (
+            <span
+              className={`rounded px-1.5 py-0.5 font-mono text-[10.5px] font-medium ${
+                result.ok ? "bg-s3/15 text-s3" : "bg-s2/15 text-s2"
+              }`}
+            >
+              {result.status}
+            </span>
+          ) : null}
+          {failure ? (
+            <span className="rounded bg-s2/15 px-1.5 py-0.5 font-mono text-[10.5px] font-medium text-s2">
+              blocked
             </span>
           ) : null}
           <span className="ml-auto flex gap-0.5">
@@ -243,16 +335,26 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
             ))}
           </span>
         </div>
-        {sent ? (
+        {result ? (
           <Code
-            text={tab === "body" ? endpoint.response : headers}
+            text={tab === "body" ? result.body : result.headers}
             lang={tab === "body" ? "json" : "plain"}
           />
+        ) : failure ? (
+          <p className="m-0 p-3.5 text-xs leading-relaxed text-s2">{failure}</p>
         ) : (
           <p className="m-0 p-3.5 text-xs text-faint">
-            Send the request to see what comes back. It goes from this browser straight to{" "}
-            <span className="font-mono">{API_BASE[endpoint.product]?.replace("https://", "")}</span>
-            .
+            {pending ? (
+              "Waiting for the API."
+            ) : (
+              <>
+                Send the request to see what comes back. It goes from this browser straight to{" "}
+                <span className="font-mono">
+                  {API_BASE[endpoint.product]?.replace("https://", "")}
+                </span>
+                .
+              </>
+            )}
           </p>
         )}
       </div>
