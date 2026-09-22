@@ -723,18 +723,37 @@
       {
         "name": "kind",
         "type": "enum",
-        "options": ["fact", "knowledge", "action", "decision", "observation", "feedback"],
-        "note": "Only events of this kind."
+        "options": [
+          "knowledge",
+          "constraint",
+          "rule",
+          "constraint_violation",
+          "action",
+          "decision",
+          "routine",
+          "noise"
+        ],
+        "note": "Only events of this kind. Any type that maps to it works too: `fact`, `observation` and `feedback` all reach `knowledge`."
       },
       {
         "name": "source",
-        "type": "string",
+        "type": "enum",
+        "options": [
+          "user",
+          "assistant",
+          "verified",
+          "tool",
+          "policy",
+          "document",
+          "derived",
+          "system"
+        ],
         "note": "Only events from this provenance tier."
       },
       {
         "name": "since",
-        "type": "string",
-        "note": "Only events after this timestamp."
+        "type": "integer",
+        "note": "Epoch seconds. Only events at or after this instant."
       },
       {
         "name": "page",
@@ -744,15 +763,15 @@
       {
         "name": "page_size",
         "type": "integer",
-        "note": "How many per page."
+        "note": "How many per page. Defaults to 100."
       }
     ],
-    "returns": "The events on that page.",
+    "returns": "The events on that page. `kind` and `source` are the public names; `sent_kind` is the exact string the writer sent, which is finer grained than `kind`.",
     "sample": {
       "graph_id": "acme",
       "page": 0
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"events\": [\n      {\n        \"context_id\": \"org:acme\",\n        \"source\": \"UserFeedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Acme runs on Postgres\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070864,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      },\n      {\n        \"context_id\": \"person:alice\",\n        \"source\": \"UserFeedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Alice leads the platform team\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070864,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      },\n      {\n        \"context_id\": \"preference:dark_mode\",\n        \"source\": \"UserFeedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Prefers dark mode across all surfaces\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070861,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      }\n    ],\n    \"total\": 3,\n    \"page\": 0,\n    \"page_size\": 100\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"events\": [\n      {\n        \"context_id\": \"org:acme\",\n        \"source\": \"user\",\n        \"kind\": \"knowledge\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Acme runs on Postgres\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070864,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      },\n      {\n        \"context_id\": \"person:alice\",\n        \"source\": \"user\",\n        \"kind\": \"knowledge\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Alice leads the platform team\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070864,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      }\n    ],\n    \"total\": 3,\n    \"page\": 0,\n    \"page_size\": 100\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -794,7 +813,7 @@
         "note": "How many to return."
       }
     ],
-    "returns": "The rejected events, each with the reason.",
+    "returns": "The events the gate refused, in the same shape as a stored one.",
     "sample": {
       "graph_id": "acme",
       "limit": 20
@@ -837,7 +856,7 @@
     ],
     "returns": "The kinds, with what each one means.",
     "sample": {},
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"kinds\": [\n      {\n        \"type\": \"action\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"choice\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"completed\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint\",\n        \"kind\": \"Constraint\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint_violation\",\n        \"kind\": \"ConstraintViolation\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"debug\",\n        \"kind\": \"Noise\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"decision\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"determination\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"execution\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"fact\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"user\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"feedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"user\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"heartbeat\",\n        \"kind\": \"RoutineOperation\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"knowledge\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"user\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"learned\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"log\",\n        \"kind\": \"Noise\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"noise\",\n        \"kind\": \"Noise\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"observation\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"operation\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"routine\",\n        \"kind\": \"RoutineOperation\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"rule\",\n        \"kind\": \"Rule\",\n        \"source\": \"system\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"selection\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"status\",\n        \"kind\": \"RoutineOperation\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"task\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      }\n    ]\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"kinds\": [\n      {\n        \"type\": \"action\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"choice\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"completed\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint\",\n        \"kind\": \"Constraint\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
