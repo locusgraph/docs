@@ -81,6 +81,20 @@ export const API_KEY_ENV: Record<string, string> = {
   spendgraph: "SPENDGRAPH_API_KEY",
 };
 
+/**
+ * How each section carries the key, which is not the same header.
+ *
+ * LocusGraph takes a bearer token; Spendgraph takes `x-api-key`, and answers
+ * `401 unauthorized` with "Sign in with GitHub, or run `sg login`" to anything
+ * sent the other way. Both were documented as `Authorization: Bearer` here,
+ * which made every Spendgraph sample and every Send request on those pages a
+ * call that could only fail.
+ */
+export const API_KEY_HEADER: Record<string, { name: string; value: (key: string) => string }> = {
+  locusgraph: { name: "Authorization", value: (key) => `Bearer ${key}` },
+  spendgraph: { name: "x-api-key", value: (key) => key },
+};
+
 export function endpointsFor(product: string): Endpoint[] {
   return ENDPOINTS.filter((endpoint) => endpoint.product === product);
 }

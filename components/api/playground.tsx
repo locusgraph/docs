@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Endpoint } from "@/lib/api/endpoints";
-import { API_BASE } from "@/lib/api/endpoints";
+import { API_BASE, API_KEY_HEADER } from "@/lib/api/endpoints";
 import { highlight, type Lang } from "@/lib/api/highlight";
 import { LANG_LABEL, LANGS, requestFor, type SampleLang, sampleFor } from "@/lib/api/samples";
 
@@ -155,10 +155,12 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
     setFailure(null);
 
     try {
+      const header = API_KEY_HEADER[endpoint.product] ?? API_KEY_HEADER.locusgraph;
+
       const res = await fetch(request.url, {
         method: request.method,
         headers: {
-          Authorization: `Bearer ${apiKey.trim()}`,
+          [header.name]: header.value(apiKey.trim()),
           ...(request.payload ? { "Content-Type": "application/json" } : {}),
         },
         body: request.payload ? JSON.stringify(request.payload) : undefined,

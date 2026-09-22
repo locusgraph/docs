@@ -7,7 +7,7 @@
  * screenshot, and a reader has no way to see what their own question looks like
  * going over the wire.
  */
-import { API_BASE, API_KEY_ENV, type Endpoint } from "./endpoints";
+import { API_BASE, API_KEY_ENV, API_KEY_HEADER, type Endpoint } from "./endpoints";
 
 export const LANGS = ["curl", "node", "python", "go"] as const;
 export type SampleLang = (typeof LANGS)[number];
@@ -85,13 +85,14 @@ export function sampleFor(
 ): string {
   const { url, payload: sent } = requestFor(endpoint, body);
   const keyEnv = API_KEY_ENV[endpoint.product];
+  const header = API_KEY_HEADER[endpoint.product] ?? API_KEY_HEADER.locusgraph;
   const hasBody = sent !== undefined;
   const payload = sent ?? {};
 
   if (lang === "curl") {
     const lines = [
       `curl -X ${endpoint.method} ${url} \\`,
-      `  -H "Authorization: Bearer $${keyEnv}"${hasBody ? " \\" : ""}`,
+      `  -H "${header.name}: ${header.value(`$${keyEnv}`)}"${hasBody ? " \\" : ""}`,
     ];
     if (hasBody) {
       lines.push(`  -H "Content-Type: application/json" \\`, `  -d '${json(payload, 2)}'`);
@@ -104,7 +105,7 @@ export function sampleFor(
       `const res = await fetch("${url}", {`,
       `  method: "${endpoint.method}",`,
       `  headers: {`,
-      `    Authorization: \`Bearer \${process.env.${keyEnv}}\`,`,
+      `    "${header.name}": \`${header.value(`\${process.env.${keyEnv}}`)}\`,`,
       ...(hasBody ? [`    "Content-Type": "application/json",`] : []),
       `  },`,
       ...(hasBody ? [`  body: JSON.stringify(${json(payload, 2)}),`] : []),
@@ -121,7 +122,7 @@ export function sampleFor(
       ``,
       `res = requests.${endpoint.method.toLowerCase()}(`,
       `    "${url}",`,
-      `    headers={"Authorization": f"Bearer {os.environ['${keyEnv}']}"},`,
+      `    headers={"${header.name}": f"${header.value(`{os.environ['${keyEnv}']}`)}"},`,
       ...(hasBody ? [`    json=${json(payload, 4)},`] : []),
       `)`,
       ``,
@@ -134,8 +135,8 @@ export function sampleFor(
     `req, _ := http.NewRequest(http.Method${endpoint.method[0]}${endpoint.method.slice(1).toLowerCase()},`,
     `    "${url}",`,
     hasBody ? `    bytes.NewReader(body))` : `    nil)`,
-    `req.Header.Set("Authorization",`,
-    `    "Bearer "+os.Getenv("${keyEnv}"))`,
+    `req.Header.Set("${header.name}",`,
+    `    ${header.name === "Authorization" ? `"Bearer "+os.Getenv("${keyEnv}")` : `os.Getenv("${keyEnv}")`})`,
     ``,
     `res, err := http.DefaultClient.Do(req)`,
   ].join("\n");
