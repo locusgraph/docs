@@ -854,9 +854,9 @@
         "note": "Not used. The kinds do not vary by graph."
       }
     ],
-    "returns": "The kinds, with what each one means.",
+    "returns": "Every string the gate recognises, the kind it lands on, the source it implies, and whether sending it becomes a memory. Several types share a kind: `completed` and `task` both land on `action`.",
     "sample": {},
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"kinds\": [\n      {\n        \"type\": \"action\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"choice\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"completed\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint\",\n        \"kind\": \"Constraint\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      }\n    ]\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"kinds\": [\n      {\n        \"type\": \"action\",\n        \"kind\": \"action\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"choice\",\n        \"kind\": \"decision\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"completed\",\n        \"kind\": \"action\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint\",\n        \"kind\": \"constraint\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
