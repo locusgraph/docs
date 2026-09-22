@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Playground } from "@/components/api/playground";
 import { CopyPage } from "@/components/docs/copy-page";
 import { ENDPOINTS, endpointBySlug } from "@/lib/api/endpoints";
+import { highlight } from "@/lib/api/highlight";
 import { PRODUCT_INFO, type Product } from "@/lib/site/products";
 import { pageMeta } from "@/lib/site/seo";
 
@@ -108,6 +109,20 @@ export default async function ApiEndpoint({
           Returns
         </h2>
         <p>{endpoint.returns}</p>
+
+        {/* The shape, not only the sentence. A reader writing against this has
+            to know what the envelope looks like and what sits under `data`,
+            and the playground beside this answers only for a key they hold. */}
+        <div className="not-prose overflow-hidden rounded-xl border border-line bg-surface">
+          <pre className="m-0 overflow-x-auto p-3.5 font-mono text-[12px] leading-relaxed">
+            {highlight(endpoint.response, "json").map((token, i) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: a token's position is its identity
+              <span key={i} style={{ color: token.colour }}>
+                {token.text}
+              </span>
+            ))}
+          </pre>
+        </div>
 
         <h2 id="when-it-fails" className="scroll-mt-20">
           When it fails
