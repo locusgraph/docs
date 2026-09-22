@@ -34,6 +34,44 @@ function resolve(endpoint: Endpoint, body: Record<string, unknown>) {
   return { path, rest };
 }
 
+/**
+ * The one request both halves of the panel describe.
+ *
+ * `sampleFor` prints it and the Send button performs it, from this function, so
+ * the code a reader copies is the call the playground just made. A GET carries
+ * what is left of the body as a query string, because that is where those
+ * fields go on the wire: building the query only in the sample would print a
+ * url the button does not use.
+ */
+export interface BuiltRequest {
+  readonly url: string;
+  readonly method: Endpoint["method"];
+  /** Present only for a method that takes one. */
+  readonly payload?: Record<string, unknown>;
+}
+
+export function requestFor(endpoint: Endpoint, body: Record<string, unknown>): BuiltRequest {
+  const { path, rest } = resolve(endpoint, body);
+  const hasBody = endpoint.method !== "GET" && endpoint.method !== "DELETE";
+
+  const query = hasBody
+    ? ""
+    : Object.entries(rest)
+        .map(
+          ([k, v]) =>
+            `${encodeURIComponent(k)}=${encodeURIComponent(
+              typeof v === "object" ? JSON.stringify(v) : String(v)
+            )}`
+        )
+        .join("&");
+
+  return {
+    url: `${API_BASE[endpoint.product]}${path}${query ? `?${query}` : ""}`,
+    method: endpoint.method,
+    payload: hasBody ? rest : undefined,
+  };
+}
+
 const json = (value: unknown, indent: number) =>
   JSON.stringify(value, null, 2)
     .split("\n")
@@ -45,11 +83,10 @@ export function sampleFor(
   body: Record<string, unknown>,
   lang: SampleLang
 ): string {
-  const { path, rest } = resolve(endpoint, body);
-  const url = `${API_BASE[endpoint.product]}${path}`;
+  const { url, payload: sent } = requestFor(endpoint, body);
   const keyEnv = API_KEY_ENV[endpoint.product];
-  const hasBody = endpoint.method !== "GET" && endpoint.method !== "DELETE";
-  const payload = hasBody ? rest : {};
+  const hasBody = sent !== undefined;
+  const payload = sent ?? {};
 
   if (lang === "curl") {
     const lines = [
