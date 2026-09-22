@@ -65,7 +65,7 @@
       "query": "what theme do they like?",
       "limit": 5
     },
-    "response": "{\n  \"memories\": \"- Prefers dark mode across all surfaces\\n- Asked for denser tables in reports\",\n  \"items_found\": 2\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"memories\": \"## Relevant Memories\\n\\nNo relevant memories found.\",\n    \"items_found\": 0,\n    \"offset\": 0,\n    \"has_more\": false\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -118,7 +118,7 @@
       "graph_id": "acme",
       "question": "What did we decide about churn, and why?"
     },
-    "response": "{\n  \"summary\": \"Churn was capped at 4% for Q3 \u2026\",\n  \"facts\": [ \u2026 ],\n  \"coverage\": \"full\",\n  \"fallback\": false\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"facts\": [],\n    \"subquestions\": [\n      \"What did we decide about the database and why?\"\n    ],\n    \"contexts_walked\": [\n      \"org:acme\",\n      \"preference:dark_mode\"\n    ],\n    \"coverage\": \"full\",\n    \"rounds_used\": 2,\n    \"fallback\": false,\n    \"usage\": {\n      \"llm_calls\": 4,\n      \"prompt_tokens\": 1230,\n      \"completion_tokens\": 78,\n      \"cost_usd\": 0.00018\n    }\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -218,7 +218,7 @@
         "data": "Prefers dark mode across all surfaces"
       }
     },
-    "response": "{\n  \"locus_id\": \"L9f3a1c42e7b85d10\",\n  \"context_id\": \"preference:dark_mode\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locus_id\": \"L81c4d0660a054999\",\n    \"status\": \"created\",\n    \"confidence\": 0.7,\n    \"context_id\": \"preference:dark_mode\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -285,7 +285,7 @@
       "source": "turn",
       "payload": "user: we should never deploy on Fridays\\nassistant: noted"
     },
-    "response": "{\n  \"observed\": true,\n  \"observation_id\": \"obs_7f2a9c\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"observed\": true,\n    \"observation_id\": \"obs_6232bef2\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -351,7 +351,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"contexts\": [\n    { \"context_id\": \"preference:dark_mode\", \"count\": 3 }\n  ],\n  \"total\": 1\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_types\": [\n      {\n        \"context_type\": \"org\",\n        \"count\": 1\n      },\n      {\n        \"context_type\": \"person\",\n        \"count\": 1\n      },\n      {\n        \"context_type\": \"preference\",\n        \"count\": 1\n      }\n    ],\n    \"total\": 3,\n    \"page\": 0,\n    \"page_size\": 100\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -399,7 +399,7 @@
       "graph_id": "acme",
       "locus_id": "L9f3a1c42e7b85d10"
     },
-    "response": "{\n  \"deleted\": true,\n  \"locus_id\": \"L9f3a1c42e7b85d10\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locus_id\": \"L9f3a1c42e7b85d10\",\n    \"affected_links\": 2\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -452,7 +452,7 @@
       "graph_id": "acme",
       "locus_id": "L9f3a1c42e7b85d10"
     },
-    "response": "{\n  \"locus_id\": \"L9f3a1c42e7b85d10\",\n  \"context_id\": \"preference:dark_mode\",\n  \"data\": \"Prefers dark mode across all surfaces\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locus\": {\n      \"locus_id\": \"L14d43ac15a16349f\",\n      \"value\": \"high\",\n      \"payload\": \"{\\\"context_id\\\":\\\"person:alice\\\",\\\"data\\\":{\\\"data\\\":\\\"Alice leads the platform team\\\",\\\"kind\\\":\\\"fact\\\"},\\\"kind\\\":\\\"fact\\\",\\\"source\\\":\\\"user\\\"}\",\n      \"source\": \"user\",\n      \"created\": 1790070864\n    },\n    \"links\": {\n      \"outgoing\": [],\n      \"incoming\": []\n    },\n    \"metadata\": {\n      \"confidence\": 0.7,\n      \"decay_days\": 180,\n      \"last_accessed\": null\n    },\n    \"contexts\": [\n      \"person:alice\"\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -510,7 +510,7 @@
       "graph_id": "acme",
       "page": 0
     },
-    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 128\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locuses\": [\n      {\n        \"locus_id\": \"L14d43ac15a16349f\",\n        \"value\": \"high\",\n        \"confidence\": 0.7,\n        \"created_at\": 1790070864,\n        \"last_accessed\": null,\n        \"content_preview\": \"Alice leads the platform team\",\n        \"link_count\": 0\n      },\n      {\n        \"locus_id\": \"Lab08f583b85ce38a\",\n        \"value\": \"high\",\n        \"confidence\": 0.7,\n        \"created_at\": 1790070864,\n        \"last_accessed\": null,\n        \"content_preview\": \"Acme runs on Postgres\",\n        \"link_count\": 0\n      },\n      {\n        \"locus_id\": \"L81c4d0660a054999\",\n        \"value\": \"high\",\n        \"confidence\": 0.7,\n        \"created_at\": 1790070861,\n        \"last_accessed\": null,\n        \"content_preview\": \"Prefers dark mode across all surfaces\",\n        \"link_count\": 0\n      }\n    ],\n    \"total\": 3,\n    \"page\": 0,\n    \"page_size\": 50\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -563,7 +563,7 @@
       "graph_id": "acme",
       "context_type": "preference"
     },
-    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 12\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locuses\": [\n      {\n        \"locus_id\": \"L81c4d0660a054999\",\n        \"value\": \"high\",\n        \"confidence\": 0.7,\n        \"created_at\": 1790070861,\n        \"last_accessed\": null,\n        \"content_preview\": \"Prefers dark mode across all surfaces\",\n        \"link_count\": 0\n      }\n    ],\n    \"total\": 1,\n    \"page\": 0,\n    \"page_size\": 50\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -623,7 +623,7 @@
       "context_type": "preference",
       "context_name": "dark_mode"
     },
-    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 3\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locuses\": [\n      {\n        \"locus_id\": \"L81c4d0660a054999\",\n        \"value\": \"high\",\n        \"confidence\": 0.7,\n        \"created_at\": 1790070861,\n        \"last_accessed\": null,\n        \"content_preview\": \"Prefers dark mode across all surfaces\",\n        \"link_count\": 0\n      }\n    ],\n    \"total\": 1,\n    \"page\": 0,\n    \"page_size\": 50\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -684,7 +684,7 @@
         }
       ]
     },
-    "response": "{\n  \"stored\": 1,\n  \"rejected\": []\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"stored\": 2,\n    \"filtered\": 0,\n    \"failed\": 0,\n    \"results\": [\n      {\n        \"locus_id\": \"L14d43ac15a16349f\",\n        \"status\": \"created\",\n        \"confidence\": 0.7,\n        \"context_id\": \"person:alice\"\n      },\n      {\n        \"locus_id\": \"Lab08f583b85ce38a\",\n        \"status\": \"created\",\n        \"confidence\": 0.7,\n        \"context_id\": \"org:acme\"\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -752,7 +752,7 @@
       "graph_id": "acme",
       "page": 0
     },
-    "response": "{\n  \"items\": [ \u2026 ],\n  \"total\": 1284\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"events\": [\n      {\n        \"context_id\": \"org:acme\",\n        \"source\": \"UserFeedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Acme runs on Postgres\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070864,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      },\n      {\n        \"context_id\": \"person:alice\",\n        \"source\": \"UserFeedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Alice leads the platform team\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070864,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      },\n      {\n        \"context_id\": \"preference:dark_mode\",\n        \"source\": \"UserFeedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"sent_kind\": \"fact\",\n        \"payload\": {\n          \"data\": \"Prefers dark mode across all surfaces\",\n          \"kind\": \"fact\"\n        },\n        \"timestamp\": 1790070861,\n        \"reinforces\": null,\n        \"extends\": null,\n        \"contradicts\": null,\n        \"related_to\": null\n      }\n    ],\n    \"total\": 3,\n    \"page\": 0,\n    \"page_size\": 100\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -799,7 +799,7 @@
       "graph_id": "acme",
       "limit": 20
     },
-    "response": "{\n  \"items\": [\n    { \"reason\": \"payload is empty\", \"received_at\": 1764432180 }\n  ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"events\": [],\n    \"count\": 0\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -837,7 +837,7 @@
     ],
     "returns": "The kinds, with what each one means.",
     "sample": {},
-    "response": "{\n  \"kinds\": [\"fact\", \"knowledge\", \"action\", \"decision\", \"observation\", \"feedback\"]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"kinds\": [\n      {\n        \"type\": \"action\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"choice\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"completed\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint\",\n        \"kind\": \"Constraint\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"constraint_violation\",\n        \"kind\": \"ConstraintViolation\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"debug\",\n        \"kind\": \"Noise\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"decision\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"determination\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"execution\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"fact\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"user\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"feedback\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"user\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"heartbeat\",\n        \"kind\": \"RoutineOperation\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"knowledge\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"user\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"learned\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"log\",\n        \"kind\": \"Noise\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"noise\",\n        \"kind\": \"Noise\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"observation\",\n        \"kind\": \"KnowledgeRecorded\",\n        \"source\": \"verified\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"operation\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"routine\",\n        \"kind\": \"RoutineOperation\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"rule\",\n        \"kind\": \"Rule\",\n        \"source\": \"system\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"selection\",\n        \"kind\": \"DecisionMade\",\n        \"source\": \"assistant\",\n        \"admitted\": true\n      },\n      {\n        \"type\": \"status\",\n        \"kind\": \"RoutineOperation\",\n        \"source\": \"system\",\n        \"admitted\": false\n      },\n      {\n        \"type\": \"task\",\n        \"kind\": \"ActionCompleted\",\n        \"source\": \"tool\",\n        \"admitted\": true\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -877,7 +877,7 @@
         "name": "operations",
         "type": "object[]",
         "required": true,
-        "note": "The writes, in order. Must not be empty."
+        "note": "The writes, in order. Must not be empty, and at most 100. A `store` carries `event_kind` as well as `context_id` and `payload`; without it the whole request answers 400."
       }
     ],
     "returns": "Confirmation, or the operation that stopped it.",
@@ -887,13 +887,14 @@
         {
           "op": "store",
           "context_id": "decision:use_postgres",
+          "event_kind": "fact",
           "payload": {
             "data": "Chose Postgres"
           }
         }
       ]
     },
-    "response": "{\n  \"committed\": true,\n  \"applied\": 1\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"committed\": true,\n    \"applied\": 2,\n    \"stored\": 2,\n    \"filtered\": 0,\n    \"results\": [\n      {\n        \"op\": \"store\",\n        \"status\": \"recorded\",\n        \"locus_id\": \"L9f3a1c42e7b85d10\",\n        \"confidence\": 0.7\n      },\n      {\n        \"op\": \"unlink\",\n        \"removed\": true,\n        \"links_removed\": 1\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -948,7 +949,7 @@
       "context_type": "preference",
       "context_name": "dark_mode"
     },
-    "response": "{\n  \"context_id\": \"preference:dark_mode\",\n  \"count\": 3,\n  \"links\": [ \u2026 ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context\": {\n      \"context_id\": \"preference:dark_mode\",\n      \"context_type\": \"preference\",\n      \"context_name\": \"dark_mode\",\n      \"created_at\": 1782542287,\n      \"updated_at\": 1790070861\n    },\n    \"stats\": {\n      \"locus_count\": 1,\n      \"outgoing_links\": 0,\n      \"incoming_links\": 0\n    }\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1010,7 +1011,7 @@
       "graph_id": "acme",
       "context_id": "preference:dark_mode"
     },
-    "response": "{\n  \"context_id\": \"preference:dark_mode\",\n  \"count\": 3\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_id\": \"preference:dark_mode\",\n    \"context\": {\n      \"context_id\": \"preference:dark_mode\",\n      \"context_type\": \"preference\",\n      \"context_name\": \"dark_mode\",\n      \"created_at\": 1782542287,\n      \"updated_at\": 1790070861,\n      \"reference_count\": 1\n    },\n    \"locus_id\": \"L81c4d0660a054999\",\n    \"payload\": {\n      \"context_id\": \"preference:dark_mode\",\n      \"data\": {\n        \"data\": \"Prefers dark mode across all surfaces\",\n        \"kind\": \"fact\"\n      },\n      \"kind\": \"fact\",\n      \"source\": \"user\"\n    }\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1063,7 +1064,7 @@
       "graph_id": "acme",
       "context_ids": ["preference:dark_mode", "policy:deployments"]
     },
-    "response": "{\n  \"found\": [ \u2026 ],\n  \"missing\": []\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"contexts\": [\n      {\n        \"context_id\": \"preference:dark_mode\",\n        \"context\": {\n          \"context_id\": \"preference:dark_mode\",\n          \"context_type\": \"preference\",\n          \"context_name\": \"dark_mode\",\n          \"created_at\": 1782542287,\n          \"updated_at\": 1790070861,\n          \"reference_count\": 1\n        },\n        \"locus_id\": \"L81c4d0660a054999\",\n        \"payload\": {\n          \"context_id\": \"preference:dark_mode\",\n          \"data\": {\n            \"data\": \"Prefers dark mode across all surfaces\",\n            \"kind\": \"fact\"\n          },\n          \"kind\": \"fact\",\n          \"source\": \"user\"\n        }\n      },\n      {\n        \"context_id\": \"person:alice\",\n        \"context\": {\n          \"context_id\": \"person:alice\",\n          \"context_type\": \"person\",\n          \"context_name\": \"alice\",\n          \"created_at\": 1789035949,\n          \"updated_at\": 1790070864,\n          \"reference_count\": 1\n        },\n        \"locus_id\": \"L14d43ac15a16349f\",\n        \"payload\": {\n          \"context_id\": \"person:alice\",\n          \"data\": {\n            \"data\": \"Alice leads the platform team\",\n            \"kind\": \"fact\"\n          },\n          \"kind\": \"fact\",\n          \"source\": \"user\"\n        }\n      }\n    ],\n    \"not_found\": []\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1126,7 +1127,7 @@
       "to_context_id": "org:acme",
       "link_type": "extends"
     },
-    "response": "{\n  \"linked\": true\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"from_context_id\": \"person:alice\",\n    \"to_context_id\": \"org:acme\",\n    \"link_type\": \"extends\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1189,7 +1190,7 @@
       "to_context_id": "org:acme",
       "link_type": "extends"
     },
-    "response": "{\n  \"unlinked\": true\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"from_context_id\": \"person:alice\",\n    \"to_context_id\": \"org:acme\",\n    \"link_type\": \"extends\",\n    \"removed\": true,\n    \"links_removed\": 1\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1244,7 +1245,7 @@
       "context_type": "preference",
       "context_name": "dark_mode"
     },
-    "response": "{\n  \"forgotten\": true,\n  \"memories_removed\": 3\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_id\": \"preference:dark_mode\",\n    \"deleted_locus_ids\": [\n      \"L81c4d0660a054999\"\n    ],\n    \"unlinked_locus_ids\": []\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1327,7 +1328,7 @@
       "context_name": "alice",
       "direction": "both"
     },
-    "response": "{\n  \"relationships\": [\n    { \"to\": \"org:acme\", \"link_type\": \"extends\" }\n  ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"relationships\": [\n      {\n        \"context\": {\n          \"context_id\": \"org:acme\",\n          \"context_type\": \"org\",\n          \"context_name\": \"acme\",\n          \"created_at\": 1790070864,\n          \"updated_at\": 1790070864,\n          \"reference_count\": 1\n        },\n        \"link_type\": \"extends\",\n        \"direction\": \"outgoing\"\n      }\n    ],\n    \"total\": 1,\n    \"page\": 0,\n    \"page_size\": 100\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1393,7 +1394,7 @@
       "context_name": "alice",
       "depth": 2
     },
-    "response": "{\n  \"nodes\": [ \u2026 ],\n  \"edges\": [ \u2026 ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"nodes\": [\n      {\n        \"context_id\": \"org:acme\",\n        \"context_type\": \"org\",\n        \"context_name\": \"acme\",\n        \"reference_count\": 1\n      },\n      {\n        \"context_id\": \"person:alice\",\n        \"context_type\": \"person\",\n        \"context_name\": \"alice\",\n        \"reference_count\": 1\n      }\n    ],\n    \"edges\": [\n      {\n        \"from\": \"person:alice\",\n        \"to\": \"org:acme\",\n        \"link_type\": \"extends\"\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1450,7 +1451,7 @@
       "graph_id": "acme",
       "min_refs": 2
     },
-    "response": "{\n  \"nodes\": [ \u2026 ],\n  \"edges\": [ \u2026 ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"nodes\": [\n      {\n        \"context_id\": \"org:acme\",\n        \"context_type\": \"org\",\n        \"context_name\": \"acme\",\n        \"reference_count\": 1\n      },\n      {\n        \"context_id\": \"person:alice\",\n        \"context_type\": \"person\",\n        \"context_name\": \"alice\",\n        \"reference_count\": 1\n      },\n      {\n        \"context_id\": \"preference:dark_mode\",\n        \"context_type\": \"preference\",\n        \"context_name\": \"dark_mode\",\n        \"reference_count\": 1\n      }\n    ],\n    \"edges\": [\n      {\n        \"from\": \"person:alice\",\n        \"to\": \"org:acme\",\n        \"link_type\": \"extends\"\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1491,7 +1492,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"findings\": [\n    { \"id\": \"fnd_\u2026\", \"statement\": \"no deploys on Friday afternoons\", \"status\": \"pending\" }\n  ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"findings\": [],\n    \"usage\": {\n      \"llm_calls\": 0,\n      \"prompt_tokens\": 0,\n      \"completion_tokens\": 0,\n      \"cost_usd\": 0\n    }\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1532,7 +1533,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"findings\": [\n    { \"id\": \"fnd_\u2026\", \"status\": \"edited_promoted\" }\n  ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"findings\": [],\n    \"usage\": {\n      \"llm_calls\": 0,\n      \"prompt_tokens\": 0,\n      \"completion_tokens\": 0,\n      \"cost_usd\": 0\n    }\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1584,7 +1585,7 @@
       "finding_id": "fnd_7f2a9c",
       "statement": "No deploys after 14:00 on Fridays"
     },
-    "response": "{\n  \"status\": \"edited_promoted\",\n  \"locus_id\": \"L9f3a1c42e7b85d10\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"fnd_7f2a9c\",\n    \"status\": \"promoted\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1630,7 +1631,7 @@
     "sample": {
       "finding_id": "fnd_7f2a9c"
     },
-    "response": "{\n  \"status\": \"rejected\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"id\": \"fnd_7f2a9c\",\n    \"status\": \"rejected\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1680,7 +1681,7 @@
     "sample": {
       "page": 0
     },
-    "response": "{\n  \"graphs\": [\n    { \"graph_id\": \"acme\", \"name\": \"Acme\" }\n  ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"graphs\": [\n      {\n        \"graph_id\": \"acme\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Acme\",\n        \"description\": \"Everything the assistant knows about Acme\",\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1788770804,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_3279854f-449e-4fd4-beb4-8412fe94113d\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Acme\",\n        \"description\": \"Everything the assistant knows about Acme\",\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1788770461,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_c35cec88-2bdf-4116-8a98-188c5feaeb30\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Acme\",\n        \"description\": \"Everything the assistant knows about Acme\",\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1788611878,\n        \"permission\": \"owner\",\n        \"memory_count\": 690,\n        \"event_count\": 1042,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1788864021,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_9b10849d-d3e7-4bf6-a8b4-c60616ed82cc\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Acme\",\n        \"description\": \"Everything the assistant knows about Acme\",\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1788604019,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_1fdc75e4-fce3-454b-8096-77b2a9174c50\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Acme\",\n        \"description\": \"Everything the assistant knows about Acme\",\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1788551734,\n        \"permission\": \"owner\",\n        \"memory_count\": 88,\n        \"event_count\": 219,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1788601153,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_43758eb1-72a9-4fdb-9a0c-5ca75c21a5e5\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Acme\",\n        \"description\": \"Scope probe, safe to delete\",\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1788551688,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_11c1b9d4-4f23-4344-9914-77529e1574f2\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"accidental — created by an API probe 2026-08-24, archived same day\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": true,\n        \"created_at\": 1787545772,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_6f83bbaa-3b0e-4156-b10a-82e71ed4e12b\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_bc92544d-5f4e-407c-987d-7cf20f9b0d7e\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1783752362,\n        \"permission\": \"owner\",\n        \"memory_count\": 7,\n        \"event_count\": 7,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1784549762,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_6ecb207d-2745-45f7-a74d-27e62044b004\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_ee6b3cf6-52a3-48a1-8504-21f6cb728057\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1783669239,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_1e8d9a9e-9f28-446b-a87f-125530a036fc\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"rag-demo\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1783168468,\n        \"permission\": \"owner\",\n        \"memory_count\": 18,\n        \"event_count\": 40,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1783169483,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_db0254f8-1d2b-482e-b4a4-b8183658b094\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_a97e4ec5-c11b-4531-8d00-c810f7bd30bc\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1783064320,\n        \"permission\": \"owner\",\n        \"memory_count\": 54,\n        \"event_count\": 70,\n        \"rejected_count\": 20,\n        \"last_write_at\": 1783171039,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_fc5de1e5-370e-4e85-b801-725715256d39\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_43a5fffb-8d03-4d7f-920f-13fb6e202782\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782889182,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_dccf4e47-fdc7-41f2-952a-ca6b359f5129\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"chatbot-demo\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782541888,\n        \"permission\": \"owner\",\n        \"memory_count\": 134,\n        \"event_count\": 327,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1785402497,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_4c87fca5-0f75-4c9a-aa50-ae1ac255a169\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_e88c31bd-52da-410d-829e-18e0791dcbaa\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782195757,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_3f91ad7c-19f5-491c-94d3-28c0a9e4c078\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_0f579866-9866-4f1c-a691-e79758863541\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782191380,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_3ab793b6-fd35-4db0-8eb7-7cad9e69ed3f\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_b09cbc41-1227-4658-a2f7-5d3b8402ec31\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782191114,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_7a1f20dd-f4ef-46bd-bbc0-e49a73bc4700\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_7983a6e6-9c68-4a6d-8f2c-084243e4413f\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782191113,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_a6041c22-40bd-4a75-b083-5bbe02c9f24d\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_01dbbd91-a0ac-4e50-9a95-a7e6019f9b8d\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782190612,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_7d9dc326-51e5-42d4-b831-2761d3f1285d\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_247fd02d-6623-4d6e-8f1e-d4d43160b3c9\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782189415,\n        \"permission\": \"owner\",\n        \"memory_count\": 2,\n        \"event_count\": 2,\n        \"rejected_count\": 2,\n        \"last_write_at\": 1782201845,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_5e2f1072-3db1-4e5c-8d6a-e88fceed9809\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_6ad030ff-8e60-46a7-8dbe-9db712e8ca43\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782189363,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_74bdb845-9740-4aa8-a3a0-f96028be819d\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_d0a59e47-ae81-4cb7-ad4f-2a1f600c5418\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782185931,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_42820c8a-c915-4c9d-9def-ab34bf0d495c\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_ba047371-e32c-4c99-9e21-8621b1f4a9c1\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782185930,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_f5893f04-3a6d-4247-a0b2-1b5975aa562d\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_dc209e9c-6e37-4e92-8f43-a7954ac93a8d\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782185828,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_7ba81398-31de-4cde-9b75-24dd6eaf9e7f\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_3135d813-a9b0-4476-bdc1-4c7954c84bde\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782184791,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_4c5001f2-8098-4565-9ade-5157955269a7\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_8c1ee102-cca5-42fe-ac1d-816f60176f0c\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782184790,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_3a0833ac-fe1d-4fd3-a2db-582c1902670e\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_77179ce7-9b2e-4a4f-b26c-0a60ff71eb87\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782184751,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_0db981bc-905b-48f5-9cda-25972f68048e\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-ws-ws_c0048193-fd0c-4766-b649-7c76039e5674\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782184750,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_0fafb40a-62ff-4e0c-8cee-b9c32d637d1b\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-c445b6db-ba63-408a-8200-b04509ae200b\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782182411,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_84843855-d061-44bd-bb0e-909f56b5296d\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-03bb755c-7521-4b36-8756-e3155be2bcfd\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782182368,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_04e07566-b874-4970-9e1b-52a90c83e3f5\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-01773685-0b31-4c38-9176-ca6545d015d1\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782182351,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_a659aad2-7ff7-4505-bf12-213c13a36730\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-d8588681-3b33-4870-8b85-fc40ad9ab879\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782182295,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_038e4f3d-d3ee-4eb7-9866-9a987ab4616b\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-eaa52d5c-c7e3-42aa-bf43-6bd452622086\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1782182271,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_1ac6969f-5963-459c-8c70-121e7acb3573\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"fnb\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781965084,\n        \"permission\": \"owner\",\n        \"memory_count\": 1188,\n        \"event_count\": 1956,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1782474338,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_35190c95-63a1-46db-9425-80032c1942c1\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-89ca50fb-3e8f-4057-bbe4-a334b9455265\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781862729,\n        \"permission\": \"owner\",\n        \"memory_count\": 237,\n        \"event_count\": 237,\n        \"rejected_count\": 9,\n        \"last_write_at\": 1782739127,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_73defca9-597a-491b-96bb-e3e18ce202c7\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-ae9fe27a-5bf2-4e22-a782-af4ca28521af\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781619105,\n        \"permission\": \"owner\",\n        \"memory_count\": 502,\n        \"event_count\": 523,\n        \"rejected_count\": 13,\n        \"last_write_at\": 1785619203,\n        \"review_count\": 10\n      },\n      {\n        \"graph_id\": \"graph_a0a366bb-2c4a-42e5-b830-3c6caa27fc4f\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-1b1e3ad4-f8ed-4c0c-bf68-40eec9bdbfec\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781549497,\n        \"permission\": \"owner\",\n        \"memory_count\": 356,\n        \"event_count\": 358,\n        \"rejected_count\": 20,\n        \"last_write_at\": 1783670352,\n        \"review_count\": 25\n      },\n      {\n        \"graph_id\": \"graph_f164f68f-db63-4a17-882f-992a35406ab8\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-9135b275-473e-42a3-bc73-b5f30b286a97\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781544467,\n        \"permission\": \"owner\",\n        \"memory_count\": 156,\n        \"event_count\": 156,\n        \"rejected_count\": 8,\n        \"last_write_at\": 1783174683,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_5d31e0ab-5e8d-4ee9-9861-cb77037de436\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-050083ac-21f8-4f93-9f40-7da5dd5c7123\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781543973,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_13f56d29-d439-40b9-83dd-7f03e76bdf1f\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-demo-1781543677666\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781543678,\n        \"permission\": \"owner\",\n        \"memory_count\": 1,\n        \"event_count\": 1,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1781543680,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_98e23db1-fa55-48f0-9323-ed91ca82c2f1\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"realm-user-test\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1781543557,\n        \"permission\": \"owner\",\n        \"memory_count\": 1,\n        \"event_count\": 1,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1781543607,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_9268916a-7d98-48b5-b9f0-abed9f054662\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"membenches\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1780987832,\n        \"permission\": \"owner\",\n        \"memory_count\": 1258,\n        \"event_count\": 3772,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1697968500,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_17ac4667-ee9a-4c02-9903-69236309b875\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"fnmoa\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1780915919,\n        \"permission\": \"owner\",\n        \"memory_count\": 101,\n        \"event_count\": 213,\n        \"rejected_count\": 48,\n        \"last_write_at\": 1785505814,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_d5dc39eb-67fb-4cba-b9f8-1d5a674cb105\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"article-gen-agent\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1775743697,\n        \"permission\": \"owner\",\n        \"memory_count\": 1024,\n        \"event_count\": 1135,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1778757315,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_711b0889-1f2b-472c-94ce-60717f96b656\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"demo\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1775462398,\n        \"permission\": \"owner\",\n        \"memory_count\": 93,\n        \"event_count\": 93,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1775463562,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_8d2faeff-6f0e-4997-8e22-441bb0ba5c4b\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"obsidian\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1774422528,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_a72ad8e6-e223-4ffd-9866-c3de6d13d96a\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"Personal\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1773546894,\n        \"permission\": \"owner\",\n        \"memory_count\": 238,\n        \"event_count\": 238,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1785318447,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_ae625d52-f709-4152-a3d4-2c33c8acf940\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"locus.codes\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1773531128,\n        \"permission\": \"owner\",\n        \"memory_count\": 28,\n        \"event_count\": 28,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1773722033,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_4bf37aea-f704-49a8-b294-005c1adabcda\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"ordingo\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1772570727,\n        \"permission\": \"owner\",\n        \"memory_count\": 29,\n        \"event_count\": 29,\n        \"rejected_count\": 0,\n        \"last_write_at\": 1773750382,\n        \"review_count\": 0\n      },\n      {\n        \"graph_id\": \"graph_c20269e3-3dc5-4f16-bdc1-b96780e61d22\",\n        \"owner_account_id\": \"acct_88213\",\n        \"name\": \"podd\",\n        \"description\": null,\n        \"auto_delete_enabled\": false,\n        \"archived\": false,\n        \"created_at\": 1772559553,\n        \"permission\": \"owner\",\n        \"memory_count\": 0,\n        \"event_count\": 0,\n        \"rejected_count\": 0,\n        \"last_write_at\": null,\n        \"review_count\": 0\n      }\n    ],\n    \"total\": 49,\n    \"page\": 0,\n    \"page_size\": 50,\n    \"sort\": \"created\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1721,7 +1722,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"graph_id\": \"acme\",\n  \"name\": \"Acme\",\n  \"archived\": false\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"graph\": {\n      \"graph_id\": \"acme\",\n      \"owner_account_id\": \"acct_88213\",\n      \"name\": \"Acme\",\n      \"description\": \"Everything the assistant knows about Acme\",\n      \"auto_delete_enabled\": false,\n      \"archived\": false,\n      \"created_at\": 1788770804,\n      \"stats\": {\n        \"total_memories\": 3,\n        \"keyword_indexed\": 3,\n        \"total_links\": 0,\n        \"total_events\": 3,\n        \"memory_by_value\": {\n          \"high\": 3,\n          \"medium\": 0,\n          \"low\": 0,\n          \"permanent\": 0\n        },\n        \"average_confidence\": 0.6999999999999998,\n        \"created_at\": 1790070861,\n        \"last_accessed\": null\n      },\n      \"recent_memories\": [\n        {\n          \"locus_id\": \"L14d43ac15a16349f\",\n          \"value\": \"high\",\n          \"confidence\": 0.7,\n          \"created_at\": 1790070864,\n          \"last_accessed\": null,\n          \"content_preview\": \"Alice leads the platform team\",\n          \"link_count\": 0\n        },\n        {\n          \"locus_id\": \"Lab08f583b85ce38a\",\n          \"value\": \"high\",\n          \"confidence\": 0.7,\n          \"created_at\": 1790070864,\n          \"last_accessed\": null,\n          \"content_preview\": \"Acme runs on Postgres\",\n          \"link_count\": 0\n        },\n        {\n          \"locus_id\": \"L81c4d0660a054999\",\n          \"value\": \"high\",\n          \"confidence\": 0.7,\n          \"created_at\": 1790070861,\n          \"last_accessed\": null,\n          \"content_preview\": \"Prefers dark mode across all surfaces\",\n          \"link_count\": 0\n        }\n      ]\n    }\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1767,7 +1768,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"nodes\": [ \u2026 ],\n  \"edges\": [ \u2026 ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"nodes\": [\n      {\n        \"id\": \"L14d43ac15a16349f\",\n        \"value\": \"high\",\n        \"label\": \"Alice leads the platform team\",\n        \"confidence\": 0.7\n      },\n      {\n        \"id\": \"Lab08f583b85ce38a\",\n        \"value\": \"high\",\n        \"label\": \"Acme runs on Postgres\",\n        \"confidence\": 0.7\n      },\n      {\n        \"id\": \"L81c4d0660a054999\",\n        \"value\": \"high\",\n        \"label\": \"Prefers dark mode across all surfaces\",\n        \"confidence\": 0.7\n      }\n    ],\n    \"edges\": []\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1811,26 +1812,23 @@
       {
         "name": "context_id",
         "type": "string",
-        "note": "The context to resolve to."
+        "required": true,
+        "note": "The context the reference resolves to. `domain_id` is the pre-rename alias, still accepted."
       },
       {
         "name": "locus_id",
         "type": "string",
-        "note": "The memory carrying the unresolved reference."
-      },
-      {
-        "name": "domain_id",
-        "type": "string",
-        "note": "The placeholder being resolved."
+        "required": true,
+        "note": "The memory carrying the unresolved reference. Without it the call answers 400."
       }
     ],
     "returns": "Confirmation.",
     "sample": {
       "graph_id": "acme",
-      "domain_id": "acct_88213",
-      "context_id": "person:alice"
+      "context_id": "person:alice",
+      "locus_id": "L9f3a1c42e7b85d10"
     },
-    "response": "{\n  \"resolved\": true\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_id\": \"person:alice\",\n    \"locus_id\": \"L14d43ac15a16349f\",\n    \"links_resolved\": 3,\n    \"success\": true,\n    \"resolved_at\": 1790070864,\n    \"source\": \"manual\"\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1870,7 +1868,7 @@
         "name": "resolutions",
         "type": "object[]",
         "required": true,
-        "note": "Each one shaped like a single resolve. Between 1 and 100."
+        "note": "Each one carries `context_id` and `locus_id`, both required. Between 1 and 100."
       }
     ],
     "returns": "How many resolved, and which did not.",
@@ -1878,12 +1876,12 @@
       "graph_id": "acme",
       "resolutions": [
         {
-          "domain_id": "acct_88213",
-          "context_id": "person:alice"
+          "context_id": "person:alice",
+          "locus_id": "L9f3a1c42e7b85d10"
         }
       ]
     },
-    "response": "{\n  \"resolved\": 1,\n  \"failed\": []\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"results\": [\n      {\n        \"context_id\": \"person:alice\",\n        \"locus_id\": \"L14d43ac15a16349f\",\n        \"links_resolved\": 3,\n        \"success\": true,\n        \"resolved_at\": 1790070864,\n        \"source\": \"batch\"\n      }\n    ],\n    \"total_resolved\": 3\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1924,7 +1922,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"unresolved\": [\n    { \"domain_id\": \"acct_88213\", \"seen\": 4 }\n  ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"total_unresolved_links\": 0,\n    \"unique_context_ids\": 0,\n    \"context_ids\": []\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -1972,7 +1970,7 @@
       "graph_id": "acme",
       "context_id": "acct_88213"
     },
-    "response": "{\n  \"waiting\": [ \u2026 ]\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"context_id\": \"person:alice\",\n    \"links_count\": 2,\n    \"links\": [\n      {\n        \"from\": \"org:acme\",\n        \"to\": \"person:alice\",\n        \"link_type\": \"extends\"\n      }\n    ]\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2018,7 +2016,7 @@
     "sample": {
       "graph_id": "acme"
     },
-    "response": "{\n  \"job_id\": \"job_4c7a1f\",\n  \"status\": \"queued\"\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"job_4c1f8e\",\n    \"status\": \"processing\",\n    \"deduplicated\": false\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2059,7 +2057,7 @@
     "sample": {
       "job_id": "job_4c7a1f"
     },
-    "response": "{\n  \"job_id\": \"job_4c7a1f\",\n  \"status\": \"done\",\n  \"memories\": 42\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"job_4c1f8e\",\n    \"graph_id\": \"acme\",\n    \"filename\": \"handbook.pdf\",\n    \"content_sha256\": \"9f2c1d…\",\n    \"source\": \"upload\",\n    \"status\": \"complete\",\n    \"chunk_count\": 12,\n    \"chunks_processed\": 12,\n    \"events_created\": 47,\n    \"contexts_reused\": 9,\n    \"contexts_created\": 5,\n    \"llm_calls\": 13,\n    \"prompt_tokens\": 18422,\n    \"completion_tokens\": 3140,\n    \"cost_usd\": 0.042\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2719,7 +2717,7 @@
       "id": "pr_123",
       "project": "prod"
     },
-    "response": "{\n  \"id\": \"pr_123\",\n  \"slug\": \"ctr-sum-a91\",\n  \"fields\": [ \u2026 ]\n}",
+    "response": "{\n  \"id\": \"pr_123\",\n  \"slug\": \"ctr-sum-a91\",\n  \"fields\": [ … ]\n}",
     "errors": [
       {
         "status": 400,
@@ -3038,10 +3036,10 @@
       "id": "pr_123",
       "project": "prod",
       "values": {
-        "document": "\u2026"
+        "document": "…"
       }
     },
-    "response": "{\n  \"output\": \"\u2026\",\n  \"rolloutId\": \"ro_71b\",\n  \"usage\": { \"inputTokens\": 1240, \"outputTokens\": 96 }\n}",
+    "response": "{\n  \"output\": \"…\",\n  \"rolloutId\": \"ro_71b\",\n  \"usage\": { \"inputTokens\": 1240, \"outputTokens\": 96 }\n}",
     "errors": [
       {
         "status": 400,
@@ -3327,7 +3325,7 @@
     "sample": {
       "id": "run_88"
     },
-    "response": "{\n  \"id\": \"run_88\",\n  \"mean\": 0.82,\n  \"cases\": [ \u2026 ]\n}",
+    "response": "{\n  \"id\": \"run_88\",\n  \"mean\": 0.82,\n  \"cases\": [ … ]\n}",
     "errors": [
       {
         "status": 400,
@@ -3439,7 +3437,7 @@
       "cases": [
         {
           "id": "case_1",
-          "input": "\u2026"
+          "input": "…"
         }
       ]
     },
@@ -3916,7 +3914,7 @@
       "project": "prod",
       "byteLength": 18422
     },
-    "response": "{\n  \"fileId\": \"fl_4c7\",\n  \"uploadUrl\": \"https://\u2026\"\n}",
+    "response": "{\n  \"fileId\": \"fl_4c7\",\n  \"uploadUrl\": \"https://…\"\n}",
     "product": "spendgraph",
     "errors": [
       {
