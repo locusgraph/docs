@@ -208,7 +208,7 @@
         "note": "Contexts this memory conflicts with."
       }
     ],
-    "returns": "The stored memory's id.",
+    "returns": "The stored memory's id, and `links_replaced` naming any link types the write cleared. That field is absent when it cleared none.",
     "sample": {
       "graph_id": "acme",
       "context_id": "preference:dark_mode",
@@ -671,7 +671,7 @@
         "note": "Each one shaped like a single store. At most 1000 per call."
       }
     ],
-    "returns": "How many landed, and which were rejected.",
+    "returns": "How many landed, which were rejected, and `links_replaced` per item for any that cleared links.",
     "sample": {
       "graph_id": "acme",
       "events": [

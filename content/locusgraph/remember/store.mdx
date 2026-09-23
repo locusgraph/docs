@@ -139,6 +139,32 @@ Without `replace: true`, the same write is refused, and the refusal says what it
   `reinforces` or `related_to`. Send `reinforces: []` to clear one deliberately.
 </Callout>
 
+### `links_replaced` says what a write removed
+
+A link field you send is an opinion about that link type, and an empty array is the opinion "none". So `related_to: []` deletes every `related_to` edge the memory had. The response names what went:
+
+```json
+{
+  "success": true,
+  "data": {
+    "locus_id": "L1a2b3c4d5e6f7a8",
+    "status": "replaced",
+    "confidence": 0.7,
+    "context_id": "preference:theme",
+    "links_replaced": { "RelatedTo": 1, "Extends": 1 }
+  }
+}
+```
+
+The field is absent when a write removed nothing, so a client that never clears links never sees it. Batch results carry it per item.
+
+<Callout tone="trap" title="Do not send every field by default">
+  A client that serializes its whole request object sends `related_to: []` without meaning to, and
+  that clears links. Omit the fields you have no opinion about. If you cannot, read
+  `links_replaced` on every write and treat a non-empty value you did not intend as a bug in the
+  caller.
+</Callout>
+
 ### `context_id` comes back normalized
 
 The context you get back is the one the server actually stored, which may differ from what you sent. Use the returned value if you are going to reference it.
