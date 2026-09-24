@@ -1,0 +1,157 @@
+export const meta = {
+  title: "Naming a context | LocusGraph docs",
+  description:
+    "The convention behind a context id: a closed list of types, five rules for the name, and the test for which link to use.",
+};
+
+# Naming a context
+
+A context id is `type:name`, and every memory in a graph is addressed by one. The parser is loose. It wants a colon that is not the first character, and something after it, so almost anything is accepted.
+
+This page is about what to write anyway. An agent that names the same subject two ways builds two graphs that never meet.
+
+Written for whoever prompts the model that extracts facts, and for anyone writing events by hand. For the mechanics of a context, see [Contexts and memories](/locusgraph/contexts/overview).
+
+## Why the name decides whether the graph connects
+
+When facts are extracted from a document, every fact carrying the same context id is merged into one memory. Three facts about moving a value become three lines under `concept:move`, not three memories.
+
+That merge is the reason naming matters. A chunk that says `concept:move` and a later chunk that says `concept:moving` produce two contexts, each holding half of what is known, and the links between them never form. The merge is only as good as the agreement on the id.
+
+## The type
+
+Pick from a closed list. An open one is where consistency dies: one document says `trait:`, the next says `traits:`, and nothing joins.
+
+| type | what belongs in it | example |
+| --- | --- | --- |
+| `concept` | an idea or mechanism | `concept:move` |
+| `rule` | a constraint that must hold | `rule:one_owner_at_a_time` |
+| `api` | an endpoint | `api:post_v1_events` |
+| `fn` | a function or method | `fn:string_from` |
+| `type` | a named type | `type:string` |
+| `trait` | a trait, interface or protocol | `trait:copy` |
+| `error` | a named failure | `error:double_free` |
+| `person` | a human | `person:priya` |
+| `team` | a group of them | `team:sales` |
+| `policy` | a rule the organisation set | `policy:retention` |
+| `decision` | a choice, with a reason | `decision:tiers` |
+| `topic` | a subject with no better home | `topic:pricing` |
+| `section` | a heading inside a document | `section:variable_scope` |
+| `doc` | **reserved**, minted by ingestion | `doc:runbook` |
+
+<Callout tone="warning" title="`doc:` is not merely a convention">
+  Ingestion reads that prefix to decide whether a second upload of a document may overwrite the
+  memories the first one wrote. A hand-written `doc:` context gets caught in that, so write your
+  own contexts under one of the other types.
+</Callout>
+
+**The test for adding a type: would you ever ask for all of them?** "List every trait" is a real question. "List every fact" is not, which is why there is no `fact:` type. Facts are lines inside a context, not contexts.
+
+## The name
+
+1. **`[a-z0-9_]` only**, snake_case, 40 characters or fewer.
+2. **Canonical form, not the phrase as written.** "heap data", "the heap" and "heap memory" are all `heap`. This is the rule that decides whether a graph connects or fragments, and it is the one a model breaks first.
+3. **Singular.** `concept:pointer`, never `concept:pointers`.
+4. **The subject, never the claim.** `concept:move` holds "assignment invalidates the source". `concept:move_invalidates_source` is a sentence pretending to be an address, and nothing else will ever land on it.
+5. **No values, dates or versions.** `topic:pricing` holds "now $2,400". `topic:pricing_2400` strands itself the day the price changes.
+
+Never repeat the type in the name. `concept:ownership_concept` and `trait:copy_trait` say it twice.
+
+Two contexts may share a name under different types, and often should:
+
+```
+section:move     the heading "Variables and Data Interacting with Move"
+concept:move     the idea, that assignment invalidates the source
+trait:copy       the Copy trait, a real item in the language
+concept:copy     the idea of copying, which the chapter contrasts with move
+```
+
+## What an extractor does per fact
+
+```
+1. What is this fact ABOUT?             one noun            the name
+2. What kind of thing is that noun?     the table above     the type
+3. Does that context already exist?     yes: add a line to it
+                                        no:  create it, and link it to the
+                                             nearest context that does
+```
+
+Step 3 is the one to enforce. Ingestion already passes the graph's existing context names into the extraction prompt for this reason: a model that can see `concept:heap` exists will not mint `concept:heap_data` on the ninth chunk. An agent writing events itself should read the context list first and do the same.
+
+## Choosing the link
+
+| link | when | example |
+| --- | --- | --- |
+| `extends` | B sits under A | `concept:stack` extends `concept:memory` |
+| `related_to` | connected, neither is above the other | `concept:move` related_to `section:move` |
+| `reinforces` | A is evidence for B | `concept:clone` reinforces `concept:heap` |
+| `contradicts` | both cannot hold | `trait:copy` contradicts `trait:drop` |
+
+Default to `related_to` when unsure. A wrong `extends` distorts the tree for every later reader, because the map is built from it. A wrong `related_to` is only noise. [Link and unlink](/locusgraph/contexts/linking) covers the calls.
+
+### `extends` means broader, not subclass
+
+The obvious test for a hierarchy is "every X is a Y", and by that test `concept:move extends concept:ownership` is wrong. A move is not a kind of ownership, it is something ownership does. Applied strictly, that test rejects most of the edges a reader would expect to see.
+
+So do not apply it strictly. `extends` here is [`skos:broader`](https://www.w3.org/TR/skos-reference/#semantic-relations), not `rdfs:subClassOf`. It means "A is in some way more general than B", which is the question a hierarchy for finding things actually asks.
+
+| standard | hierarchy edge | what it claims |
+| --- | --- | --- |
+| RDFS and OWL | `rdfs:subClassOf` | every instance of B is an instance of A |
+| Wikidata | `P279` subclass of, `P361` part of | kept apart, on purpose |
+| **SKOS** | **`skos:broader`** | **B is more specific than A, in this scheme** |
+
+SKOS refuses to say whether `broader` means "is a kind of" or "is part of", and has been used that way by libraries and archives since long before this engine. That refusal is the useful part. Kind-of and part-of both land on `extends`, and four link types stay four rather than becoming six.
+
+The test to apply instead:
+
+```
+Would a reader looking at A expect to find B underneath it?
+```
+
+| pair | verdict |
+| --- | --- |
+| `concept:heap` under `concept:memory` | yes, `extends` |
+| `concept:move` under `concept:ownership` | yes, `extends` |
+| `type:string` under `concept:heap` | no. String **uses** the heap, so `related_to` |
+| `concept:move` under `section:move` | no. That is where it was written, so `related_to` |
+
+`related_to` is the rest of SKOS's answer, `skos:related`: a link between two concepts where neither is above the other. Provenance lives there too. Which document or heading a fact came from is an association, not a rank.
+
+## A worked example
+
+The ownership chapter of the Rust book is 11 headings and 22 chunks, holding about 30 extractable facts. It lands as 11 subject contexts, each holding one merged memory:
+
+```
+concept:ownership          "Each value in Rust has one owner.
+                            There can only be one owner at a time.
+                            When the owner goes out of scope, the value is dropped."
+|
++- concept:scope           2 lines
++- concept:memory
+|  +- concept:stack        3 lines
+|  +- concept:heap         3 lines
++- concept:move            4 lines
++- concept:clone           2 lines
++- trait:copy              3 lines
++- trait:drop              1 line
++- type:string             3 lines
++- concept:functions       2 lines
+```
+
+The headings survive as provenance rather than as structure: eleven `section:` contexts, each `related_to` the document, and each concept `related_to` the section it was read from. Ask "what is a move" and the concept answers. Ask "where does the chapter say that" and the section does.
+
+The spine is concepts because that is what recall asks about. Set the ingestion map's relation to `extends` and the tree above is what draws. Set it to `related_to` and the same graph reads as the document and its sections.
+
+## How long a memory should be
+
+Two to five lines, which lands at 150 to 400 characters. Keyword scoring normalises a memory's length against the average of the graph, so a context holding ten times the average is scored at roughly a seventh per term, and it drags that average up for every other context at the same time. Even lengths matter more than any absolute number.
+
+Nothing enforces this. A write of any size is accepted, the embedder cuts silently at the model's input ceiling, and a very long memory keeps only its commonest terms for keyword search, dropping the rare ones a search would have matched on.
+
+## Next
+
+- **[Contexts and memories](/locusgraph/contexts/overview)**: what a context is, and the calls that read one
+- **[Link and unlink](/locusgraph/contexts/linking)**: the four relationships, and how to write them
+- **[Store an event](/locusgraph/remember/store)**: writing a memory to a context
+- **[Ingesting documents](/locusgraph/use-cases/documents)**: where these ids get minted in bulk

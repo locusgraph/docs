@@ -287,6 +287,11 @@ const LG_CONTEXTS: DocsTree = {
           blurb: "What a context is, and what belongs in one",
         },
         {
+          title: "Naming a context",
+          href: "/locusgraph/contexts/naming",
+          blurb: "The types, the name rules, and which link to use",
+        },
+        {
           title: "Link and unlink",
           href: "/locusgraph/contexts/linking",
           blurb: "Relating one context to another",

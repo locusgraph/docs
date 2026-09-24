@@ -32,6 +32,7 @@ export const DOCS: Record<Product, Record<string, () => Promise<DocModule>>> = {
     "recall/search": () => import("@/content/locusgraph/recall/search.mdx"),
     "contexts/browsing": () => import("@/content/locusgraph/contexts/browsing.mdx"),
     "contexts/linking": () => import("@/content/locusgraph/contexts/linking.mdx"),
+    "contexts/naming": () => import("@/content/locusgraph/contexts/naming.mdx"),
     "contexts/overview": () => import("@/content/locusgraph/contexts/overview.mdx"),
     "contexts/resolving": () => import("@/content/locusgraph/contexts/resolving.mdx"),
     "review/decisions": () => import("@/content/locusgraph/review/decisions.mdx"),
