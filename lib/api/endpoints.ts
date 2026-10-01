@@ -65,6 +65,11 @@ export interface Endpoint {
   readonly sample: Record<string, unknown>;
   readonly response: string;
   readonly errors: readonly ApiError[];
+  /**
+   * Why the daily replay in `scripts/replay-samples.ts` leaves this one out.
+   * Set only where a call costs money, so its example is checked by hand.
+   */
+  readonly skip?: string;
 }
 
 export const ENDPOINTS: readonly Endpoint[] = spec as readonly Endpoint[];

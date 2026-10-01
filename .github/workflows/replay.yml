@@ -1,0 +1,59 @@
+# Send every documented API sample to the live API each morning and compare the
+# shape of each answer with the stored example. A divergence opens one issue,
+# or comments on the one already open, so a drift is reported once rather than
+# every day. The plan and the comparison are in lib/api/replay.ts.
+name: Replay API samples
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: replay
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Replay
+        id: replay
+        run: pnpm replay --report report.md
+        env:
+          LOCUSGRAPH_API_KEY: ${{ secrets.LOCUSGRAPH_API_KEY }}
+          LOCUSGRAPH_GRAPH_ID: ${{ secrets.LOCUSGRAPH_GRAPH_ID }}
+          SPENDGRAPH_API_KEY: ${{ secrets.SPENDGRAPH_API_KEY }}
+
+      - name: Report the divergence
+        if: failure() && steps.replay.outcome == 'failure' && hashFiles('report.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TITLE: The API reference has drifted from the live API
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          printf '%s\n\nFrom %s.\n' "$(cat report.md)" "$RUN" > body.md
+          open=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" --body-file body.md
+          else
+            gh issue create --title "$TITLE" --body-file body.md
+          fi

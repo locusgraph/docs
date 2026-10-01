@@ -135,7 +135,8 @@
         "code": "FORBIDDEN",
         "note": "The key is pinned to a different graph. A key cannot widen itself."
       }
-    ]
+    ],
+    "skip": "Spends model calls on every request"
   },
   {
     "product": "locusgraph",
@@ -3132,6 +3133,7 @@
         "note": "No such record in the pinned project."
       }
     ],
+    "skip": "Calls a model provider and is billed per run",
     "product": "spendgraph"
   },
   {
@@ -3592,6 +3594,7 @@
         "note": "No such record in the pinned project."
       }
     ],
+    "skip": "Calls a model provider and is billed per run",
     "product": "spendgraph"
   },
   {
