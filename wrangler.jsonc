@@ -15,11 +15,18 @@
   // the worker that serves it. Cloudflare provisions the certificate and the DNS
   // record itself, which it will only do for a name nothing else holds.
   //
-  // `doc.locusgraph.com` is not that name: a CNAME to Vercel still owns it, and
-  // Cloudflare refuses with `already has externally managed DNS records`.
+  // `doc.locusgraph.com` is the old docs host, held by a CNAME to Vercel. Run
+  // from a terminal, `wrangler deploy` asks "Update them to point to this script
+  // instead?" and answering yes replaces that record with the worker's own. Run
+  // without one, it overrides without asking. Once attached, the app answers
+  // every path on it with a redirect, mapped in `lib/site/legacy.ts`.
   "routes": [
     {
       "pattern": "docs.locusgraph.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "doc.locusgraph.com",
       "custom_domain": true
     }
   ],
