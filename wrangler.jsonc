@@ -6,7 +6,14 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // The worker runs before the asset store for every path but the hashed
+    // build output, so the `doc.` redirect in `next.config.ts` reaches files
+    // too. Without it `doc.locusgraph.com/llms.txt`, `/sitemap.xml` and the
+    // `.md` pages were served straight from the store on the old hostname.
+    // OpenNext's asset resolver serves them for `docs.` once the worker has
+    // looked; `/_next/static` never varies by host, so it stays direct.
+    "run_worker_first": ["/*", "!/_next/static/*"]
   },
   // Keep the workers.dev hostname. Declaring `routes` alone turns it off, which
   // takes the site offline the moment a custom domain fails to attach.

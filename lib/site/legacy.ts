@@ -80,4 +80,8 @@ export const LEGACY_REDIRECTS: Record<string, string> = {
 
   "/llms.txt": "/llms.txt",
   "/llms-full.txt": "/llms-full.txt",
+  // The old host had neither, and a crawler asking for them should get this
+  // host's, not the section index.
+  "/sitemap.xml": "/sitemap.xml",
+  "/robots.txt": "/robots.txt",
 };
