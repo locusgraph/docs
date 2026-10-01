@@ -400,7 +400,7 @@
       "graph_id": "acme",
       "locus_id": "L9f3a1c42e7b85d10"
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locus_id\": \"L9f3a1c42e7b85d10\",\n    \"affected_links\": 2\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"locus_id\": \"L9f3a1c42e7b85d10\",\n    \"affected_links\": 2,\n    \"unbound_links\": 0\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2077,7 +2077,7 @@
     "sample": {
       "job_id": "job_4c7a1f"
     },
-    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"ing_4c1f8e20-9a77-4b31-88de-1f0a6c5d2e34\",\n    \"graph_id\": \"acme\",\n    \"filename\": \"handbook.pdf\",\n    \"content_sha256\": \"9f2c1d7b84e0a5c3\",\n    \"source\": \"upload\",\n    \"status\": \"completed\",\n    \"chunk_count\": 12,\n    \"chunks_processed\": 12,\n    \"events_created\": 47,\n    \"contexts_reused\": 9,\n    \"contexts_created\": 5,\n    \"llm_calls\": 13,\n    \"prompt_tokens\": 18422,\n    \"completion_tokens\": 3140,\n    \"cost_usd\": 0.042,\n    \"created_at\": 1790070864,\n    \"completed_at\": 1790071002\n  }\n}",
+    "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"ing_4c1f8e20-9a77-4b31-88de-1f0a6c5d2e34\",\n    \"graph_id\": \"acme\",\n    \"filename\": \"handbook.pdf\",\n    \"content_sha256\": \"9f2c1d7b84e0a5c3\",\n    \"source\": \"document\",\n    \"status\": \"completed\",\n    \"anchor_id\": \"doc:employee_handbook_9f2c1d\",\n    \"anchor_title\": \"handbook.pdf\",\n    \"doc_scope\": \"doc\",\n    \"accepted_events\": 47,\n    \"chunk_count\": 12,\n    \"chunks_processed\": 12,\n    \"events_created\": 47,\n    \"contexts_reused\": 9,\n    \"contexts_created\": 5,\n    \"llm_calls\": 13,\n    \"prompt_tokens\": 18422,\n    \"completion_tokens\": 3140,\n    \"cost_usd\": 0.042,\n    \"file_url\": \"/v1/ingest/jobs/ing_4c1f8e20-9a77-4b31-88de-1f0a6c5d2e34/file\",\n    \"created_at\": 1790070864,\n    \"completed_at\": 1790071002\n  }\n}",
     "errors": [
       {
         "status": 400,
@@ -2171,7 +2171,7 @@
         "note": "Up to 1KB of string, number or boolean values. Cost by tenant and Cost by feature group on it."
       }
     ],
-    "returns": "How many landed, and the model ids that had no price.",
+    "returns": "How many events were accepted, the model ids that had no price, and what each event cost in micro-USD: `eventCosts` in the order sent, `costs` keyed by any `eventId` sent with one.",
     "sample": {
       "events": [
         {
@@ -2181,7 +2181,7 @@
         }
       ]
     },
-    "response": "{\n  \"stored\": 1,\n  \"unpricedModels\": []\n}",
+    "response": "{\n  \"accepted\": 1,\n  \"rejected\": 0,\n  \"unpricedModels\": [],\n  \"costs\": {},\n  \"eventCosts\": [\n    8600\n  ]\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -2363,7 +2363,7 @@
     "sample": {
       "project": "prod"
     },
-    "response": "{\n  \"current\": {\n    \"costMicros\": 4280242,\n    \"inputTokens\": 1185515,\n    \"outputTokens\": 191712,\n    \"cacheReadTokens\": 10,\n    \"cacheWriteTokens\": 0,\n    \"requests\": 18\n  },\n  \"previous\": {\n    \"costMicros\": 0,\n    \"inputTokens\": 0,\n    \"outputTokens\": 0,\n    \"cacheReadTokens\": 0,\n    \"cacheWriteTokens\": 0,\n    \"requests\": 0\n  },\n  \"pricing\": {\n    \"catalogEmpty\": false,\n    \"zeroCostEvents\": 5,\n    \"pricesUpdatedAt\": \"2026-09-22T06:02:59.000Z\",\n    \"staleDays\": 0\n  }\n}",
+    "response": "{\n  \"current\": {\n    \"costMicros\": 4280242,\n    \"inputTokens\": 1185515,\n    \"outputTokens\": 191712,\n    \"cacheReadTokens\": 10,\n    \"cacheWriteTokens\": 0,\n    \"requests\": 18\n  },\n  \"previous\": {\n    \"costMicros\": 0,\n    \"inputTokens\": 0,\n    \"outputTokens\": 0,\n    \"cacheReadTokens\": 0,\n    \"cacheWriteTokens\": 0,\n    \"requests\": 0\n  },\n  \"pricing\": {\n    \"catalogEmpty\": false,\n    \"zeroCostEvents\": 5,\n    \"unpricedEvents\": 4,\n    \"zeroTokenEvents\": 1,\n    \"pricesUpdatedAt\": \"2026-09-22T06:02:59.000Z\",\n    \"staleDays\": 0\n  }\n}",
     "product": "spendgraph",
     "errors": [
       {
@@ -3179,7 +3179,7 @@
       "project": "prod",
       "limit": 20
     },
-    "response": "{\n  \"rollouts\": [\n    {\n      \"id\": \"ro_4f21\",\n      \"projectId\": \"prj_8c41\",\n      \"promptId\": \"pr_123\",\n      \"promptVersionId\": null,\n      \"runId\": null,\n      \"source\": \"report\",\n      \"candidateId\": null,\n      \"parentId\": null,\n      \"generation\": null,\n      \"caseId\": null,\n      \"split\": null,\n      \"seed\": 0,\n      \"model\": \"claude-opus-5\",\n      \"fields\": {},\n      \"rendered\": [\n        {\n          \"role\": \"user\",\n          \"content\": \"Summarise in three bullets: a one page contract\"\n        }\n      ],\n      \"output\": \"- one\\n- two\\n- three\",\n      \"steps\": null,\n      \"status\": \"completed\",\n      \"error\": null,\n      \"outcome\": null,\n      \"failure\": null,\n      \"judge\": null,\n      \"inputTokens\": 1240,\n      \"outputTokens\": 96,\n      \"cacheReadTokens\": 0,\n      \"cacheWriteTokens\": 0,\n      \"citationTokens\": 0,\n      \"reasoningTokens\": 0,\n      \"costMicros\": 8600,\n      \"latencyMs\": 0,\n      \"createdAt\": \"2026-09-22T10:09:11.000Z\"\n    }\n  ],\n  \"nextCursor\": null\n}",
+    "response": "{\n  \"rollouts\": [\n    {\n      \"id\": \"ro_4f21\",\n      \"projectId\": \"prj_8c41\",\n      \"promptId\": \"pr_123\",\n      \"promptVersionId\": null,\n      \"runId\": null,\n      \"source\": \"report\",\n      \"candidateId\": null,\n      \"parentId\": null,\n      \"generation\": null,\n      \"caseId\": null,\n      \"split\": null,\n      \"seed\": 0,\n      \"model\": \"claude-opus-5\",\n      \"fields\": {},\n      \"rendered\": [\n        {\n          \"role\": \"user\",\n          \"content\": \"Summarise in three bullets: a one page contract\"\n        }\n      ],\n      \"output\": \"- one\\n- two\\n- three\",\n      \"steps\": null,\n      \"status\": \"completed\",\n      \"error\": null,\n      \"outcome\": null,\n      \"failure\": null,\n      \"judge\": null,\n      \"inputTokens\": 1240,\n      \"outputTokens\": 96,\n      \"cacheReadTokens\": 0,\n      \"cacheWriteTokens\": 0,\n      \"citationTokens\": 0,\n      \"reasoningTokens\": 0,\n      \"costMicros\": 8600,\n      \"latencyMs\": 0,\n      \"client\": null,\n      \"createdAt\": \"2026-09-22T10:09:11.000Z\"\n    }\n  ],\n  \"nextCursor\": null\n}",
     "errors": [
       {
         "status": 400,
@@ -3286,7 +3286,7 @@
       "outputTokens": 96,
       "status": "completed"
     },
-    "response": "{\n  \"rollout\": {\n    \"id\": \"ro_4f21\",\n    \"projectId\": \"prj_8c41\",\n    \"promptId\": \"pr_123\",\n    \"promptVersionId\": null,\n    \"candidateId\": null,\n    \"parentId\": null,\n    \"generation\": null,\n    \"caseId\": null,\n    \"split\": null,\n    \"seed\": 0,\n    \"model\": \"claude-opus-5\",\n    \"fields\": {},\n    \"rendered\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"Summarise in three bullets: a one page contract\"\n      }\n    ],\n    \"source\": \"report\",\n    \"output\": \"- one\\n- two\\n- three\",\n    \"steps\": null,\n    \"status\": \"completed\",\n    \"error\": null,\n    \"outcome\": null,\n    \"failure\": null,\n    \"judge\": null,\n    \"inputTokens\": 1240,\n    \"outputTokens\": 96,\n    \"cacheReadTokens\": 0,\n    \"cacheWriteTokens\": 0,\n    \"citationTokens\": 0,\n    \"reasoningTokens\": 0,\n    \"costMicros\": 8600,\n    \"latencyMs\": 0,\n    \"createdAt\": \"2026-09-22T10:09:11.686Z\"\n  },\n  \"priced\": true\n}",
+    "response": "{\n  \"rollout\": {\n    \"id\": \"ro_4f21\",\n    \"projectId\": \"prj_8c41\",\n    \"promptId\": \"pr_123\",\n    \"promptVersionId\": null,\n    \"candidateId\": null,\n    \"parentId\": null,\n    \"generation\": null,\n    \"caseId\": null,\n    \"split\": null,\n    \"seed\": 0,\n    \"model\": \"claude-opus-5\",\n    \"fields\": {},\n    \"rendered\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"Summarise in three bullets: a one page contract\"\n      }\n    ],\n    \"source\": \"report\",\n    \"output\": \"- one\\n- two\\n- three\",\n    \"steps\": null,\n    \"status\": \"completed\",\n    \"error\": null,\n    \"outcome\": null,\n    \"failure\": null,\n    \"judge\": null,\n    \"inputTokens\": 1240,\n    \"outputTokens\": 96,\n    \"cacheReadTokens\": 0,\n    \"cacheWriteTokens\": 0,\n    \"citationTokens\": 0,\n    \"reasoningTokens\": 0,\n    \"costMicros\": 8600,\n    \"latencyMs\": 0,\n    \"client\": null,\n    \"createdAt\": \"2026-09-22T10:09:11.686Z\"\n  },\n  \"priced\": true\n}",
     "errors": [
       {
         "status": 400,
