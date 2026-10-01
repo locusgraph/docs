@@ -26,11 +26,12 @@ What the engine settled, 2026-09-22:
 opens an issue when an answer's shape stops matching its example. How it runs
 is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
-- [ ] **Two Spendgraph answers look like API bugs**, to raise in the spendgraph
-      repo. `update-a-prompt` answers `409 project_immutable` to every PUT made
-      with a key, with or without `project`. Creating or renaming a tool to a
-      name another tool holds, archived or not, answers `500` with an empty
-      body where a `409` would say why
+- [ ] **Two Spendgraph API bugs, filed 2026-10-01.** Raised in the spendgraph
+      repo, so the fixes land there. `update-a-prompt` refuses a body without
+      `projectId` with `409 project_immutable`, though the field is optional
+      (fnLog0/spendgraph#31); the replay reports it daily until that ships.
+      Reusing an archived tool's name answers `500` (fnLog0/spendgraph#32).
+      Once #31 is fixed, decide whether the reference should list `projectId`
 - [ ] **Three memories are left in the replay graph** from the runs made while
       building the job, before it cleaned up after itself. The job deletes only
       what it wrote, so these stay until someone removes them by hand
