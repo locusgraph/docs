@@ -26,10 +26,6 @@ What the engine settled, 2026-09-22:
 opens an issue when an answer's shape stops matching its example. How it runs
 is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
-- [ ] **Document the file on `ingest-a-document`.** It takes
-      `multipart/form-data` with the document in a `file` field, and the page
-      lists only `graph_id`. `endpoints.json` has no way to describe a file part
-      yet
 - [ ] **Two Spendgraph answers look like API bugs**, to raise in the spendgraph
       repo. `update-a-prompt` answers `409 project_immutable` to every PUT made
       with a key, with or without `project`. Creating or renaming a tool to a
