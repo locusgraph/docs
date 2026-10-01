@@ -26,13 +26,6 @@ What the engine settled, 2026-09-22:
 opens an issue when an answer's shape stops matching its example. How it runs
 is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
-- [ ] **Fix the six examples the first replay found drifted**, on 2026-10-01:
-      `report-usage` answers `{accepted, rejected, costs, eventCosts}`, not
-      `{stored, unpricedModels}`; `delete-a-memory` adds `unbound_links`;
-      `read-an-ingest-job` adds `accepted_events`, `anchor_id`, `anchor_title`,
-      `doc_scope` and `file_url`; `usage-summary` adds
-      `pricing.unpricedEvents` and `pricing.zeroTokenEvents`; and a rollout
-      carries `client`, in both `record-a-rollout` and `list-rollouts`
 - [ ] **Document the file on `ingest-a-document`.** It takes
       `multipart/form-data` with the document in a `file` field, and the page
       lists only `graph_id`. `endpoints.json` has no way to describe a file part
