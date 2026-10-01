@@ -1,7 +1,18 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { type DocsTree, pagesOf, treeFor } from "../lib/site/docs-nav";
-import { declaredTrees, listedTrees, nav, pages, reachable, SECTIONS, treesFor } from "./site";
+import {
+  declaredTrees,
+  listedTrees,
+  localPages,
+  nav,
+  packagePages,
+  pages,
+  reachable,
+  SECTIONS,
+  specifiers,
+  treesFor,
+} from "./site";
 
 /**
  * The nav and the manifest describe the same set of pages, or a reader meets a
@@ -47,6 +58,39 @@ describe("navigation", () => {
 });
 
 /**
+ * Every `.mdx` on disk has a manifest entry that loads it.
+ *
+ * The checks above compare the nav with the manifest, so a page missing from
+ * both passes them. That is how a package release lands: `kairos/overview`
+ * arrived in `@spendgraph/docs` 0.9.1, every test stayed green, and the page
+ * would have shipped with no route. The files are the source here, because a
+ * file is what a writer or a publish adds.
+ */
+describe("every page on disk is in the manifest", () => {
+  const loaded = new Set(SECTIONS.flatMap((section) => specifiers(section).map(([, s]) => s)));
+
+  it("finds the package pages to check", () => {
+    // `packagePages()` answers `[]` when the package is not installed, and an
+    // empty list would pass the check below without checking anything.
+    expect(packagePages().length).toBeGreaterThan(0);
+  });
+
+  it("loads every local page", () => {
+    const missing = localPages().filter((file) => !loaded.has(`@/${file}`));
+    expect(missing, `in content/ with no manifest entry: ${missing.join(", ")}`).toEqual([]);
+  });
+
+  it("loads every package page", () => {
+    const missing = packagePages()
+      .map((file) => file.replace(/^node_modules\//, ""))
+      .filter((specifier) => !loaded.has(specifier));
+    expect(missing, `in @spendgraph/docs with no manifest entry: ${missing.join(", ")}`).toEqual(
+      []
+    );
+  });
+});
+
+/**
  * Every page resolves to the tree that lists it.
  *
  * The header names the page from that tree and the footer takes its prev and
@@ -74,7 +118,7 @@ describe("every reachable page resolves to a tree", () => {
 });
 
 /**
- * The sidebar and the overview page list the ten packages in the same order.
+ * The sidebar and the overview page list the packages in the same order.
  *
  * They disagreed: the sidebar had prompt before llms, the overview had tools
  * before stage. Neither was wrong on its own, and together they read as no
