@@ -43,12 +43,13 @@ Each needs someone with an account this machine does not have.
 
 - [ ] **Submit the sitemap.** `https://docs.locusgraph.com/sitemap.xml`, in the
       existing Search Console property, per Sl 6. Do not submit app sitemaps
-- [ ] **Deploy to move `doc.locusgraph.com` here.** It still serves the old
-      Vocs docs from Vercel, indexable and describing the API before its
-      renames. `wrangler.jsonc` now claims the name and `lib/site/legacy.ts`
-      maps its 48 pages onto this host. Run `pnpm deploy:cf` from a terminal and
-      answer yes when wrangler offers to replace the conflicting DNS record. Then
-      remove the domain from the Vercel project
+- [ ] **Move `doc.locusgraph.com` here.** It still serves the old Vocs docs
+      from Vercel, indexable and describing the API before its renames.
+      `wrangler.jsonc` claims the name and `lib/site/legacy.ts` maps its 48
+      pages onto this host, but the deploy on 2026-10-01 could not attach it:
+      the CNAME to Vercel has to be deleted in the Cloudflare DNS dashboard
+      first. Then run `pnpm exec wrangler deploy`, and remove the domain from
+      the Vercel project
 
 ## Deferred
 

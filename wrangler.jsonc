@@ -15,11 +15,12 @@
   // the worker that serves it. Cloudflare provisions the certificate and the DNS
   // record itself, which it will only do for a name nothing else holds.
   //
-  // `doc.locusgraph.com` is the old docs host, held by a CNAME to Vercel. Run
-  // from a terminal, `wrangler deploy` asks "Update them to point to this script
-  // instead?" and answering yes replaces that record with the worker's own. Run
-  // without one, it overrides without asking. Once attached, the app answers
-  // every path on it with a redirect, mapped in `lib/site/legacy.ts`.
+  // `doc.locusgraph.com` is the old docs host, held by a CNAME to Vercel. That
+  // record has to be deleted in the Cloudflare DNS dashboard before a deploy can
+  // attach the name: `wrangler deploy` sends its override flag, and the API
+  // refuses regardless, with `already has externally managed DNS records`
+  // (code 100117). Once attached, the app answers every path on it with a
+  // redirect, mapped in `lib/site/legacy.ts`.
   "routes": [
     {
       "pattern": "docs.locusgraph.com",
