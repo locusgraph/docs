@@ -32,9 +32,6 @@ is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
       (fnLog0/spendgraph#31). The reference marks `projectId` required until
       then, so its sample works today; once #31 ships, make it optional again.
       Reusing an archived tool's name answers `500` (fnLog0/spendgraph#32)
-- [ ] **Three memories are left in the replay graph** from the runs made while
-      building the job, before it cleaned up after itself. The job deletes only
-      what it wrote, so these stay until someone removes them by hand
 - [ ] **Five Spendgraph endpoints are still unverified**, because they need a
       provider key on the account: `run-a-prompt`, `run-an-assay`, and the three
       that depend on a run existing. Their examples come from the zod schemas in
