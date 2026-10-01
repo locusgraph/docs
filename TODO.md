@@ -76,9 +76,3 @@ landing page points anyone who finds them at early access.
 intro. That was written when the docs were one product. This host serves several
 sections, so redirecting would pick a winner and bounce everyone else. The root
 is an indexable index instead.
-
-**`@spendgraph/workflows` stays up, undeprecated.** Versions 0.2.0 to 0.6.0 are
-public on npm from before the package was made private. Deprecating them was
-considered and declined on 2026-09-19: the package may be worth shipping again,
-and a notice on every install is the wrong signal for something only paused. The
-reasoning is in the spendgraph repo, in `handbook/PUBLISH.md`.
