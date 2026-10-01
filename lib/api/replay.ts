@@ -197,10 +197,19 @@ const SPENDGRAPH: Step[] = [
     keep: (data) =>
       kept({
         prompt: at(data, "prompt", "id"),
+        project: at(data, "prompt", "projectId"),
         version: at(data, "prompt", "currentVersionId"),
       }),
   },
-  ...["read-a-prompt", "update-a-prompt", "list-versions"].map(
+  {
+    product: "spendgraph",
+    slug: "update-a-prompt",
+    needs: ["prompt", "project"],
+    // The sample's `prj_8c41` stands for the prompt's own project, which only
+    // the prompt that `create-a-prompt` made can say.
+    fill: (found) => ({ id: found.prompt, projectId: found.project }),
+  },
+  ...["read-a-prompt", "list-versions"].map(
     (slug): Step => ({
       product: "spendgraph",
       slug,

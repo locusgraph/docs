@@ -2865,12 +2865,14 @@
       {
         "name": "projectId",
         "type": "string",
-        "note": "Must match the prompt's own project. A different one answers 409 `project_immutable`."
+        "note": "The prompt's own project, as `projectId` on the prompt. Leaving it out answers 409 `project_immutable`, the same as sending a different one: a save cannot move a prompt, and today a missing project reads as a move.",
+        "required": true
       }
     ],
     "returns": "The prompt, with the version that was created.",
     "sample": {
       "id": "pr_123",
+      "projectId": "prj_8c41",
       "name": "Contract summary",
       "blocks": [
         {
@@ -2901,6 +2903,11 @@
         "status": 404,
         "code": "NOT_FOUND",
         "note": "No such record in the pinned project."
+      },
+      {
+        "status": 409,
+        "code": "project_immutable",
+        "note": "`projectId` is missing, or is not the prompt's own project."
       }
     ],
     "product": "spendgraph"

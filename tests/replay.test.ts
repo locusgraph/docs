@@ -53,7 +53,7 @@ describe("the replay plan", () => {
       "list-unresolved": ["unresolved"],
       "read-the-inbox": ["finding", "other_finding"],
       "ingest-a-document": ["job_id"],
-      "create-a-prompt": ["prompt", "version"],
+      "create-a-prompt": ["prompt", "project", "version"],
       "list-runs": ["run"],
       "create-a-tool": ["tool", "tool_name"],
     };
