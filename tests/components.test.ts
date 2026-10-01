@@ -64,3 +64,31 @@ it("every figure this host draws is registered", () => {
   expect(exported.length).toBeGreaterThan(0);
   expect(exported.filter((c) => !registered.has(c))).toEqual([]);
 });
+
+/**
+ * A `Callout` tone the component does not know crashes the page at prerender.
+ *
+ * `tone="warning"` on `contexts/naming` passed lint, typecheck and every test
+ * here, because a prop inside `.mdx` is typed by nothing. Only `pnpm build`
+ * caught it, and `pre-push` does not build, so it reached `master`. The tones
+ * are read from the component rather than listed here, so adding one there is
+ * all it takes.
+ */
+describe("every Callout names a tone the component has", () => {
+  const callout = readFileSync("components/docs/callout.tsx", "utf8");
+  const table = callout.slice(callout.indexOf("const TONES = {"), callout.indexOf("} as const;"));
+  const tones = new Set([...table.matchAll(/^\s+([a-z]+): \{/gm)].map((m) => m[1]));
+
+  it("finds the tones at all", () => {
+    expect(tones.size).toBeGreaterThan(0);
+  });
+
+  for (const page of [...localPages(), ...packagePages()]) {
+    it(page, () => {
+      const used = [
+        ...prose(readFileSync(page, "utf8")).matchAll(/<Callout[^>]*?\btone="([^"]*)"/g),
+      ];
+      expect(used.map((m) => m[1]).filter((tone) => !tones.has(tone))).toEqual([]);
+    });
+  }
+});
