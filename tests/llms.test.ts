@@ -9,10 +9,13 @@ import { pages, SECTIONS } from "./site";
  * a clean checkout has neither. Generating them here rather than committing
  * them keeps the repo free of a quarter of a megabyte that is derived anyway,
  * and has the side effect of testing the generator on every run.
+ *
+ * Every run, not only when the files are missing. A checkout that built once
+ * keeps them, so a page or an endpoint changed since then failed here against
+ * yesterday's output until someone thought to rebuild, and `pre-push` refused
+ * the push for it. The generator takes a tenth of a second.
  */
-if (!existsSync("public/llms.txt") || !existsSync("public/locusgraph/concepts.md")) {
-  execFileSync("node", ["scripts/build-docs-artifacts.mjs"], { stdio: "ignore" });
-}
+execFileSync("node", ["scripts/build-docs-artifacts.mjs"], { stdio: "ignore" });
 
 /**
  * `llms.txt` and `llms-full.txt` list what the manifest serves.
