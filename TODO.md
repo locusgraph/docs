@@ -22,29 +22,32 @@ What the engine settled, 2026-09-22:
 
 ## Keep the reference honest
 
-Every example in `lib/api/endpoints.json` was checked against the live API on
-2026-09-22, and nothing stops it drifting again. The corpus test only asserts
-that a field is present, never that the API still answers that way.
+`.github/workflows/replay.yml` replays every documented sample each morning and
+opens an issue when an answer's shape stops matching its example. How it runs
+is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
-- [ ] **A daily job that replays the samples.** Read `endpoints.json`, send each
-      documented sample to the real API, and compare the **shape** of the answer
-      to the stored example: same keys, same nesting, same types, never the
-      values, because ids and timestamps change every run. Report a divergence
-      as one issue naming the endpoint, the expected shape and the actual one.
-      GitHub Actions on a cron in this repo is enough, with
-      `LOCUSGRAPH_API_KEY`, `LOCUSGRAPH_GRAPH_ID` and `SPENDGRAPH_API_KEY` as
-      secrets. Two things to decide first: the write endpoints need a scratch
-      graph or they leave junk in a real one daily, and `deep-recall`,
-      `run-a-prompt` and `run-an-assay` spend real money per run, so they want a
-      `skip` flag on the endpoint rather than a run every morning
-
-What this would have caught the day it broke, all of it found by hand instead:
-the Spendgraph pages documenting `Authorization: Bearer` when the API takes
-`x-api-key` and answers `401` to everything else, `usage-summary` documenting
-`{costMicros, calls}` when the answer is `{current, previous, pricing}`, three
-request samples that the API refuses with a `400` or `422`, and the event
-vocabulary changing from `UserFeedback` to `user` under the examples.
-
+- [ ] **Add the three secrets to the repo.** `LOCUSGRAPH_API_KEY`,
+      `LOCUSGRAPH_GRAPH_ID` and `SPENDGRAPH_API_KEY`, the values in `.env`. The
+      job fails on its first step until they exist
+- [ ] **Fix the six examples the first replay found drifted**, on 2026-10-01:
+      `report-usage` answers `{accepted, rejected, costs, eventCosts}`, not
+      `{stored, unpricedModels}`; `delete-a-memory` adds `unbound_links`;
+      `read-an-ingest-job` adds `accepted_events`, `anchor_id`, `anchor_title`,
+      `doc_scope` and `file_url`; `usage-summary` adds
+      `pricing.unpricedEvents` and `pricing.zeroTokenEvents`; and a rollout
+      carries `client`, in both `record-a-rollout` and `list-rollouts`
+- [ ] **Document the file on `ingest-a-document`.** It takes
+      `multipart/form-data` with the document in a `file` field, and the page
+      lists only `graph_id`. `endpoints.json` has no way to describe a file part
+      yet
+- [ ] **Two Spendgraph answers look like API bugs**, to raise in the spendgraph
+      repo. `update-a-prompt` answers `409 project_immutable` to every PUT made
+      with a key, with or without `project`. Creating or renaming a tool to a
+      name another tool holds, archived or not, answers `500` with an empty
+      body where a `409` would say why
+- [ ] **Three memories are left in the replay graph** from the runs made while
+      building the job, before it cleaned up after itself. The job deletes only
+      what it wrote, so these stay until someone removes them by hand
 - [ ] **Five Spendgraph endpoints are still unverified**, because they need a
       provider key on the account: `run-a-prompt`, `run-an-assay`, and the three
       that depend on a run existing. Their examples come from the zod schemas in
