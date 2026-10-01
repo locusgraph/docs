@@ -97,6 +97,7 @@ export const DOCS: Record<Product, Record<string, () => Promise<DocModule>>> = {
     "harness/refine": () => import("@spendgraph/docs/harness/refine.mdx"),
     "harness/route": () => import("@spendgraph/docs/harness/route.mdx"),
     "harness/streaming": () => import("@spendgraph/docs/harness/streaming.mdx"),
+    "kairos/overview": () => import("@spendgraph/docs/kairos/overview.mdx"),
     "llms/calling": () => import("@spendgraph/docs/llms/calling.mdx"),
     "llms/overview": () => import("@spendgraph/docs/llms/overview.mdx"),
     "llms/providers": () => import("@spendgraph/docs/llms/providers.mdx"),

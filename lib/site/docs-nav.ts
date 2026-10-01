@@ -433,7 +433,7 @@ const LG_GRAPHS: DocsTree = {
 const SPENDGRAPH: DocsTree = {
   title: "",
   href: "/spendgraph/overview",
-  blurb: "Ten packages on one foundation, and which of them you need.",
+  blurb: "Eleven packages on one foundation, and which of them you need.",
   sections: [
     {
       title: "Start here",
@@ -441,7 +441,7 @@ const SPENDGRAPH: DocsTree = {
         {
           title: "Overview",
           href: "/spendgraph/overview",
-          blurb: "The ten packages, and how they compose",
+          blurb: "The eleven packages, and how they compose",
         },
         {
           title: "Getting started",
@@ -1003,6 +1003,24 @@ const VIGIL: DocsTree = {
   ],
 };
 
+const KAIROS: DocsTree = {
+  title: "Kairos",
+  href: "/spendgraph/kairos/overview",
+  blurb: "Pick the model a prompt runs on from what each one cost per accepted answer.",
+  sections: [
+    {
+      title: "Start here",
+      items: [
+        {
+          title: "Overview",
+          href: "/spendgraph/kairos/overview",
+          blurb: "Cost per accepted answer, and what it will not do",
+        },
+      ],
+    },
+  ],
+};
+
 /**
  * The sidebar order, bottom up.
  *
@@ -1010,9 +1028,10 @@ const VIGIL: DocsTree = {
  * which calls a provider, then `prompt`, which decides the wording, then
  * `stage`, which is those two plus a schema and a retry. `tools`, `graph` and
  * `harness` build on that, `vigil` parks a run, `evals` scores what came back,
- * and `cli` drives the lot from a terminal.
+ * `kairos` picks the model from what was scored, and `cli` drives the lot from
+ * a terminal.
  *
- * `content/spendgraph/overview.mdx` lists the same ten in the same order. Two
+ * `content/spendgraph/overview.mdx` lists the same eleven in the same order. Two
  * orders that disagree read as no order at all.
  */
 /**
@@ -1097,6 +1116,7 @@ const SPENDGRAPH_TREES: DocsTree[] = [
   HARNESS,
   VIGIL,
   EVALS,
+  KAIROS,
   CLI,
   SG_API,
 ];

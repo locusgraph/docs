@@ -18,11 +18,11 @@ importers:
         specifier: ^16.3.5
         version: 16.3.5(@mdx-js/loader@3.1.1(supports-color@10.2.2))(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.2.4))
       '@spendgraph/config':
-        specifier: ^0.8.3
-        version: 0.8.3
+        specifier: ^0.9.1
+        version: 0.9.1
       '@spendgraph/docs':
-        specifier: ^0.8.3
-        version: 0.8.3(react@19.2.4)
+        specifier: ^0.9.1
+        version: 0.9.1(react@19.2.4)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -2234,12 +2234,12 @@ packages:
   '@speed-highlight/core@1.2.24':
     resolution: {integrity: sha512-qeW2e1l78afw8VhRPfPQ1Gjj+KU5XFQ/OFV5ti6eTa9bruO7mJyZtA4vw0ofqmA3tKCkROE9xLk3VZoeRc98nw==}
 
-  '@spendgraph/config@0.8.3':
-    resolution: {integrity: sha512-q61AuGhrTLJgVmx7kq2WU0qv4Dixv2bO2eqib73wlkzIrGsfEguWKvQt8qUNis+9zaWQfI3pA6GbumstkusESQ==}
+  '@spendgraph/config@0.9.1':
+    resolution: {integrity: sha512-TUEEWDwlYVIyaSrQ0Wo6G0BxW9sMXGenhgz1Yt01/lFXMLxHE3DYw2uBFeQflZBFxloRSqyzBGbWyJFYMpIa7g==}
     engines: {node: '>=18'}
 
-  '@spendgraph/docs@0.8.3':
-    resolution: {integrity: sha512-REmcuKSknNXs+jpMN4cil1rMcBP1Kk7UAlWFnJSyuL0lkraTcKaUOOR4F9XA/rjIduksg2fuGnV5eP+Ybx0/gg==}
+  '@spendgraph/docs@0.9.1':
+    resolution: {integrity: sha512-pzwb+f/NVnbtsyiqF2MoyHLzurfJDWgjXvPuQS6j7Ar/zPI+zFs/e8dZx7Lt0KnP9rRYVEQVFYrZqK48Fkpnkw==}
     peerDependencies:
       react: '>=18'
     peerDependenciesMeta:
@@ -6354,9 +6354,9 @@ snapshots:
 
   '@speed-highlight/core@1.2.24': {}
 
-  '@spendgraph/config@0.8.3': {}
+  '@spendgraph/config@0.9.1': {}
 
-  '@spendgraph/docs@0.8.3(react@19.2.4)':
+  '@spendgraph/docs@0.9.1(react@19.2.4)':
     optionalDependencies:
       react: 19.2.4
 

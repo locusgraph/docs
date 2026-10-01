@@ -1,7 +1,7 @@
 export const meta = {
   title: "Overview | spendgraph docs",
   description:
-    "Everyone can build an agent. Almost nobody can say what one run cost, broken down by step, including the attempts that failed. That gap is what these ten packages close.",
+    "Everyone can build an agent. Almost nobody can say what one run cost, broken down by step, including the attempts that failed. That gap is what these eleven packages close.",
 };
 
 # What a run costs
@@ -60,7 +60,7 @@ Two of those eight rows are the interesting ones, and both are failures: a brief
 
 Every row carries its own rollout id, so `brief` and `brief · retry` are separately addressable: that is what makes "this prompt misses its schema one time in five" a query rather than a hunch.
 
-## Ten packages on one foundation
+## Eleven packages on one foundation
 
 Each layer keeps a receipt. Take any one of them on its own.
 
@@ -77,6 +77,7 @@ Each layer keeps a receipt. Take any one of them on its own.
 | [`harness`](/spendgraph/harness/overview) | The seven workflow shapes, each recorded as a priced rollout |
 | [`vigil`](/spendgraph/vigil/getting-started) | Parking a run on an agent that takes hours, and resuming it |
 | [`evals`](/spendgraph/evals/getting-started) | Scoring what came back |
+| [`kairos`](/spendgraph/kairos/overview) | Choosing the model from what each one cost per accepted answer |
 | [`cli`](/spendgraph/cli/overview) | `sg`, driving the dashboard from a terminal |
 
 ### One socket
