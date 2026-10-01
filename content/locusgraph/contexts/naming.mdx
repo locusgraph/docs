@@ -39,7 +39,7 @@ Pick from a closed list. An open one is where consistency dies: one document say
 | `section` | a heading inside a document | `section:variable_scope` |
 | `doc` | **reserved**, minted by ingestion | `doc:runbook` |
 
-<Callout tone="warning" title="`doc:` is not merely a convention">
+<Callout tone="warn" title="`doc:` is not merely a convention">
   Ingestion reads that prefix to decide whether a second upload of a document may overwrite the
   memories the first one wrote. A hand-written `doc:` context gets caught in that, so write your
   own contexts under one of the other types.
