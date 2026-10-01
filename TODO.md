@@ -37,15 +37,6 @@ is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
       that depend on a run existing. Their examples come from the zod schemas in
       the spendgraph repo, not from a call
 
-## Open
-
-Needs someone with an account this machine does not have.
-
-- [ ] **Remove `doc.locusgraph.com` from the old Vercel project**, now that the
-      name points at this worker and redirects here (moved 2026-10-01). Delete
-      its entry in the `_vercel` TXT record too, and only that one: the record
-      also verifies `app.`, `design.` and the apex
-
 ## Deferred
 
 Both exist as routes and stay off the host index while `ready: false`. The
