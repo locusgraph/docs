@@ -39,10 +39,8 @@ is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
 ## Open
 
-Each needs someone with an account this machine does not have.
+Needs someone with an account this machine does not have.
 
-- [ ] **Submit the sitemap.** `https://docs.locusgraph.com/sitemap.xml`, in the
-      existing Search Console property, per Sl 6. Do not submit app sitemaps
 - [ ] **Remove `doc.locusgraph.com` from the old Vercel project**, now that the
       name points at this worker and redirects here (moved 2026-10-01). Delete
       its entry in the `_vercel` TXT record too, and only that one: the record
