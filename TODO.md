@@ -7,11 +7,6 @@ things that bite, and in `git log` for the rest.
 
 ## Tomorrow
 
-In this repo:
-
-- [ ] **Breadcrumbs do not collapse on a narrow screen.** Flagged while building
-      the API reference and never built
-
 What the engine settled, 2026-09-22:
 
 - **`scope` is gone.** A context holds one memory, by design rather than by
