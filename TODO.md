@@ -20,11 +20,6 @@ What the engine settled, 2026-09-22:
   updated: `event_id` to `locus_id`, `kind` to `value`, `relevance` to
   `confidence`, `score` to `match_score`
 
-Elsewhere:
-
-- [ ] **Publish `@spendgraph/*` 0.8.3.** Needs `vault run`, which only you can
-      start
-
 ## Keep the reference honest
 
 Every example in `lib/api/endpoints.json` was checked against the live API on
