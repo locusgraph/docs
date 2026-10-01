@@ -2030,18 +2030,37 @@
         "type": "string",
         "required": true,
         "note": "In the path. Which graph to ingest into."
+      },
+      {
+        "name": "file",
+        "type": "file",
+        "required": true,
+        "field": "file",
+        "note": "The document, as a multipart part. Up to 10 MB, read by its extension and then its bytes: md, txt, pdf, docx, html, epub, rst, adoc, org, pptx, odt, ipynb, eml, mbox, rtf, csv, tsv, xlsx, json, yaml, vtt, srt, png, jpg, webp, tiff, and source code in ts, js, py, go, rs, java, kt, cs, c and cpp."
+      },
+      {
+        "name": "source",
+        "type": "enum",
+        "options": ["document", "policy", "verified", "tool", "user"],
+        "note": "Where the document came from. Defaults to `document`. `derived` is refused: the engine never ingests its own output."
+      },
+      {
+        "name": "parent_context",
+        "type": "string",
+        "note": "A context id to file the document under. Its root context extends this one, so the document is reachable from it."
       }
     ],
-    "returns": "A job id.",
+    "returns": "A job id. Sending a document already in the graph, under the same parent, returns the job that took it the first time, with `deduplicated: true`.",
     "sample": {
-      "graph_id": "acme"
+      "graph_id": "acme",
+      "file": "handbook.pdf"
     },
     "response": "{\n  \"success\": true,\n  \"data\": {\n    \"job_id\": \"ing_4c1f8e20-9a77-4b31-88de-1f0a6c5d2e34\",\n    \"status\": \"processing\",\n    \"deduplicated\": false\n  }\n}",
     "errors": [
       {
         "status": 400,
         "code": "BAD_REQUEST",
-        "note": "The body was not valid JSON, or a field failed its check. The message names the field."
+        "note": "No `file` part, an empty or unreadable file, one over 10 MB, a format not on the list, or an unknown `source`. The message names which."
       },
       {
         "status": 401,
@@ -2049,9 +2068,19 @@
         "note": "No key, or a key that has been revoked."
       },
       {
+        "status": 402,
+        "code": "PAYMENT_REQUIRED",
+        "note": "The account is out of credit. Ingesting calls a model, so it is refused before any work starts."
+      },
+      {
         "status": 403,
         "code": "FORBIDDEN",
         "note": "The key is pinned to a different graph. A key cannot widen itself."
+      },
+      {
+        "status": 404,
+        "code": "NOT_FOUND",
+        "note": "No graph with that id."
       }
     ]
   },

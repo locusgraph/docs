@@ -4,7 +4,14 @@ import { useEffect, useState } from "react";
 import type { Endpoint } from "@/lib/api/endpoints";
 import { API_BASE, API_KEY_HEADER } from "@/lib/api/endpoints";
 import { highlight, type Lang } from "@/lib/api/highlight";
-import { LANG_LABEL, LANGS, requestFor, type SampleLang, sampleFor } from "@/lib/api/samples";
+import {
+  fileFields,
+  LANG_LABEL,
+  LANGS,
+  requestFor,
+  type SampleLang,
+  sampleFor,
+} from "@/lib/api/samples";
 
 /**
  * The key is kept in this browser and nowhere else.
@@ -77,6 +84,11 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
     )
   );
   const [tab, setTab] = useState<"body" | "headers">("body");
+  /**
+   * Files picked for the fields that take one. The field itself holds only the
+   * name, which is what the sample prints; the bytes stay here until Send.
+   */
+  const [files, setFiles] = useState<Record<string, File>>({});
 
   /**
    * What came back, or why nothing did.
@@ -147,6 +159,7 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
 
   const code = sampleFor(endpoint, parsed, lang);
   const hasKey = apiKey.trim().length > 0;
+  const unpicked = fileFields(endpoint).filter((field) => !files[field]);
 
   const send = async () => {
     const request = requestFor(endpoint, parsed);
@@ -157,14 +170,27 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
     try {
       const header = API_KEY_HEADER[endpoint.product] ?? API_KEY_HEADER.locusgraph;
 
-      const res = await fetch(request.url, {
-        method: request.method,
-        headers: {
-          [header.name]: header.value(apiKey.trim()),
-          ...(request.payload ? { "Content-Type": "application/json" } : {}),
-        },
-        body: request.payload ? JSON.stringify(request.payload) : undefined,
-      });
+      const key = { [header.name]: header.value(apiKey.trim()) };
+
+      let init: RequestInit;
+      if (request.files) {
+        // No Content-Type: the browser writes the multipart boundary into it.
+        const form = new FormData();
+        for (const field of Object.keys(request.files)) form.append(field, files[field]);
+        for (const [k, v] of Object.entries(request.payload ?? {})) form.append(k, String(v));
+        init = { method: request.method, headers: key, body: form };
+      } else {
+        init = {
+          method: request.method,
+          headers: {
+            ...key,
+            ...(request.payload ? { "Content-Type": "application/json" } : {}),
+          },
+          body: request.payload ? JSON.stringify(request.payload) : undefined,
+        };
+      }
+
+      const res = await fetch(request.url, init);
 
       setResult({
         status: res.status,
@@ -265,6 +291,18 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
                       </option>
                     ))}
                   </select>
+                ) : spec?.field === "file" ? (
+                  <input
+                    id={`pg-${field}`}
+                    type="file"
+                    onChange={(e) => {
+                      const picked = e.target.files?.[0];
+                      if (!picked) return;
+                      setFiles({ ...files, [field]: picked });
+                      edit(picked.name);
+                    }}
+                    className={`${control} file:mr-2 file:rounded file:border-0 file:bg-ghost file:px-2 file:py-0.5 file:text-xs file:text-foreground`}
+                  />
                 ) : spec?.field === "prose" ? (
                   <textarea
                     id={`pg-${field}`}
@@ -312,9 +350,16 @@ export function Playground({ endpoint }: { endpoint: Endpoint }) {
         <Code text={code} lang={lang} />
       </div>
 
+      {unpicked.length > 0 ? (
+        <p className="m-0 text-[11px] text-faint">
+          Choose a file for <span className="font-mono">{unpicked.join(", ")}</span> to send this
+          one. The sample reads it from disk by the name in the field.
+        </p>
+      ) : null}
+
       <button
         type="button"
-        disabled={!hasKey || pending}
+        disabled={!hasKey || pending || unpicked.length > 0}
         onClick={send}
         className="h-10 rounded-lg bg-s1 text-sm font-semibold text-background disabled:cursor-not-allowed disabled:bg-ghost disabled:text-faint"
       >

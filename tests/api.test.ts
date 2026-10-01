@@ -118,6 +118,33 @@ describe("the code samples", () => {
   });
 
   /**
+   * A file goes in a multipart body, never in JSON. `ingest-a-document` printed
+   * a JSON sample, and the API answered every copy of it with `400 Invalid
+   * multipart body`.
+   */
+  it("builds a form for an endpoint that takes a file", () => {
+    const ingest = endpointBySlug("locusgraph", "ingest-a-document");
+    if (!ingest) throw new Error("ingest-a-document is gone");
+
+    const body = { ...ingest.sample, source: "policy" };
+    const sent = requestFor(ingest, body);
+    expect(sent.files).toEqual({ file: "handbook.pdf" });
+    expect(sent.payload).toEqual({ source: "policy" });
+
+    const looks: Record<string, RegExp> = {
+      curl: /-F "file=@handbook\.pdf"[\s\S]*-F "source=policy"/,
+      node: /new FormData\(\)[\s\S]*openAsBlob\("handbook\.pdf"\)/,
+      python: /files=\{"file": open\("handbook\.pdf", "rb"\)\}[\s\S]*data=\{"source": "policy"\}/,
+      go: /CreateFormFile\("file", "handbook\.pdf"\)[\s\S]*FormDataContentType/,
+    };
+    for (const lang of LANGS) {
+      const code = sampleFor(ingest, body, lang);
+      expect(code, lang).toMatch(looks[lang]);
+      expect(code, `${lang} still sends JSON`).not.toMatch(/application\/json|json\.Marshal|json=/);
+    }
+  });
+
+  /**
    * A DELETE sends what the path did not take as a JSON body. The API reads
    * `unlink-two-contexts` from the body and refused the query string the sample
    * and the Send button both used, with `400 body must be valid JSON`.

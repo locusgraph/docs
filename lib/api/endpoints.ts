@@ -33,8 +33,12 @@ export interface ApiParam {
    * no list of them is a field you have to leave the page to fill in.
    */
   readonly options?: readonly string[];
-  /** `prose` gets a textarea: a payload is a sentence, not a word. */
-  readonly field?: "prose";
+  /**
+   * `prose` gets a textarea: a payload is a sentence, not a word. `file` is a
+   * part of a `multipart/form-data` body rather than a JSON field, and its
+   * sample value is the file's name.
+   */
+  readonly field?: "prose" | "file";
 }
 
 export interface ApiError {

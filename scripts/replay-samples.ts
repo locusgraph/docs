@@ -64,16 +64,19 @@ const parse = (text: string): unknown => {
 };
 
 async function send(endpoint: Endpoint, body: Record<string, unknown>, upload?: Step["upload"]) {
-  const { url, method, payload } = requestFor(endpoint, body);
+  const { url, method, payload, files } = requestFor(endpoint, body);
   const header = API_KEY_HEADER[endpoint.product];
   const key = { [header.name]: header.value(env(API_KEY_ENV[endpoint.product])) };
 
   let init: RequestInit;
-  if (upload) {
+  if (files) {
+    if (!upload) throw new Error(`${endpoint.slug} takes a file and its step has no upload`);
     // `fetch` writes the multipart boundary into Content-Type itself.
     const form = new FormData();
+    for (const field of Object.keys(files)) {
+      form.append(field, new Blob([upload.text], { type: "text/markdown" }), upload.name);
+    }
     for (const [k, v] of Object.entries(payload ?? {})) form.append(k, String(v));
-    form.append(upload.field, new Blob([upload.text], { type: "text/markdown" }), upload.name);
     init = { method, headers: key, body: form };
   } else {
     init = {

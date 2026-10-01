@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { ENDPOINTS, endpointBySlug } from "../lib/api/endpoints";
 import { STEPS, shapeDiff, shapeOf } from "../lib/api/replay";
+import { fileFields } from "../lib/api/samples";
 
 /**
  * The daily replay is only as good as its coverage. An endpoint added to
@@ -29,6 +30,14 @@ describe("the replay plan", () => {
         expect(endpointBySlug(step.product, setup.slug), setup.slug).toBeDefined();
       }
     }
+  });
+
+  it("has something to upload for every endpoint that takes a file", () => {
+    const missing = STEPS.filter((step) => {
+      const endpoint = endpointBySlug(step.product, step.slug);
+      return endpoint && fileFields(endpoint).length > 0 && !step.upload;
+    });
+    expect(missing.map((s) => s.slug)).toEqual([]);
   });
 
   it("sends each endpoint once", () => {

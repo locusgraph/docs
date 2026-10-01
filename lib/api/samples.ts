@@ -48,10 +48,38 @@ export interface BuiltRequest {
   readonly method: Endpoint["method"];
   /** Present only for a method that takes one. */
   readonly payload?: Record<string, unknown>;
+  /**
+   * File parts by field, each the name of the file to send. Present only for
+   * an endpoint that takes a file, and then the body is `multipart/form-data`:
+   * `payload` holds the other parts as text rather than going over as JSON.
+   */
+  readonly files?: Record<string, string>;
+}
+
+/** The fields an endpoint takes as files, which only a multipart body can carry. */
+export function fileFields(endpoint: Endpoint): string[] {
+  return endpoint.params.filter((p) => p.field === "file").map((p) => p.name);
 }
 
 export function requestFor(endpoint: Endpoint, body: Record<string, unknown>): BuiltRequest {
   const { path, rest } = resolve(endpoint, body);
+
+  const named = fileFields(endpoint);
+  if (named.length > 0) {
+    const files: Record<string, string> = {};
+    const parts: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(rest)) {
+      if (named.includes(k)) files[k] = String(v);
+      else parts[k] = v;
+    }
+    return {
+      url: `${API_BASE[endpoint.product]}${path}`,
+      method: endpoint.method,
+      payload: parts,
+      files,
+    };
+  }
+
   // A DELETE with fields left over after the path carries them as JSON, the
   // way `unlink-two-contexts` reads them. Sent as a query, it answered `400
   // body must be valid JSON`, from the sample and the Send button alike. One
@@ -88,9 +116,10 @@ export function sampleFor(
   body: Record<string, unknown>,
   lang: SampleLang
 ): string {
-  const { url, payload: sent } = requestFor(endpoint, body);
+  const { url, payload: sent, files } = requestFor(endpoint, body);
   const keyEnv = API_KEY_ENV[endpoint.product];
   const header = API_KEY_HEADER[endpoint.product] ?? API_KEY_HEADER.locusgraph;
+  if (files) return multipartSample(endpoint, url, sent ?? {}, files, lang);
   const hasBody = sent !== undefined;
   const payload = sent ?? {};
 
@@ -140,6 +169,94 @@ export function sampleFor(
     `req, _ := http.NewRequest(http.Method${endpoint.method[0]}${endpoint.method.slice(1).toLowerCase()},`,
     `    "${url}",`,
     hasBody ? `    bytes.NewReader(body))` : `    nil)`,
+    `req.Header.Set("${header.name}",`,
+    `    ${header.name === "Authorization" ? `"Bearer "+os.Getenv("${keyEnv}")` : `os.Getenv("${keyEnv}")`})`,
+    ``,
+    `res, err := http.DefaultClient.Do(req)`,
+  ].join("\n");
+}
+
+/**
+ * The same call for an endpoint that takes a file.
+ *
+ * A JSON body cannot carry one, so the sample builds a form instead, each
+ * language its own way, and reads the file from disk by the name in the field.
+ * Printing JSON here is what made `ingest-a-document` answer `400 Invalid
+ * multipart body` to every reader who copied it.
+ */
+function multipartSample(
+  endpoint: Endpoint,
+  url: string,
+  parts: Record<string, unknown>,
+  files: Record<string, string>,
+  lang: SampleLang
+): string {
+  const keyEnv = API_KEY_ENV[endpoint.product];
+  const header = API_KEY_HEADER[endpoint.product] ?? API_KEY_HEADER.locusgraph;
+  const text = Object.entries(parts).map(([k, v]) => [k, String(v)] as const);
+  const file = Object.entries(files);
+
+  if (lang === "curl") {
+    return [
+      `curl -X ${endpoint.method} ${url} \\`,
+      `  -H "${header.name}: ${header.value(`$${keyEnv}`)}" \\`,
+      ...[...file.map(([k, name]) => `${k}=@${name}`), ...text.map(([k, v]) => `${k}=${v}`)].map(
+        (part, i, all) => `  -F "${part}"${i < all.length - 1 ? " \\" : ""}`
+      ),
+    ].join("\n");
+  }
+
+  if (lang === "node") {
+    return [
+      `import { openAsBlob } from "node:fs";`,
+      ``,
+      `const form = new FormData();`,
+      ...file.map(([k, name]) => `form.append("${k}", await openAsBlob("${name}"), "${name}");`),
+      ...text.map(([k, v]) => `form.append("${k}", "${v}");`),
+      ``,
+      `const res = await fetch("${url}", {`,
+      `  method: "${endpoint.method}",`,
+      `  headers: { "${header.name}": \`${header.value(`\${process.env.${keyEnv}}`)}\` },`,
+      `  body: form,`,
+      `});`,
+      ``,
+      `const data = await res.json();`,
+    ].join("\n");
+  }
+
+  if (lang === "python") {
+    return [
+      `import os`,
+      `import requests`,
+      ``,
+      `res = requests.${endpoint.method.toLowerCase()}(`,
+      `    "${url}",`,
+      `    headers={"${header.name}": f"${header.value(`{os.environ['${keyEnv}']}`)}"},`,
+      `    files={${file.map(([k, name]) => `"${k}": open("${name}", "rb")`).join(", ")}},`,
+      ...(text.length > 0
+        ? [`    data={${text.map(([k, v]) => `"${k}": "${v}"`).join(", ")}},`]
+        : []),
+      `)`,
+      ``,
+      `print(res.json())`,
+    ].join("\n");
+  }
+
+  return [
+    `var body bytes.Buffer`,
+    `form := multipart.NewWriter(&body)`,
+    ...file.flatMap(([k, name]) => [
+      `part, _ := form.CreateFormFile("${k}", "${name}")`,
+      `file, _ := os.Open("${name}")`,
+      `io.Copy(part, file)`,
+    ]),
+    ...text.map(([k, v]) => `form.WriteField("${k}", "${v}")`),
+    `form.Close()`,
+    ``,
+    `req, _ := http.NewRequest(http.Method${endpoint.method[0]}${endpoint.method.slice(1).toLowerCase()},`,
+    `    "${url}",`,
+    `    &body)`,
+    `req.Header.Set("Content-Type", form.FormDataContentType())`,
     `req.Header.Set("${header.name}",`,
     `    ${header.name === "Authorization" ? `"Bearer "+os.Getenv("${keyEnv}")` : `os.Getenv("${keyEnv}")`})`,
     ``,

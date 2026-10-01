@@ -34,11 +34,11 @@ export interface Step {
    */
   readonly before?: readonly { readonly slug: string; readonly body: Record<string, unknown> }[];
   /**
-   * A file to send as `multipart/form-data` beside the sample's fields. The
-   * reference does not document the field, because `endpoints.json` has no way
-   * to describe one, so it is named here.
+   * What to send for an endpoint's file fields. The sample names a file, like
+   * `handbook.pdf`, that no runner has on disk, so the replay sends this in its
+   * place, under this name, for every field `endpoints.json` marks as a file.
    */
-  readonly upload?: { readonly field: string; readonly name: string; readonly text: string };
+  readonly upload?: { readonly name: string; readonly text: string };
 }
 
 const at = (data: unknown, ...path: (string | number)[]): string | undefined => {
@@ -159,7 +159,7 @@ const LOCUSGRAPH: Step[] = [
   {
     product: "locusgraph",
     slug: "ingest-a-document",
-    upload: { field: "file", name: "replay.md", text: "Deploys stop at 14:00 on Fridays.\n" },
+    upload: { name: "replay.md", text: "Deploys stop at 14:00 on Fridays.\n" },
     keep: (data) => kept({ job_id: at(data, "data", "job_id") }),
   },
   {
