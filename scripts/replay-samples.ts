@@ -4,6 +4,11 @@
  *
  *   pnpm replay                       # print the report
  *   pnpm replay --report report.md    # and write it to a file
+ *   pnpm replay --answers answers.json # and keep every raw answer
+ *
+ * The report gives shapes, which is enough to see a drift and not enough to
+ * fix one: a corrected example wants a real answer to copy, so `--answers`
+ * writes each one, keyed by `product/slug`.
  *
  * Reads `LOCUSGRAPH_API_KEY`, `LOCUSGRAPH_GRAPH_ID` and `SPENDGRAPH_API_KEY`
  * from the environment, or from `.env` when run locally. Exits `1` when any
@@ -97,6 +102,9 @@ function bodyFor(endpoint: Endpoint, fill: Record<string, unknown>): Record<stri
   return { ...sample, ...fill };
 }
 
+/** Every answer the run got, for `--answers`. */
+const answers: Record<string, unknown> = {};
+
 /** Ids the run has found, shared with the clean-up that follows it. */
 const found: Found = {};
 
@@ -147,6 +155,7 @@ async function run(): Promise<Result[]> {
 
     const answer = await send(endpoint, bodyFor(endpoint, step.fill?.(found) ?? {}), step.upload);
     Object.assign(found, step.keep?.(answer.data) ?? {});
+    answers[`${endpoint.product}/${endpoint.slug}`] = answer;
 
     const expected = shapeOf(parse(endpoint.response));
     const actual = shapeOf(answer.data);
@@ -255,7 +264,13 @@ const results = await run().finally(() => cleanUp(before));
 const text = report(results);
 console.log(text);
 
-const to = process.argv.indexOf("--report");
-if (to !== -1 && process.argv[to + 1]) writeFileSync(process.argv[to + 1], text);
+const flag = (name: string) => {
+  const at = process.argv.indexOf(name);
+  return at === -1 ? undefined : process.argv[at + 1];
+};
+const reportTo = flag("--report");
+if (reportTo) writeFileSync(reportTo, text);
+const answersTo = flag("--answers");
+if (answersTo) writeFileSync(answersTo, `${JSON.stringify(answers, null, 2)}\n`);
 
 process.exit(results.some((r) => r.outcome === "diverged") ? 1 : 0);
