@@ -26,9 +26,6 @@ What the engine settled, 2026-09-22:
 opens an issue when an answer's shape stops matching its example. How it runs
 is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
-- [ ] **Add the three secrets to the repo.** `LOCUSGRAPH_API_KEY`,
-      `LOCUSGRAPH_GRAPH_ID` and `SPENDGRAPH_API_KEY`, the values in `.env`. The
-      job fails on its first step until they exist
 - [ ] **Fix the six examples the first replay found drifted**, on 2026-10-01:
       `report-usage` answers `{accepted, rejected, costs, eventCosts}`, not
       `{stored, unpricedModels}`; `delete-a-memory` adds `unbound_links`;
