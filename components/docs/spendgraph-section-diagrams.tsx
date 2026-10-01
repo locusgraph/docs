@@ -312,7 +312,7 @@ export function TwoCredentials() {
  * thing people get wrong.
  */
 export function TheStack() {
-  const W = 420;
+  const W = 520;
   const rows = [
     {
       y: 24,
@@ -336,6 +336,7 @@ export function TheStack() {
 
   const parts = [
     { name: "prompt", blurb: "wording, versioned" },
+    { name: "kairos", blurb: "picks the model" },
     { name: "llms", blurb: "one shape back" },
     { name: "tools", blurb: "your code, callable" },
   ];
@@ -348,7 +349,7 @@ export function TheStack() {
 
   return (
     <Fig caption="Everything rests on the SDK. Take any layer and you take the ones under it, which is why the SDK alone is a two-minute install.">
-      <svg viewBox="0 0 640 316" className="w-full" role="img" aria-label="What sits on what">
+      <svg viewBox="0 0 740 316" className="w-full" role="img" aria-label="What sits on what">
         <title>What sits on what</title>
         <defs>
           <Arrow id="tsk-a" />
@@ -370,7 +371,7 @@ export function TheStack() {
         ))}
 
         {parts.map((part, i) => {
-          const w = (W - 16) / 3;
+          const w = (W - 8 * (parts.length - 1)) / parts.length;
           const x = 20 + i * (w + 8);
           return (
             <g key={part.name}>
@@ -397,17 +398,17 @@ export function TheStack() {
         </text>
 
         <path
-          d="M 462 296 L 462 30"
+          d="M 562 296 L 562 30"
           className="stroke-line"
           strokeWidth="1.5"
           fill="none"
           markerEnd="url(#tsk-a)"
         />
         <text
-          x="450"
+          x="550"
           y="164"
           textAnchor="middle"
-          transform="rotate(-90 450 164)"
+          transform="rotate(-90 550 164)"
           className={`${LABEL} text-faint`}
         >
           built on
@@ -416,7 +417,7 @@ export function TheStack() {
         {aside.map((one) => (
           <g key={one.name}>
             <rect
-              x="476"
+              x="576"
               y={one.y}
               width="152"
               height="52"
@@ -425,18 +426,18 @@ export function TheStack() {
               strokeDasharray="3 3"
               strokeWidth="1"
             />
-            <text x="490" y={one.y + 22} className={`${MONO} text-foreground`}>
+            <text x="590" y={one.y + 22} className={`${MONO} text-foreground`}>
               {one.name}
             </text>
-            <text x="490" y={one.y + 38} className={`${LABEL} text-faint`}>
+            <text x="590" y={one.y + 38} className={`${LABEL} text-faint`}>
               {one.blurb}
             </text>
           </g>
         ))}
-        <text x="552" y="244" textAnchor="middle" className={`${LABEL} text-faint`}>
+        <text x="652" y="244" textAnchor="middle" className={`${LABEL} text-faint`}>
           not in the
         </text>
-        <text x="552" y="258" textAnchor="middle" className={`${LABEL} text-faint`}>
+        <text x="652" y="258" textAnchor="middle" className={`${LABEL} text-faint`}>
           request path
         </text>
       </svg>
