@@ -39,14 +39,16 @@ is in `lib/api/replay.ts`; `pnpm replay` runs it locally from `.env`.
 
 ## Open
 
-Both need someone with an account this machine does not have.
+Each needs someone with an account this machine does not have.
 
 - [ ] **Submit the sitemap.** `https://docs.locusgraph.com/sitemap.xml`, in the
       existing Search Console property, per Sl 6. Do not submit app sitemaps
-- [ ] **`doc.locusgraph.com` still points at Vercel.** A CNAME to
-      `vercel-dns-017.com` holds the name, which is why this host is `docs.`.
-      Redirect `doc.` here once that is untangled, so the spec's hostname and
-      any links already written against it still resolve
+- [ ] **Deploy to move `doc.locusgraph.com` here.** It still serves the old
+      Vocs docs from Vercel, indexable and describing the API before its
+      renames. `wrangler.jsonc` now claims the name and `lib/site/legacy.ts`
+      maps its 48 pages onto this host. Run `pnpm deploy:cf` from a terminal and
+      answer yes when wrangler offers to replace the conflicting DNS record. Then
+      remove the domain from the Vercel project
 
 ## Deferred
 
