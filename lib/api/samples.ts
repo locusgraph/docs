@@ -52,7 +52,12 @@ export interface BuiltRequest {
 
 export function requestFor(endpoint: Endpoint, body: Record<string, unknown>): BuiltRequest {
   const { path, rest } = resolve(endpoint, body);
-  const hasBody = endpoint.method !== "GET" && endpoint.method !== "DELETE";
+  // A DELETE with fields left over after the path carries them as JSON, the
+  // way `unlink-two-contexts` reads them. Sent as a query, it answered `400
+  // body must be valid JSON`, from the sample and the Send button alike. One
+  // whose fields all went into the path still sends no body at all.
+  const hasBody =
+    endpoint.method === "DELETE" ? Object.keys(rest).length > 0 : endpoint.method !== "GET";
 
   const query = hasBody
     ? ""

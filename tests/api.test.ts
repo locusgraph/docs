@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { API_BASE, API_KEY_ENV, ENDPOINTS, endpointBySlug } from "../lib/api/endpoints";
 import { highlight, type Lang } from "../lib/api/highlight";
-import { LANGS, sampleFor } from "../lib/api/samples";
+import { LANGS, requestFor, sampleFor } from "../lib/api/samples";
 
 /**
  * The API reference is generated, so the spec is the thing to hold.
@@ -115,6 +115,23 @@ describe("the code samples", () => {
     for (const lang of LANGS) {
       expect(sampleFor(search, edited, lang)).toContain("what did we decide about churn?");
     }
+  });
+
+  /**
+   * A DELETE sends what the path did not take as a JSON body. The API reads
+   * `unlink-two-contexts` from the body and refused the query string the sample
+   * and the Send button both used, with `400 body must be valid JSON`.
+   */
+  it("sends a DELETE's leftover fields as a body, and none when there are none", () => {
+    const unlink = endpointBySlug("locusgraph", "unlink-two-contexts");
+    const forget = endpointBySlug("locusgraph", "forget-a-context");
+    if (!unlink || !forget) throw new Error("an endpoint this test reads is gone");
+
+    const sent = requestFor(unlink, unlink.sample);
+    expect(sent.url).not.toContain("?");
+    expect(sent.payload).toMatchObject({ link_type: "extends" });
+
+    expect(requestFor(forget, forget.sample).payload).toBeUndefined();
   });
 });
 
