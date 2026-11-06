@@ -2,9 +2,9 @@
   <rect width="1280" height="320" rx="16" fill="#09090b"/>
 
   <g transform="translate(80 96)">
-    <text x="0" y="0" font-family="Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="-2" fill="#fafafa">LocusGraph <tspan fill="#a1a1aa">docs</tspan></text>
-    <text x="0" y="52" font-family="Geist, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="400" fill="#a1a1aa">Everything we ship, written down.</text>
-    <text x="0" y="108" font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#71717a">reference  ·  guides  ·  api surface</text>
+    <text x="0" y="0" font-family="Archivo, IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="-2" fill="#fafafa">LocusGraph <tspan fill="#a1a1aa">docs</tspan></text>
+    <text x="0" y="52" font-family="IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif" font-size="26" font-weight="400" fill="#a1a1aa">Everything we ship, written down.</text>
+    <text x="0" y="108" font-family="IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18" fill="#71717a">reference  ·  guides  ·  api surface</text>
   </g>
 
   <!-- Two stacks of pages, one per section, in that section's own accent.
@@ -21,7 +21,7 @@
       <rect x="38" y="84" width="112" height="6" rx="3" fill="#3f3f46"/>
       <rect x="38" y="110" width="80" height="6" rx="3" fill="#27272a"/>
       <rect x="38" y="128" width="104" height="6" rx="3" fill="#27272a"/>
-      <text x="38" y="158" font-family="Geist Mono, ui-monospace, monospace" font-size="13" fill="#0099ff">locusgraph</text>
+      <text x="38" y="158" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13" fill="#0099ff">locusgraph</text>
     </g>
 
     <g transform="translate(206 0)">
@@ -34,7 +34,7 @@
       <rect x="38" y="84" width="112" height="6" rx="3" fill="#3f3f46"/>
       <rect x="38" y="110" width="96" height="6" rx="3" fill="#27272a"/>
       <rect x="38" y="128" width="72" height="6" rx="3" fill="#27272a"/>
-      <text x="38" y="158" font-family="Geist Mono, ui-monospace, monospace" font-size="13" fill="#7f8bff">spendgraph</text>
+      <text x="38" y="158" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13" fill="#7f8bff">spendgraph</text>
     </g>
   </g>
 </svg>
