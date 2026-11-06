@@ -32,9 +32,6 @@ importers:
       '@next/mdx':
         specifier: ^16.3.5
         version: 16.3.5(@mdx-js/loader@3.1.1(supports-color@10.2.2))(@mdx-js/react@3.1.1(@types/react@19.3.0)(react@19.2.4))
-      '@spendgraph/config':
-        specifier: ^0.9.1
-        version: 0.9.1
       '@spendgraph/docs':
         specifier: ^0.9.1
         version: 0.9.1(react@19.2.4)
@@ -2981,10 +2978,6 @@ packages:
 
   '@speed-highlight/core@1.2.24':
     resolution: {integrity: sha512-qeW2e1l78afw8VhRPfPQ1Gjj+KU5XFQ/OFV5ti6eTa9bruO7mJyZtA4vw0ofqmA3tKCkROE9xLk3VZoeRc98nw==}
-
-  '@spendgraph/config@0.9.1':
-    resolution: {integrity: sha512-TUEEWDwlYVIyaSrQ0Wo6G0BxW9sMXGenhgz1Yt01/lFXMLxHE3DYw2uBFeQflZBFxloRSqyzBGbWyJFYMpIa7g==}
-    engines: {node: '>=18'}
 
   '@spendgraph/docs@0.9.1':
     resolution: {integrity: sha512-pzwb+f/NVnbtsyiqF2MoyHLzurfJDWgjXvPuQS6j7Ar/zPI+zFs/e8dZx7Lt0KnP9rRYVEQVFYrZqK48Fkpnkw==}
@@ -8152,8 +8145,6 @@ snapshots:
       tslib: 2.8.1
 
   '@speed-highlight/core@1.2.24': {}
-
-  '@spendgraph/config@0.9.1': {}
 
   '@spendgraph/docs@0.9.1(react@19.2.4)':
     optionalDependencies:

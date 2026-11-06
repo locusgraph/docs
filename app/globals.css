@@ -1,6 +1,34 @@
 @import "tailwindcss";
-@import "@spendgraph/config/css/theme.css";
-@import "@spendgraph/config/css/typeset.css";
+@import "@locusgraph/components/theme.css";
+@import "@locusgraph/brand/sources.css";
+
+/*
+ * The package pages draw their figures with classes this host never writes, so
+ * Tailwind has to be told to read them. It skips `node_modules` on its own.
+ */
+@source "../node_modules/@spendgraph/docs";
+
+/*
+ * Names the figures in `@spendgraph/docs` were drawn with.
+ *
+ * Those pages are written against the old Spendgraph token names: `line`,
+ * `soft`, `ghost`, `btn`, `bad` and the three signal colours. The LocusGraph
+ * theme names the same roles differently, so each one is pointed at the
+ * LocusGraph value it stands for. The pages keep rendering, and they take the
+ * LocusGraph palette in both modes because every value here is a `--locus-*`
+ * variable that flips with `.dark`.
+ */
+@theme inline {
+  --color-line: var(--locus-border);
+  --color-soft: var(--locus-muted-foreground);
+  --color-ghost: var(--locus-muted);
+  --color-btn: var(--locus-btn);
+  --color-btn-ink: var(--locus-btn-ink);
+  --color-bad: var(--locus-destructive);
+  --color-s1: var(--locus-s1);
+  --color-s2: var(--locus-s2);
+  --color-s3: var(--locus-s3);
+}
 
 /*
  * One accent per section.
@@ -8,52 +36,52 @@
  * Values are taken from each product's own marketing page, so a reader moving
  * from the site to the docs meets the same colour.
  *
- * Only the three signal tokens are redefined — `--s1`, `--s2`, `--s3`. Every
- * structural token (background, surface, foreground, border, the button pair)
- * stays exactly as the shared theme sets it, so the two sections remain
- * recognisably the same host and nothing outside these three values can shift.
+ * Only the three signal tokens are redefined: `--locus-s1`, `--locus-s2` and
+ * `--locus-s3`. Every structural token (background, surface, foreground,
+ * border, the button pair) stays exactly as the LocusGraph theme sets it, so
+ * the two sections remain recognisably the same host.
  *
  * Scoped to `[data-section]`, which the product layout sets. The host index,
  * the 404 and anything else outside a section inherit the default untouched.
  *
  * Each block is written twice because the dark palette is a separate set of
- * values in `theme.css`, not a filter over the light one.
+ * values in the theme, not a filter over the light one.
  */
 
 [data-section="locusgraph"] {
   /* www.locusgraph.com is near-monochrome with one azure accent, rgb(0,153,255).
-     Darkened here because the brand value is 2.9:1 on white — fine for a large
-     headline on their site, too weak for a body link on ours. */
-  --s1: #0077cc;
-  --s2: #2d567d;
-  --s3: #8cc9ff;
+     Darkened here because the brand value is 2.9:1 on white, fine for a large
+     headline on their site and too weak for a body link on ours. */
+  --locus-s1: #0077cc;
+  --locus-s2: #2d567d;
+  --locus-s3: #8cc9ff;
 }
 
 .dark [data-section="locusgraph"] {
-  /* The brand azure itself, which is what it was drawn for — a dark background. */
-  --s1: #0099ff;
-  --s2: #8cc9ff;
-  --s3: #2d567d;
+  /* The brand azure itself, which is what it was drawn for: a dark background. */
+  --locus-s1: #0099ff;
+  --locus-s2: #8cc9ff;
+  --locus-s3: #2d567d;
 }
 
 [data-section="spendgraph"] {
   /* www.locusgraph.com/spendgraph is indigo throughout: rgb(93,103,233) across
      the page, rgb(46,49,220) on the headline. Both are used exactly. */
-  --s1: #2e31dc;
-  --s2: #5d67e9;
-  --s3: #95a3ed;
+  --locus-s1: #2e31dc;
+  --locus-s2: #5d67e9;
+  --locus-s3: #95a3ed;
 }
 
 .dark [data-section="spendgraph"] {
-  --s1: #7f8bff;
-  --s2: #aeb9ff;
-  --s3: #5d67e9;
+  --locus-s1: #7f8bff;
+  --locus-s2: #aeb9ff;
+  --locus-s3: #5d67e9;
 }
 
 /*
  * Where the accent actually shows.
  *
- * `--s1` was only ever rendered by the host index hero and the LocusGraph
+ * `--locus-s1` was only ever rendered by the host index hero and the LocusGraph
  * diagrams, so recolouring the token alone left most pages identical. These
  * three rules put it on something every page has: prose links, the active
  * sidebar item, and the active group in the header.
@@ -69,15 +97,15 @@
  */
 
 [data-section] .typeset a:not(:is(h1, h2, h3, h4, h5, h6) a) {
-  color: var(--s1);
+  color: var(--locus-s1);
 }
 
 [data-section] [data-sidebar="menu-button"][data-active="true"] {
-  color: var(--s1);
+  color: var(--locus-s1);
 }
 
 [data-section] nav a[aria-current="page"] {
-  color: var(--s1);
+  color: var(--locus-s1);
 }
 
 /*
@@ -136,7 +164,7 @@
 /**
  * The two product accents, on a page that belongs to neither section.
  *
- * The host index sets no `data-section`, so `--s1` there is the default blue
+ * The host index sets no `data-section`, so `--locus-s1` there is the default blue
  * and both halves of the headline would read the same. These carry the exact
  * values the two sections use, so the colour on "wisdom" is the one a reader
  * meets again on every LocusGraph page, and likewise for Spendgraph.
