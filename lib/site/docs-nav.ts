@@ -6,7 +6,7 @@ import type { Product } from "./products";
  *
  * The API reference has a sidebar of its own, so listing every endpoint here
  * too would bury the guides under the thing a reader reaches for second. This
- * is the door; `components/api/api-sidebar.tsx` is what is behind it.
+ * is the door; `sidebarGroups` in `lib/site/docs-shell.ts` is what is behind it.
  */
 const apiDoor = (product: string): DocsLink[] => {
   const first = ENDPOINTS.find((endpoint) => endpoint.product === product);
