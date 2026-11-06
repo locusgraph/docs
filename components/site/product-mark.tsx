@@ -1,5 +1,6 @@
+import { LocusGraphMark } from "@locusgraph/brand";
 import { type LucideIcon, TrendingUp, Workflow } from "lucide-react";
-import { BrainStormMark, LocusMark } from "@/components/site/marks";
+import { BrainStormMark } from "@/components/site/marks";
 import type { Product } from "@/lib/site/products";
 
 type Mark = (props: { className?: string }) => React.ReactElement;
@@ -14,7 +15,7 @@ type Mark = (props: { className?: string }) => React.ReactElement;
  * until it does.
  */
 const MARKS: Record<Product, Mark | LucideIcon> = {
-  locusgraph: LocusMark,
+  locusgraph: LocusGraphMark,
   spendgraph: TrendingUp,
   brainstorm: BrainStormMark,
   "locus-skill": Workflow,

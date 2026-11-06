@@ -1,9 +1,8 @@
 "use client";
 
-import { Button } from "@locusgraph/components";
+import { Button, cn } from "@locusgraph/components";
 import { CheckIcon, CopyIcon } from "@phosphor-icons/react";
 import { useRef, useState } from "react";
-import { cn } from "@/lib/utils";
 
 /**
  * The `<pre>` every fenced code block in MDX becomes.
