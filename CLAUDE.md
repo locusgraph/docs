@@ -93,10 +93,34 @@ missing.
 
 ## Styling
 
-Colours, typography and spacing come from `@spendgraph/config/css/theme.css`.
-Use the tokens — `line`, `soft`, `faint`, `surface`, `ghost`, `s1`,
-`background`, `foreground` — rather than Tailwind's palette, or the docs stop
-matching the products.
+The design is LocusGraph's, from npm. `app/globals.css` imports
+`@locusgraph/components/theme.css`, which brings the colour tokens for both
+modes, the typeset, and the fonts: IBM Plex Sans for text, IBM Plex Mono for
+code, Archivo for headings and the brand. There is no font loader in
+`app/layout.tsx`, and none is needed. TypeScript, Biome, PostCSS and Vitest
+presets come from `@locusgraph/config`.
+
+Use the theme's tokens rather than Tailwind's palette: `background`, `card`,
+`muted`, `foreground`, `muted-foreground`, `faint`, `border`, `primary`. In CSS,
+read the `--locus-*` variables. Containers are square; group with ruled lines,
+not cards and shadows.
+
+The UI comes from `@locusgraph/components`: the docs shell, header, sidebar,
+outline, breadcrumbs, theme toggle, buttons, the search dialog and the alert a
+`Callout` draws with. Use a component from there before writing one here, and
+read its page on design.locusgraph.com (add `.md` to the path) for its props.
+Icons are Phosphor, the set the components use. Marks come from
+`@locusgraph/brand`.
+
+Pages in `@spendgraph/docs` were drawn with the old Spendgraph token names:
+`line`, `soft`, `ghost`, `btn`, `bad`, `s1` to `s3`. `globals.css` points each
+at its LocusGraph value and adds an `@source` for that package, so those pages
+render in the LocusGraph theme without a change there. The host's own diagrams
+still use them as well; new code uses the theme's names.
+
+Each section has its own accent. `globals.css` sets `--locus-s1` to `--locus-s3`
+under `[data-section]`, which the product layout puts on the shell, and uses
+`--locus-s1` for prose links and the current page in a nav.
 
 Dark mode is a `.dark` class on `<html>`, set by `next-themes`. Anything using
 `prefers-color-scheme` directly will disagree with the toggle.
