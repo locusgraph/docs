@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 @import "@locusgraph/components/theme.css";
 @import "@locusgraph/brand/sources.css";
 
@@ -83,24 +84,20 @@
  *
  * `--locus-s1` was only ever rendered by the host index hero and the LocusGraph
  * diagrams, so recolouring the token alone left most pages identical. These
- * three rules put it on something every page has: prose links, the active
- * sidebar item, and the active group in the header.
+ * two rules put it on something every page has: prose links, and the current
+ * page wherever a nav lists it (the sidebar, and the section in the header).
  *
  * Heading anchors are excluded. Every heading wraps its text in a link for the
  * `#` permalink, so colouring links blind turns every `h2` on the site into an
- * accent — a much louder change than the one being asked for.
+ * accent, a much louder change than the one being asked for.
  *
- * All three are scoped to `[data-section]`, so the host index and the 404 keep
+ * Both are scoped to `[data-section]`, so the host index and the 404 keep
  * the plain treatment. The typeset link rule uses `:where()` and has zero
  * specificity, so this wins without `!important` and without editing the
  * shared stylesheet.
  */
 
 [data-section] .typeset a:not(:is(h1, h2, h3, h4, h5, h6) a) {
-  color: var(--locus-s1);
-}
-
-[data-section] [data-sidebar="menu-button"][data-active="true"] {
   color: var(--locus-s1);
 }
 
@@ -149,15 +146,11 @@
  * component that receives only the product, never which page rendered inside
  * it. Scoped to the one page that sets the attribute, so nothing else moves.
  */
-.docs-body:has([data-wide]) {
-  max-width: 78rem;
-}
-
-.docs-body:has([data-wide]) .docs-article {
+.docs-article:has([data-wide]) {
   max-width: none;
 }
 
-.docs-body:has([data-wide]) > aside {
+[data-slot="docs-shell"]:has([data-wide]) [data-slot="docs-aside"] {
   display: none;
 }
 

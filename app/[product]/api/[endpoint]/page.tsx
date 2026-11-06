@@ -145,7 +145,7 @@ export default async function ApiEndpoint({
         </div>
       </div>
 
-      <div className="not-prose lg:sticky lg:top-4 lg:self-start">
+      <div className="not-prose lg:sticky lg:top-[calc(var(--locus-docs-header-height)+1rem)] lg:self-start">
         <Playground endpoint={endpoint} />
       </div>
     </div>
