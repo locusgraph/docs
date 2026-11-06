@@ -8,6 +8,11 @@
     "node": "^22 || >=24"
   },
   "dependencies": {
+    "@locusgraph/blocks": "0.8.0",
+    "@locusgraph/brand": "0.3.1",
+    "@locusgraph/components": "0.6.1",
+    "@locusgraph/tokens": "0.5.1",
+    "@locusgraph/utils": "0.1.3",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.3.5",
@@ -29,6 +34,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.8",
+    "@locusgraph/config": "0.1.2",
     "@opennextjs/cloudflare": "^1.20.6",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/mdx": "^2.0.14",
