@@ -1,6 +1,20 @@
 "use client";
 
-import { Command } from "cmdk";
+import {
+  Button,
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  Kbd,
+  Toggle,
+} from "@locusgraph/components";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import MiniSearch, { type SearchResult } from "minisearch";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -100,103 +114,98 @@ export function DocsSearch() {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
+        variant="secondary"
+        size="sm"
         onClick={() => setOpen(true)}
         onMouseEnter={() => void load()}
-        className="flex items-center gap-2 rounded-md border border-line px-2 py-1 text-sm text-faint transition hover:bg-ghost hover:text-soft"
+        aria-label="Search the docs"
+        className="w-8 justify-start bg-surface font-sans font-normal text-muted-foreground shadow-none hover:bg-surface/80 sm:w-56"
       >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-          <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-        <span className="hidden sm:inline">Search</span>
-        <kbd className="hidden font-mono text-[11px] text-faint sm:inline">⌘K</kbd>
-      </button>
+        <MagnifyingGlassIcon weight="bold" aria-hidden />
+        <span className="hidden sm:inline">Search the docs</span>
+        <Kbd className="ml-auto hidden sm:inline-flex">⌘K</Kbd>
+      </Button>
 
-      <Command.Dialog
-        open={open}
-        onOpenChange={setOpen}
-        label="Search the documentation"
-        shouldFilter={false}
-        className="fixed inset-0 z-50 grid place-items-start justify-center pt-[12vh]"
-      >
-        {/* A button rather than a div with a click handler: dismissing is an
-            action, and this way it is one for a keyboard and a screen reader
-            too. `cursor-default` keeps it from advertising itself as a target. */}
-        <button
-          type="button"
-          aria-label="Close search"
-          onClick={() => setOpen(false)}
-          className="fixed inset-0 cursor-default bg-background/70 backdrop-blur-sm"
-        />
-
-        <div className="relative w-[min(92vw,640px)] overflow-hidden rounded-xl border border-line bg-surface shadow-2xl">
-          <div className="flex items-center gap-2 border-b border-line px-4">
-            <Command.Input
-              value={query}
-              onValueChange={setQuery}
-              placeholder="Search the docs"
-              className="flex-1 bg-transparent py-3.5 text-sm outline-none placeholder:text-faint"
-            />
-            {section ? (
-              <button
-                type="button"
-                onClick={() => setScoped((v) => !v)}
-                className={`shrink-0 rounded-md px-2 py-1 text-xs transition ${
-                  scoped ? "bg-ghost text-foreground" : "text-faint hover:text-soft"
-                }`}
-              >
-                This section
-              </button>
-            ) : null}
-          </div>
-
-          <Command.List className="max-h-[56vh] overflow-y-auto p-2">
-            {loading ? (
-              <p className="px-3 py-6 text-center text-sm text-faint">Loading the index</p>
-            ) : null}
-
-            {!loading && query.trim().length >= 2 && results.length === 0 ? (
-              <p className="px-3 py-6 text-center text-sm text-faint">
-                Nothing matches <span className="text-soft">{query}</span>
-              </p>
-            ) : null}
-
-            {results.map((hit) => {
-              const Icon = iconForHref(hit.id);
-              return (
-                <Command.Item
-                  key={hit.id}
-                  value={hit.id}
-                  onSelect={() => go(hit.id)}
-                  className="flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 data-[selected=true]:bg-ghost"
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="overflow-hidden p-0 sm:max-w-xl" showCloseButton={false}>
+          <DialogHeader className="sr-only">
+            <DialogTitle>Search the docs</DialogTitle>
+            <DialogDescription>
+              Find a page by its title, its headings or its text.
+            </DialogDescription>
+          </DialogHeader>
+          {/* `shouldFilter` off because MiniSearch has already ranked the
+              results; cmdk filtering them again would throw that order away. */}
+          <Command shouldFilter={false} className="[&_[cmdk-input]]:h-12 [&_[cmdk-item]]:py-2">
+            <div className="flex items-center gap-2 border-b border-border pr-2">
+              <div className="min-w-0 flex-1 [&_[data-slot=command-input-wrapper]]:border-0">
+                <CommandInput
+                  value={query}
+                  onValueChange={setQuery}
+                  placeholder="Search the docs"
+                />
+              </div>
+              {section ? (
+                <Toggle
+                  size="sm"
+                  pressed={scoped}
+                  onPressedChange={setScoped}
+                  className="shrink-0 text-xs"
                 >
-                  <Icon className="mt-0.5 size-4 shrink-0 text-faint" aria-hidden />
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-baseline gap-2">
-                      <span className="truncate text-sm font-medium">{hit.title}</span>
-                      <span className="shrink-0 text-xs text-faint">{hit.section}</span>
-                    </span>
-                    <span className="mt-0.5 block truncate text-sm text-soft">
-                      {hit.description}
-                    </span>
-                  </span>
-                </Command.Item>
-              );
-            })}
-          </Command.List>
+                  This section
+                </Toggle>
+              ) : null}
+            </div>
 
-          <div className="flex items-center justify-between border-t border-line px-4 py-2 text-xs text-faint">
-            <span>
-              <kbd className="font-mono">Enter</kbd> to open
-            </span>
-            <Link href="/" className="hover:text-soft" onClick={() => setOpen(false)}>
-              All documentation
-            </Link>
-          </div>
-        </div>
-      </Command.Dialog>
+            <CommandList className="max-h-[56vh] p-1">
+              {loading ? (
+                <p className="px-3 py-6 text-center text-sm text-muted-foreground">
+                  Loading the index
+                </p>
+              ) : null}
+
+              {!loading && query.trim().length >= 2 && results.length === 0 ? (
+                <p className="px-3 py-6 text-center text-sm text-muted-foreground">
+                  Nothing matches <span className="text-foreground">{query}</span>
+                </p>
+              ) : null}
+
+              {results.map((hit) => {
+                const Icon = iconForHref(hit.id);
+                return (
+                  <CommandItem
+                    key={hit.id}
+                    value={hit.id}
+                    onSelect={() => go(hit.id)}
+                    className="items-start gap-3"
+                  >
+                    <Icon className="mt-0.5 size-4 shrink-0 text-faint" aria-hidden />
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-baseline gap-2">
+                        <span className="truncate text-sm font-medium">{hit.title}</span>
+                        <span className="shrink-0 text-xs text-faint">{hit.section}</span>
+                      </span>
+                      <span className="mt-0.5 block truncate text-sm text-muted-foreground">
+                        {hit.description}
+                      </span>
+                    </span>
+                  </CommandItem>
+                );
+              })}
+            </CommandList>
+
+            <div className="flex items-center justify-between border-t border-border px-4 py-2 text-xs text-muted-foreground">
+              <span>
+                <Kbd>Enter</Kbd> to open
+              </span>
+              <Link href="/" className="hover:text-foreground" onClick={() => setOpen(false)}>
+                All documentation
+              </Link>
+            </div>
+          </Command>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

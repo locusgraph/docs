@@ -1,10 +1,10 @@
-import { AlertTriangle, Info, TriangleAlert } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@locusgraph/components";
+import { InfoIcon, WarningCircleIcon, WarningIcon } from "@phosphor-icons/react/ssr";
 
 const TONES = {
-  note: { icon: Info, ring: "border-line", tint: "text-soft" },
-  warn: { icon: AlertTriangle, ring: "border-amber-500/30", tint: "text-amber-600" },
-  trap: { icon: TriangleAlert, ring: "border-red-500/30", tint: "text-red-600" },
+  note: { icon: InfoIcon, variant: "default" },
+  warn: { icon: WarningIcon, variant: "warning" },
+  trap: { icon: WarningCircleIcon, variant: "destructive" },
 } as const;
 
 /**
@@ -12,6 +12,11 @@ const TONES = {
  *
  * `trap` is the one that earns its keep: a rule that is deliberate, surprising,
  * and expensive to learn from a wrong dashboard three weeks later.
+ *
+ * Drawn with the LocusGraph `Alert`, so a warning here reads the same as one in
+ * the products. `not-typeset` keeps the prose styles from restyling its title.
+ * Pages in `@spendgraph/docs` take this component from the host, so its props
+ * stay as they were.
  */
 export function Callout({
   tone = "note",
@@ -22,16 +27,14 @@ export function Callout({
   title?: string;
   children: React.ReactNode;
 }) {
-  const { icon: Icon, ring, tint } = TONES[tone];
+  const { icon: Icon, variant } = TONES[tone];
   return (
-    <aside className={cn("my-5 rounded-xl border bg-ghost/60 px-4 py-3.5", ring)}>
-      <div className="flex gap-3">
-        <Icon className={cn("mt-0.5 size-4 shrink-0", tint)} />
-        <div className="min-w-0 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&>p]:text-sm">
-          {title ? <p className={cn("mb-1 font-medium", tint)}>{title}</p> : null}
-          {children}
-        </div>
-      </div>
-    </aside>
+    <Alert variant={variant} className="my-5">
+      <Icon weight="bold" aria-hidden />
+      {title ? <AlertTitle>{title}</AlertTitle> : null}
+      <AlertDescription className="[&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+        {children}
+      </AlertDescription>
+    </Alert>
   );
 }

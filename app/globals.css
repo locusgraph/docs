@@ -89,7 +89,9 @@
  *
  * Heading anchors are excluded. Every heading wraps its text in a link for the
  * `#` permalink, so colouring links blind turns every `h2` on the site into an
- * accent, a much louder change than the one being asked for.
+ * accent, a much louder change than the one being asked for. Anything marked
+ * `not-typeset` is excluded too: the page links at the foot of an article are
+ * controls, not prose.
  *
  * Both are scoped to `[data-section]`, so the host index and the 404 keep
  * the plain treatment. The typeset link rule uses `:where()` and has zero
@@ -97,7 +99,7 @@
  * shared stylesheet.
  */
 
-[data-section] .typeset a:not(:is(h1, h2, h3, h4, h5, h6) a) {
+[data-section] .typeset a:not(:is(h1, h2, h3, h4, h5, h6) a, .not-typeset a) {
   color: var(--locus-s1);
 }
 

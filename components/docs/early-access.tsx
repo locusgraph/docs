@@ -1,3 +1,6 @@
+import { Button } from "@locusgraph/components";
+import { ArrowRightIcon } from "@phosphor-icons/react/ssr";
+
 /**
  * The early-access call to action.
  *
@@ -19,20 +22,19 @@ export function EarlyAccess({
 
   return (
     <aside
-      className={`not-prose my-6 rounded-xl border border-line bg-surface px-5 py-4 ${className ?? ""}`}
+      className={`not-prose my-6 not-typeset border border-border bg-card px-5 py-4 ${className ?? ""}`}
     >
       <p className="text-sm font-medium">Get early access</p>
-      <p className="mt-1 text-sm text-soft">
+      <p className="mt-1 text-sm text-muted-foreground">
         {product} is not generally available yet. Tell us what you are building and we will get you
         in.
       </p>
-      <a
-        href={href}
-        className="mt-3 inline-flex items-center gap-2 rounded-[10px] bg-btn px-4 py-2 text-sm font-medium text-btn-ink no-underline transition hover:opacity-90"
-      >
-        nasim@effortlesslabs.xyz
-        <span aria-hidden>→</span>
-      </a>
+      <Button asChild className="mt-3 rounded-full no-underline">
+        <a href={href}>
+          nasim@effortlesslabs.xyz
+          <ArrowRightIcon weight="bold" aria-hidden />
+        </a>
+      </Button>
     </aside>
   );
 }
