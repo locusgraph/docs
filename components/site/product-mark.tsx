@@ -1,6 +1,6 @@
-import { LocusGraphMark } from "@locusgraph/brand";
+import { LocusGraphMark, SpendGraphMark } from "@locusgraph/brand";
 import type { Icon } from "@phosphor-icons/react";
-import { FlowArrowIcon, TrendUpIcon } from "@phosphor-icons/react/ssr";
+import { FlowArrowIcon } from "@phosphor-icons/react/ssr";
 import { BrainStormMark } from "@/components/site/marks";
 import type { Product } from "@/lib/site/products";
 
@@ -11,26 +11,25 @@ type Mark = (props: { className?: string; "aria-hidden"?: boolean }) => React.Re
  * The headers and the host index all draw marks through `ProductMark`, so a
  * new mark is a one-line change here.
  *
- * Spendgraph's is a trend-up arrow, the glyph its own dashboard and landing
- * page use today. `@locusgraph/brand` 0.4.0 ships `SpendGraphMark`, and the
- * swap waits on pnpm's one-day `minimumReleaseAge`, until 2026-11-08 06:19 UTC.
- * A docs host that invents a second logo for a product teaches readers the
- * wrong one. LocusGraph and BrainStorm have real artwork, so they get it;
+ * LocusGraph and Spendgraph wear the marks `@locusgraph/brand` ships, the same
+ * ones their own sites use; a docs host that invents a second logo for a
+ * product teaches readers the wrong one. BrainStorm has its own artwork here.
  * Locus Skill has none yet and borrows a Phosphor glyph until it does.
  */
 const MARKS: Record<Product, Mark | Icon> = {
   locusgraph: LocusGraphMark,
-  spendgraph: TrendUpIcon,
+  spendgraph: SpendGraphMark,
   brainstorm: BrainStormMark,
   "locus-skill": FlowArrowIcon,
 };
 
 /**
- * Drawn artwork carries far more detail than a Phosphor glyph (dozens of thin
- * strokes against a handful of thick ones), so it reads as a smudge at the size
- * an icon is normally set, and gets a larger default.
+ * Drawn artwork reads smaller than a Phosphor glyph at the same box. The
+ * LocusGraph and BrainStorm marks are dozens of thin strokes, and the Spendgraph
+ * tally sits inside a wide margin of its own viewBox, so all three get the
+ * larger default.
  */
-const DETAILED: Product[] = ["locusgraph", "brainstorm"];
+const DETAILED: Product[] = ["locusgraph", "spendgraph", "brainstorm"];
 
 /** `size` is the glyph, not the tile; the tile is whatever wraps this. */
 export function ProductMark({ product, className }: { product: Product; className?: string }) {
