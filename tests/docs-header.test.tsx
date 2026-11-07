@@ -35,3 +35,39 @@ describe("DocsHeader", () => {
     expect(render("/spendgraph/sdk/errors")).toContain(">Spendgraph<");
   });
 });
+
+describe("the group row", () => {
+  it("sits beside the switcher, before the API reference link", () => {
+    const html = render("/spendgraph/sdk/errors");
+    const groups = html.indexOf('aria-label="Groups"');
+    expect(groups).toBeGreaterThan(html.indexOf('aria-haspopup="menu"'));
+    expect(groups).toBeLessThan(html.indexOf(">API reference<"));
+  });
+
+  it("is hidden below xl", () => {
+    const html = render("/spendgraph/sdk/errors");
+    const nav = html.match(/<nav aria-label="Groups" class="([^"]*)"/)?.[1] ?? "";
+    expect(nav.split(" ")).toContain("hidden");
+    expect(nav.split(" ")).toContain("xl:flex");
+  });
+
+  it("marks the group being read, and offers the rest behind More", () => {
+    const html = render("/spendgraph/sdk/errors");
+    const nav = html.slice(
+      html.indexOf('aria-label="Groups"'),
+      html.indexOf("</nav>", html.indexOf('aria-label="Groups"'))
+    );
+    expect(nav).toMatch(/aria-current="page"[^>]*>(?:<svg[\s\S]*?<\/svg>)?SDK</);
+    expect(nav).toContain("More");
+  });
+
+  it("leaves the API reference lit on an API page", () => {
+    const html = render("/spendgraph/api/report-usage");
+    const nav = html.slice(
+      html.indexOf('aria-label="Groups"'),
+      html.indexOf("</nav>", html.indexOf('aria-label="Groups"'))
+    );
+    expect(nav).not.toContain("aria-current");
+    expect(html).toMatch(/<a[^>]*aria-current="page"[^>]*>API reference</);
+  });
+});

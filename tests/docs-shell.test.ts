@@ -1,14 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { endpointsFor } from "../lib/api/endpoints";
+import { pagesOf, treesFor } from "../lib/site/docs-nav";
 import {
   activeHeaderHref,
   apiHref,
+  GROUPS_SHOWN,
+  groupNav,
   headerBrand,
   headerLinks,
   sectionChoices,
   sidebarGroups,
   trailFor,
 } from "../lib/site/docs-shell";
+import { iconForGroup } from "../lib/site/icons";
 import { PRODUCT_INFO, PRODUCTS } from "../lib/site/products";
 
 /**
@@ -161,5 +165,57 @@ describe("activeHeaderHref", () => {
   it("lights nothing on a guide path", () => {
     expect(activeHeaderHref("/spendgraph/sdk/errors")).toBe("");
     expect(activeHeaderHref("/locusgraph")).toBe("");
+  });
+});
+
+describe("groupNav", () => {
+  const titled = (product: string) => treesFor(product).filter((tree) => tree.title);
+
+  it("shows the first groups in sidebar order and skips untitled ones", () => {
+    const { shown } = groupNav("/spendgraph/overview");
+    expect(shown).toEqual(titled("spendgraph").slice(0, GROUPS_SHOWN));
+    expect(shown.every((tree) => tree.title.length > 0)).toBe(true);
+  });
+
+  it("puts every other titled group behind More, once", () => {
+    for (const path of ["/spendgraph/overview", "/locusgraph/overview"]) {
+      const { shown, rest } = groupNav(path);
+      const all = titled(path.split("/")[1]);
+      expect(shown.length).toBe(GROUPS_SHOWN);
+      expect(rest.length).toBeGreaterThan(0);
+      expect([...shown, ...rest].sort((a, b) => a.href.localeCompare(b.href))).toEqual(
+        [...all].sort((a, b) => a.href.localeCompare(b.href))
+      );
+    }
+  });
+
+  it("always shows the current group, even when it sits last", () => {
+    // The last guide group: the API group's pages are the reference, where no
+    // group is current.
+    const last = titled("spendgraph")
+      .filter((tree) => !tree.href.includes("/api/"))
+      .at(-1);
+    if (!last) throw new Error("spendgraph has no titled groups");
+    const page = pagesOf(last).at(-1)?.href ?? last.href;
+    const { shown, rest, current } = groupNav(page);
+    expect(current).toBe(last);
+    expect(shown[0]).toBe(last);
+    expect(shown.length).toBe(GROUPS_SHOWN);
+    expect(rest).not.toContain(last);
+  });
+
+  it("marks no group on an API page", () => {
+    const slug = endpointsFor("locusgraph")[0].slug;
+    expect(groupNav(`/locusgraph/api/${slug}`).current).toBeUndefined();
+  });
+});
+
+describe("group icons", () => {
+  it("gives every titled group an icon, so the header rows line up", () => {
+    for (const product of PRODUCTS) {
+      for (const tree of treesFor(product).filter((one) => one.title)) {
+        expect(iconForGroup(tree.title), `${product}: ${tree.title} has no icon`).toBeDefined();
+      }
+    }
   });
 });
