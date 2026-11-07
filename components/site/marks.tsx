@@ -7,7 +7,7 @@
  * become `currentColor` for the same reason the other marks do: the tile
  * decides the colour, and the glyph follows it into either theme.
  */
-export function BrainStormMark({ className }: { className?: string }) {
+export function BrainStormMark({ className }: { className?: string; "aria-hidden"?: boolean }) {
   return (
     <svg viewBox="0 0 64 64" fill="none" className={className ?? "size-full"} aria-hidden="true">
       <title>BrainStorm</title>

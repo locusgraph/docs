@@ -1,6 +1,5 @@
 "use client";
 
-import { LocusGraphMark } from "@locusgraph/brand";
 import { DocsNavList, DocsHeader as Header } from "@locusgraph/components";
 import { usePathname } from "next/navigation";
 import type * as React from "react";
@@ -52,11 +51,7 @@ export function DocsHeader() {
     <Header
       brand={{
         name: brand.name,
-        icon: brand.product ? (
-          <ProductMark product={brand.product} className="size-5" />
-        ) : (
-          <LocusGraphMark className="size-5" />
-        ),
+        icon: <ProductMark product={brand.product ?? "locusgraph"} className="size-5" />,
         href: brand.product ? SWITCHER : brand.href,
       }}
       links={headerLinks(product)}

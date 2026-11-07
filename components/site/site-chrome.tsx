@@ -1,7 +1,8 @@
-import { GitHubMark, LocusGraphMark } from "@locusgraph/brand";
+import { GitHubMark } from "@locusgraph/brand";
 import Link from "next/link";
 import { DocsSearch } from "@/components/docs/search";
 import { XMark } from "@/components/site/marks";
+import { ProductMark } from "@/components/site/product-mark";
 import { ThemeSwitch } from "@/components/site/theme-switch";
 
 /**
@@ -35,7 +36,7 @@ export function SiteHeader() {
             href="/"
             className="flex min-w-0 items-center gap-2 font-brand text-base tracking-tight"
           >
-            <LocusGraphMark className="size-5 shrink-0" />
+            <ProductMark product="locusgraph" className="size-5 shrink-0" />
             <span className="truncate">
               <span className="font-bold">LocusGraph</span>
               <span className="font-light"> docs</span>
