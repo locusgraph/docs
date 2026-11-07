@@ -62,7 +62,6 @@ export function AgentPrompt({ product }: { product: PromptProduct }) {
         type="button"
         onClick={copy}
         disabled={state === "copying"}
-        aria-live="polite"
         className="locus-focus-ring flex max-w-full min-w-0 items-center gap-3 rounded-full border border-line bg-surface py-1.5 pr-3 pl-2 transition-colors hover:border-soft/40 hover:bg-ghost disabled:opacity-70"
       >
         <span className="flex shrink-0 items-center">
@@ -85,13 +84,23 @@ export function AgentPrompt({ product }: { product: PromptProduct }) {
         <span className="min-w-0 truncate text-left text-sm font-medium text-foreground sm:w-[10.5rem]">
           {LABEL[state]}
         </span>
+        {/* Two of these sit on one page, so the visible label alone gives
+            both the same name. This tells them apart for a screen reader
+            without changing what a sighted reader sees. */}
+        <span className="sr-only"> for {PRODUCT_INFO[product].title}</span>
         <Icon
+          aria-hidden
           weight="bold"
           className={`size-4 shrink-0 ${state === "done" ? "text-s3" : ""} ${
             state === "failed" ? "text-s2" : "text-faint"
           } ${state === "copying" ? "animate-pulse" : ""}`}
         />
       </button>
+      {/* The outcome, announced on its own. A live region on the button read
+          its whole name again, logos and all, every time the label changed. */}
+      <span role="status" className="sr-only">
+        {state === "done" || state === "failed" ? LABEL[state] : ""}
+      </span>
       <p className="m-0 text-xs text-faint">
         Copies a prompt that points your agent at the {PRODUCT_INFO[product].title} docs
       </p>
