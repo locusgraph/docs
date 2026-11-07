@@ -218,6 +218,7 @@ const GROUP_ICONS: Record<string, Icon> = {
   Graph: GraphIcon,
   Harness: FlowArrowIcon,
   Vigil: HourglassIcon,
+  Kairos: ScalesIcon,
   Evals: GaugeIcon,
   CLI: TerminalWindowIcon,
   MCP: PlugIcon,
