@@ -16,14 +16,13 @@ describe("the old docs host", () => {
     "/locusgraph",
     "/llms.txt",
     "/llms-full.txt",
-    "/sitemap.xml",
     "/robots.txt",
     ...pages("locusgraph").map((slug) => `/locusgraph/${slug}`),
     ...ENDPOINTS.filter((e) => e.product === "locusgraph").map((e) => `/locusgraph/api/${e.slug}`),
   ]);
 
-  it("covers the 48 pages it served, its llms files, and a crawler's two", () => {
-    expect(Object.keys(LEGACY_REDIRECTS)).toHaveLength(52);
+  it("covers the 48 pages it served, its llms files, and robots.txt", () => {
+    expect(Object.keys(LEGACY_REDIRECTS)).toHaveLength(51);
   });
 
   for (const [from, to] of Object.entries(LEGACY_REDIRECTS)) {
