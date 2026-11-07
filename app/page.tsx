@@ -4,6 +4,7 @@ import { AgentPrompt } from "@/components/site/agent-prompt";
 import { ProductMark } from "@/components/site/product-mark";
 import { SiteFooter, SiteHeader } from "@/components/site/site-chrome";
 import { Tape } from "@/components/site/tape";
+import { hasAgentPrompt } from "@/lib/site/agent-prompts";
 import { pagesOf, treesFor } from "@/lib/site/docs-nav";
 import { iconForHref } from "@/lib/site/icons";
 import { PRODUCT_INFO, PRODUCTS } from "@/lib/site/products";
@@ -16,10 +17,11 @@ import { pageMeta } from "@/lib/site/seo";
  * single intro to send a reader to. Redirecting would pick a winner and hand
  * everyone else a bounce.
  *
- * Ready sections get a card with a way in — the first few pages of each, pulled
- * from the nav so the links cannot drift. Sections that are not ready are one
- * quiet line at the bottom rather than four dimmed cards competing with the two
- * that work.
+ * Ready sections get a card with a way in: the first few pages of each, pulled
+ * from the nav so the links cannot drift, and a button that copies a prompt
+ * for that product alone, so the reader picks a product before an agent does.
+ * Sections that are not ready do not appear here at all; their routes stay
+ * live, and a reader reaches them only by link.
  */
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
@@ -29,7 +31,6 @@ export const metadata: Metadata = pageMeta({
 });
 
 const live = PRODUCTS.filter((product) => PRODUCT_INFO[product].ready);
-const soon = PRODUCTS.filter((product) => !PRODUCT_INFO[product].ready);
 
 export default function DocsHome() {
   return (
@@ -49,9 +50,6 @@ export default function DocsHome() {
           <p className="mx-auto mt-5 max-w-[52ch] text-pretty text-lg text-soft">
             LocusGraph keeps what your agent learns. Spendgraph tracks what it spends.
           </p>
-          <div className="mt-7 flex justify-center">
-            <AgentPrompt />
-          </div>
         </div>
 
         <Tape />
@@ -64,7 +62,7 @@ export default function DocsHome() {
             return (
               <section
                 key={product}
-                className="flex flex-col rounded-2xl border border-line bg-surface p-6"
+                className="flex min-w-0 flex-col rounded-2xl border border-line bg-surface p-5 sm:p-6"
               >
                 <Link href={`/${product}`} className="group no-underline">
                   <span className="flex items-center gap-3">
@@ -99,29 +97,18 @@ export default function DocsHome() {
                     );
                   })}
                 </ul>
+
+                {/* After the list and outside every link, so the card's own
+                    links stay links and this stays a button. */}
+                {hasAgentPrompt(product) ? (
+                  <div className="mt-5 border-t border-line pt-4">
+                    <AgentPrompt product={product} />
+                  </div>
+                ) : null}
               </section>
             );
           })}
         </div>
-
-        {soon.length > 0 ? (
-          <p className="mx-auto mt-8 max-w-4xl text-center text-sm text-faint">
-            {soon.map((product, i) => (
-              <span key={product}>
-                {i > 0 ? " · " : null}
-                {PRODUCT_INFO[product].title}
-              </span>
-            ))}{" "}
-            are on the way.{" "}
-            <a
-              href="mailto:nasim@effortlesslabs.xyz?subject=Early%20access"
-              className="text-soft hover:text-foreground"
-            >
-              ask for early access
-            </a>
-            .
-          </p>
-        ) : null}
       </main>
 
       <SiteFooter />

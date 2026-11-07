@@ -6,11 +6,14 @@
  * page that exists is a page that is searchable and listed, and an entry for a
  * page that does not exist is not possible.
  *
- * Runs in `prebuild` and `predev`, and writes three files:
+ * Runs in `prebuild` and `predev`, and writes three files at the root:
  *
  *   public/search-index.json   what the search palette queries
  *   public/llms.txt            the map, per llmstxt.org: one line per page
  *   public/llms-full.txt       every page's prose, for a model with room
+ *
+ * plus a `.md` beside every page, and a `llms.txt` for each section, at
+ * `public/<section>/llms.txt`.
  *
  * One traversal for all three, because each page is read from disk and a
  * package page resolves through `node_modules`.
@@ -279,6 +282,106 @@ function groupsOf(product) {
  */
 const OPTIONAL = new Set(["Enterprise"]);
 
+/**
+ * Each section's part of the map, kept apart so the same lines can go out
+ * twice: once in the host-wide `/llms.txt`, and once in the section's own
+ * `/<section>/llms.txt`, for an agent that only works with one product and
+ * should not have to read past the other.
+ */
+const guides = new Map();
+const references = new Map();
+const optionals = new Map();
+const ordered = new Map();
+
+for (const { slug: product, title } of ready) {
+  const pages = docs.filter((d) => d.product === product);
+  if (pages.length === 0) continue;
+  const byId = new Map(pages.map((page) => [page.id, page]));
+  const seen = [];
+  const own = [];
+  const optional = [];
+
+  // One H2 per group, because the format delimits file lists on H2 and says
+  // nothing about H3. Nesting the groups under the product read better and put
+  // eighteen headings inside two sections, where a strict reader sees stray
+  // headings in a file list rather than sections of their own.
+  const line = (page) => `- [${page.title}](${SITE}${page.id}): ${page.description || page.title}`;
+
+  const blurb = blurbOf(product);
+  own.push(`## ${title}`, "");
+  if (blurb) own.push(blurb, "");
+  own.push(`- [${title}](${SITE}/${product}): the section index, with every group`);
+
+  for (const group of groupsOf(product)) {
+    const inGroup = group.slugs.map((slug) => byId.get(`/${product}/${slug}`)).filter(Boolean);
+    if (inGroup.length === 0) continue;
+
+    if (!group.title) {
+      // The tree with no title of its own is the product's own pages.
+      for (const page of inGroup) {
+        own.push(line(page));
+        seen.push(page);
+      }
+      continue;
+    }
+
+    if (OPTIONAL.has(group.title)) {
+      optional.push(`### ${title}: ${group.title}`, "");
+      for (const page of inGroup) {
+        optional.push(line(page));
+        seen.push(page);
+      }
+      optional.push("");
+      continue;
+    }
+
+    own.push("", `## ${title}: ${group.title}`, "");
+    for (const page of inGroup) {
+      own.push(line(page));
+      seen.push(page);
+    }
+  }
+  own.push("");
+
+  // A page the manifest has and no tree lists would be invisible here, the way
+  // it is invisible in the sidebar. `tests/nav.test.ts` holds that the two
+  // agree, so this is a belt on braces rather than a fallback to rely on.
+  for (const page of pages) {
+    if (seen.includes(page)) continue;
+    own.push(line(page));
+    seen.push(page);
+  }
+  ordered.set(product, seen);
+  guides.set(product, own);
+  optionals.set(product, optional);
+}
+
+// The reference, grouped the way its own sidebar groups it.
+for (const { slug: product, title } of ready) {
+  const mine = API.filter((endpoint) => endpoint.product === product);
+  const lines = [];
+  for (const group of [...new Set(mine.map((e) => e.group))]) {
+    const inGroup = mine.filter((e) => e.group === group);
+    if (inGroup.length === 0) continue;
+    lines.push("", `## ${title} API: ${group}`, "");
+    for (const endpoint of inGroup) {
+      lines.push(
+        `- [${endpoint.method} ${endpoint.path}](${SITE}/${product}/api/${endpoint.slug}): ${endpoint.summary}`
+      );
+    }
+  }
+  references.set(product, lines);
+}
+
+/** The tail every map ends on: the optional groups, under their own heading. */
+function optionalPart(lines) {
+  return lines.length > 0
+    ? ["## Optional", "", "Skip these when context is short.", "", ...lines]
+    : [];
+}
+
+const write = (file, lines) => writeFileSync(file, `${lines.join("\n").trimEnd()}\n`);
+
 const map = [
   "# LocusGraph Docs",
   "",
@@ -288,93 +391,36 @@ const map = [
   "",
   "Source and issues: https://github.com/locusgraph",
   "",
+  ...ready.flatMap(({ slug }) => guides.get(slug) ?? []),
+  ...ready.flatMap(({ slug }) => references.get(slug) ?? []),
+  "",
+  ...optionalPart(ready.flatMap(({ slug }) => optionals.get(slug) ?? [])),
 ];
 
-const ordered = new Map();
-const optional = [];
-
-for (const { slug: product, title } of ready) {
-  const pages = docs.filter((d) => d.product === product);
-  if (pages.length === 0) continue;
-  const byId = new Map(pages.map((page) => [page.id, page]));
-  const seen = [];
-
-  // One H2 per group, because the format delimits file lists on H2 and says
-  // nothing about H3. Nesting the groups under the product read better and put
-  // eighteen headings inside two sections, where a strict reader sees stray
-  // headings in a file list rather than sections of their own.
-  const line = (page) => `- [${page.title}](${SITE}${page.id}): ${page.description || page.title}`;
-
-  const blurb = blurbOf(product);
-  map.push(`## ${title}`, "");
-  if (blurb) map.push(blurb, "");
-  map.push(`- [${title}](${SITE}/${product}): the section index, with every group`);
-
-  for (const group of groupsOf(product)) {
-    const inGroup = group.slugs.map((slug) => byId.get(`/${product}/${slug}`)).filter(Boolean);
-    if (inGroup.length === 0) continue;
-
-    if (!group.title) {
-      // The tree with no title of its own is the product's own pages.
-      for (const page of inGroup) {
-        map.push(line(page));
-        seen.push(page);
-      }
-      continue;
-    }
-
-    const target = OPTIONAL.has(group.title) ? optional : null;
-    if (target) {
-      target.push(`### ${title}: ${group.title}`, "");
-      for (const page of inGroup) {
-        target.push(line(page));
-        seen.push(page);
-      }
-      target.push("");
-      continue;
-    }
-
-    map.push("", `## ${title}: ${group.title}`, "");
-    for (const page of inGroup) {
-      map.push(line(page));
-      seen.push(page);
-    }
-  }
-  map.push("");
-
-  // A page the manifest has and no tree lists would be invisible here, the way
-  // it is invisible in the sidebar. `tests/nav.test.ts` holds that the two
-  // agree, so this is a belt on braces rather than a fallback to rely on.
-  for (const page of pages) {
-    if (seen.includes(page)) continue;
-    map.push(line(page));
-    seen.push(page);
-  }
-  ordered.set(product, seen);
-}
-
-// The reference, grouped the way its own sidebar groups it.
-for (const { slug: product, title } of ready) {
-  const mine = API.filter((endpoint) => endpoint.product === product);
-  for (const group of [...new Set(mine.map((e) => e.group))]) {
-    const inGroup = mine.filter((e) => e.group === group);
-    if (inGroup.length === 0) continue;
-    map.push("", `## ${title} API: ${group}`, "");
-    for (const endpoint of inGroup) {
-      map.push(
-        `- [${endpoint.method} ${endpoint.path}](${SITE}/${product}/api/${endpoint.slug}): ${endpoint.summary}`
-      );
-    }
-  }
-}
-map.push("");
-
-if (optional.length > 0) {
-  map.push("## Optional", "", "Skip these when context is short.", "", ...optional);
-}
-
 const llms = join(root, "public/llms.txt");
-writeFileSync(llms, `${map.join("\n").trimEnd()}\n`);
+write(llms, map);
+
+/**
+ * `/<section>/llms.txt`: the same map, cut to one section.
+ *
+ * It sits in the folder the `.md` pages are written to, which is cleared and
+ * rebuilt above, so a section that stops being ready loses its map with them.
+ */
+for (const { slug: product, title } of ready) {
+  if (!guides.has(product)) continue;
+  write(join(root, "public", product, "llms.txt"), [
+    `# ${title} Docs`,
+    "",
+    `> ${blurbOf(product)} Each link below is a page on ${SITE}, and appending \`.md\` to any of them returns that page as markdown.`,
+    "",
+    `The map for every section on this host is ${SITE}/llms.txt.`,
+    "",
+    ...guides.get(product),
+    ...(references.get(product) ?? []),
+    "",
+    ...optionalPart(optionals.get(product) ?? []),
+  ]);
+}
 
 /**
  * `llms-full.txt`: the prose itself, in the same order.
