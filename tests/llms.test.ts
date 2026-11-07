@@ -2,6 +2,8 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { ENDPOINTS } from "../lib/api/endpoints";
+import { AGENT_PROMPTS } from "../lib/site/agent-prompts";
+import { PRODUCT_INFO, PRODUCTS } from "../lib/site/products";
 import { pages, SECTIONS } from "./site";
 
 /**
@@ -268,32 +270,86 @@ describe("what Copy page fetches", () => {
 });
 
 /**
- * The landing page's prompt names files that have to exist.
+ * The prompts the host index copies, one per product.
  *
- * It is copied into somebody else's agent, which will fetch what it is given
- * and has no way to tell a moved page from a broken one. A prompt pointing at
- * a 404 is worse than no prompt: the agent reports that the docs are missing.
+ * Each is pasted into somebody else's agent, which fetches what it is given
+ * and cannot tell a moved page from a broken one. So every docs URL in a
+ * prompt has to be a file the build writes, and each prompt has to stay on
+ * its own product: the point of splitting them was that a reader who wants
+ * one product does not hand their agent the other.
+ *
+ * Here rather than in a file of their own because they read what the
+ * generator at the top of this file writes. A second file running the
+ * generator in parallel clears `public/<section>/` while this one reads it.
  */
-describe("the agent prompt", () => {
-  const source = readFileSync("components/site/agent-prompt.tsx", "utf8");
-  const prompt = source.slice(
-    source.indexOf("const PROMPT = `"),
-    source.indexOf("`;\n\ntype State")
-  );
+const DOCS = "https://docs.locusgraph.com";
+const entries = Object.entries(AGENT_PROMPTS);
 
-  it("names something to fetch", () => {
-    expect(prompt).toContain("/llms.txt");
-    expect(prompt.match(/https:\/\/docs\.locusgraph\.com\S+/g)?.length ?? 0).toBeGreaterThan(3);
+function urls(prompt: string): string[] {
+  return (prompt.match(/https:\/\/\S+/g) ?? []).map((url) => url.replace(/[.,;:)]+$/, ""));
+}
+
+describe("agent prompts", () => {
+  it("has one for every ready section", () => {
+    const ready = PRODUCTS.filter((product) => PRODUCT_INFO[product].ready);
+    expect(Object.keys(AGENT_PROMPTS).sort()).toEqual([...ready].sort());
   });
 
-  it("points at files that exist", () => {
-    for (const url of prompt.match(/https:\/\/docs\.locusgraph\.com(\/\S*?)(?=[\s,)]|$)/g) ?? []) {
-      const path = url.replace("https://docs.locusgraph.com", "");
-      if (path === "/llms.txt" || path === "/llms-full.txt") {
-        expect(existsSync(`public${path}`), `${path} is named and not generated`).toBe(true);
-        continue;
+  for (const [product, prompt] of entries) {
+    const others = PRODUCTS.filter((other) => other !== product);
+
+    describe(product, () => {
+      it("names its own product and no other", () => {
+        expect(prompt).toContain(PRODUCT_INFO[product as keyof typeof PRODUCT_INFO].title);
+        for (const other of others) {
+          expect(prompt, `${product} names ${other}`).not.toContain(PRODUCT_INFO[other].title);
+          expect(prompt, `${product} links into /${other}`).not.toContain(`/${other}/`);
+        }
+      });
+
+      it("points at its own map and says .md works on any page", () => {
+        expect(prompt).toContain(`${DOCS}/${product}/llms.txt`);
+        expect(prompt).toContain("append .md to its URL");
+      });
+
+      it("names only docs files that the build writes", () => {
+        const docs = urls(prompt).filter((url) => url.startsWith(DOCS));
+        expect(docs.length).toBeGreaterThan(1);
+        for (const url of docs) {
+          const path = url.slice(DOCS.length);
+          expect(existsSync(`public${path}`), `${path} does not exist`).toBe(true);
+        }
+      });
+
+      it("names no other host but the API", () => {
+        for (const url of urls(prompt).filter((one) => !one.startsWith(DOCS))) {
+          expect(url).toBe("https://api.locusgraph.com/mcp");
+        }
+      });
+    });
+  }
+
+  it("sends the LocusGraph agent to the MCP route and its page", () => {
+    expect(AGENT_PROMPTS.locusgraph).toContain("https://api.locusgraph.com/mcp");
+    expect(AGENT_PROMPTS.locusgraph).toContain(`${DOCS}/locusgraph/quickstart.md`);
+    expect(AGENT_PROMPTS.locusgraph).toContain(`${DOCS}/locusgraph/mcp/connecting.md`);
+  });
+
+  it("sends the Spendgraph agent to getting started and the SDK quickstart", () => {
+    expect(AGENT_PROMPTS.spendgraph).toContain(`${DOCS}/spendgraph/getting-started.md`);
+    expect(AGENT_PROMPTS.spendgraph).toContain(`${DOCS}/spendgraph/sdk/quickstart.md`);
+  });
+});
+
+describe("section maps", () => {
+  for (const product of Object.keys(AGENT_PROMPTS)) {
+    it(`/${product}/llms.txt lists only ${product} pages`, () => {
+      const map = readFileSync(`public/${product}/llms.txt`, "utf8");
+      const links = [...map.matchAll(/\]\(https:\/\/docs\.locusgraph\.com(\/[^)]*)\)/g)];
+      expect(links.length).toBeGreaterThan(10);
+      for (const [, path] of links) {
+        expect(path.startsWith(`/${product}`), `${path} is not in ${product}`).toBe(true);
       }
-      expect(existsSync(`public${path}`), `${path} is named and does not exist`).toBe(true);
-    }
-  });
+    });
+  }
 });
