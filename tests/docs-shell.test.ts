@@ -3,6 +3,7 @@ import { endpointsFor } from "../lib/api/endpoints";
 import {
   activeHeaderHref,
   apiHref,
+  headerBrand,
   headerLinks,
   sidebarGroups,
   trailFor,
@@ -16,6 +17,12 @@ import { PRODUCT_INFO, PRODUCTS } from "../lib/site/products";
  */
 
 describe("trailFor", () => {
+  it("keeps the Docs root link on every page", () => {
+    for (const path of ["/locusgraph", "/locusgraph/overview", "/spendgraph/sdk/errors"]) {
+      expect(trailFor(path)[0]).toEqual({ label: "Docs", href: "/" });
+    }
+  });
+
   it("stops at the section on the section root", () => {
     expect(trailFor("/locusgraph")).toEqual([
       { label: "Docs", href: "/" },
@@ -78,30 +85,54 @@ describe("sidebarGroups", () => {
   });
 });
 
+describe("headerBrand", () => {
+  it("follows the section the reader is in", () => {
+    expect(headerBrand("locusgraph")).toEqual({
+      name: "LocusGraph",
+      href: "/locusgraph",
+      product: "locusgraph",
+    });
+    expect(headerBrand("spendgraph")).toEqual({
+      name: PRODUCT_INFO.spendgraph.title,
+      href: "/spendgraph",
+      product: "spendgraph",
+    });
+  });
+
+  it("keeps the host brand outside a known section", () => {
+    expect(headerBrand("nowhere")).toEqual({ name: "LocusGraph", href: "/" });
+  });
+});
+
 describe("headerLinks", () => {
-  it("leaves out every section with ready: false", () => {
-    const titles = headerLinks("locusgraph").map((link) => link.title);
-    for (const product of PRODUCTS) {
-      const { title, ready } = PRODUCT_INFO[product];
-      expect(titles.includes(title)).toBe(ready);
+  it("lists only the section's own API reference", () => {
+    for (const product of ["locusgraph", "spendgraph"]) {
+      expect(headerLinks(product)).toEqual([{ title: "API reference", href: apiHref(product) }]);
     }
   });
 
-  it("adds the API reference for a section that has one", () => {
-    expect(headerLinks("locusgraph").at(-1)).toEqual({
-      title: "API reference",
-      href: apiHref("locusgraph"),
-    });
+  it("leaves out every section link", () => {
+    const titles = headerLinks("spendgraph").map((link) => link.title);
+    for (const product of PRODUCTS) {
+      expect(titles).not.toContain(PRODUCT_INFO[product].title);
+    }
+  });
+
+  it("is empty for a section with no API", () => {
+    expect(headerLinks("nowhere")).toEqual([]);
   });
 });
 
 describe("activeHeaderHref", () => {
-  it("lights the API reference on an API path", () => {
+  it("lights the section's own API reference on an API path", () => {
     const slug = endpointsFor("spendgraph")[2].slug;
     expect(activeHeaderHref(`/spendgraph/api/${slug}`)).toBe(apiHref("spendgraph"));
+    const first = endpointsFor("locusgraph")[0].slug;
+    expect(activeHeaderHref(`/locusgraph/api/${first}`)).toBe(apiHref("locusgraph"));
   });
 
-  it("lights the section on a guide path", () => {
-    expect(activeHeaderHref("/spendgraph/sdk/errors")).toBe("/spendgraph");
+  it("lights nothing on a guide path", () => {
+    expect(activeHeaderHref("/spendgraph/sdk/errors")).toBe("");
+    expect(activeHeaderHref("/locusgraph")).toBe("");
   });
 });
