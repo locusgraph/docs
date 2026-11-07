@@ -23,6 +23,12 @@ import { sectionChoices } from "@/lib/site/docs-shell";
  * it and hands focus back to the trigger. A radio group marks the section being
  * read as checked, which is what a screen reader announces as selected.
  *
+ * Two things are set here rather than taken from the package. The panel starts
+ * opaque instead of fading in, because mid-fade in dark mode the sidebar reads
+ * through it. And the highlighted row uses `border` rather than the package's
+ * `accent`: in dark mode `accent` is `#1b1b1d` on a `#18181a` panel, which is
+ * no visible change, so arrowing through the list showed nothing.
+ *
  * Choosing a row goes to that section's root. The host index is not in the
  * list: the "Docs" crumb at the top of every page is the way back there.
  */
@@ -43,7 +49,10 @@ export function SectionSwitcher({
         {children}
         <CaretUpDownIcon weight="bold" aria-hidden className="size-3.5 text-muted-foreground" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-72">
+      <DropdownMenuContent
+        align="start"
+        className="w-72 border-border bg-popover data-[state=open]:[--tw-enter-opacity:1]"
+      >
         <DropdownMenuRadioGroup
           value={current}
           onValueChange={(value) => {
@@ -55,7 +64,7 @@ export function SectionSwitcher({
             <DropdownMenuRadioItem
               key={choice.product}
               value={choice.product}
-              className="items-start gap-3 py-2"
+              className="items-start gap-3 py-2 focus:bg-border focus:text-foreground"
             >
               <ProductMark product={choice.product} className="mt-0.5 size-5" />
               <span className="flex flex-col gap-0.5">
