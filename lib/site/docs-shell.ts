@@ -1,6 +1,6 @@
 import { endpointBySlug, endpointsFor, groupsFor } from "@/lib/api/endpoints";
 import { pagesOf, productOf, treeFor, treesFor } from "@/lib/site/docs-nav";
-import { isProduct, PRODUCT_INFO, PRODUCTS } from "@/lib/site/products";
+import { isProduct, PRODUCT_INFO, type Product } from "@/lib/site/products";
 
 /**
  * What the LocusGraph docs shell is handed, worked out from the path.
@@ -37,24 +37,38 @@ export function apiHref(product: string): string | undefined {
 }
 
 /**
- * The header's links: every listed section, plus the API reference for the one
- * being read when it has one. A section with `ready: false` keeps its routes
- * but stays out of the header, the same as it stays off the host index.
+ * The header's brand: the section's own mark and name, linking to the section
+ * root. Inside a section the reader is reading one product, so the header says
+ * which. A path outside any known section keeps the host's brand.
  */
-export function headerLinks(product: string): NavItem[] {
-  const sections = PRODUCTS.filter((key) => PRODUCT_INFO[key].ready).map((key) => ({
-    title: PRODUCT_INFO[key].title,
-    href: `/${key}`,
-  }));
-  const api = apiHref(product);
-  return api ? [...sections, { title: "API reference", href: api }] : sections;
+export interface HeaderBrand {
+  name: string;
+  href: string;
+  product?: Product;
 }
 
-/** Which header link is lit. Exact match, because that is how the shell compares. */
+export function headerBrand(product: string): HeaderBrand {
+  if (!isProduct(product)) return { name: "LocusGraph", href: "/" };
+  return { name: PRODUCT_INFO[product].title, href: `/${product}`, product };
+}
+
+/**
+ * The header's links: the section's own API reference, when it has one.
+ * Moving between sections goes through the host index, which the brand on the
+ * host pages and the "Docs" crumb both lead back to.
+ */
+export function headerLinks(product: string): NavItem[] {
+  const api = apiHref(product);
+  return api ? [{ title: "API reference", href: api }] : [];
+}
+
+/**
+ * Which header link is lit. Exact match, because that is how the shell
+ * compares. Off the API reference nothing is lit, so the empty string.
+ */
 export function activeHeaderHref(pathname: string): string {
-  const product = productOf(pathname);
-  if (isApiPath(pathname)) return apiHref(product) ?? `/${product}`;
-  return `/${product}`;
+  if (!isApiPath(pathname)) return "";
+  return apiHref(productOf(pathname)) ?? "";
 }
 
 /**
