@@ -54,7 +54,7 @@ export function SectionSwitcher({
         className="w-72 border-border bg-popover data-[state=open]:[--tw-enter-opacity:1]"
       >
         <DropdownMenuRadioGroup
-          value={current}
+          value={choices.find((choice) => choice.current)?.product ?? ""}
           onValueChange={(value) => {
             const choice = choices.find((item) => item.product === value);
             if (choice) router.push(choice.href);
