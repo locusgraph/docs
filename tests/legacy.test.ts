@@ -2,6 +2,8 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { ENDPOINTS } from "../lib/api/endpoints";
 import { LEGACY_FALLBACK, LEGACY_HOST, LEGACY_REDIRECTS } from "../lib/site/legacy";
+import { SITEMAP_URL } from "../lib/site/seo";
+import nextConfig from "../next.config";
 import { pages } from "./site";
 
 /**
@@ -37,5 +39,27 @@ describe("the old docs host", () => {
 
   it("is attached to the worker that answers it", () => {
     expect(readFileSync("wrangler.jsonc", "utf8")).toContain(`"pattern": "${LEGACY_HOST}"`);
+  });
+});
+
+/**
+ * The old host's sitemap goes to the one sitemap there is now, on the landing
+ * site. It has its own redirect because every entry in `LEGACY_REDIRECTS` is a
+ * path on this host, and the catch-all after it would send the URL to a docs
+ * page instead.
+ */
+describe("the old sitemap", () => {
+  it("redirects for good to the landing site's sitemap, before the catch-all", async () => {
+    const redirects = (await nextConfig.redirects?.()) ?? [];
+    const sitemap = redirects.findIndex(
+      (rule) => rule.source === "/sitemap.xml" && rule.has?.some((h) => h.type === "host")
+    );
+    expect(sitemap).toBeGreaterThan(-1);
+    expect(redirects[sitemap]).toMatchObject({ destination: SITEMAP_URL, permanent: true });
+    expect(sitemap).toBeLessThan(redirects.findIndex((rule) => rule.source === "/:path*"));
+  });
+
+  it("is the www sitemap", () => {
+    expect(SITEMAP_URL).toBe("https://www.locusgraph.com/sitemap.xml");
   });
 });
