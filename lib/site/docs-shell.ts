@@ -1,5 +1,5 @@
 import { endpointBySlug, endpointsFor, groupsFor } from "@/lib/api/endpoints";
-import { pagesOf, productOf, treeFor, treesFor } from "@/lib/site/docs-nav";
+import { type DocsTree, pagesOf, productOf, treeFor, treesFor } from "@/lib/site/docs-nav";
 import { isProduct, PRODUCT_INFO, PRODUCTS, type Product } from "@/lib/site/products";
 
 /**
@@ -93,6 +93,39 @@ export function headerLinks(product: string): NavItem[] {
 export function activeHeaderHref(pathname: string): string {
   if (!isApiPath(pathname)) return "";
   return apiHref(productOf(pathname)) ?? "";
+}
+
+/** How many groups the header shows before the rest go behind "More". */
+export const GROUPS_SHOWN = 3;
+
+export interface GroupNav {
+  shown: DocsTree[];
+  rest: DocsTree[];
+  current?: DocsTree;
+}
+
+/**
+ * The section's groups for the header: the first few in sidebar order, and
+ * the rest for the "More" menu.
+ *
+ * Untitled groups are skipped. They are the section's own pages, which the
+ * sidebar shows unlabelled at the top and which have no group to name.
+ *
+ * The group being read is always one of the shown ones, even when it sits
+ * tenth in the list, or the header says nothing about where the reader is. On
+ * an API page no group is current, so none is marked and "API reference" in
+ * the header stays the lit item.
+ */
+export function groupNav(pathname: string): GroupNav {
+  const groups = treesFor(productOf(pathname)).filter((tree) => tree.title);
+  const tree = isApiPath(pathname) ? undefined : treeFor(pathname);
+  const current = tree?.title ? tree : undefined;
+
+  let shown = groups.slice(0, GROUPS_SHOWN);
+  if (current && !shown.includes(current)) {
+    shown = [current, ...groups.filter((group) => group !== current).slice(0, GROUPS_SHOWN - 1)];
+  }
+  return { shown, rest: groups.filter((group) => !shown.includes(group)), current };
 }
 
 /**

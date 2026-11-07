@@ -3,6 +3,7 @@
 import { DocsNavList, DocsHeader as Header } from "@locusgraph/components";
 import { usePathname } from "next/navigation";
 import type * as React from "react";
+import { DocsGroupNav } from "@/components/docs/docs-group-nav";
 import { DocsSearch } from "@/components/docs/search";
 import { SectionSwitcher } from "@/components/docs/section-switcher";
 import { NextLink } from "@/components/site/next-link";
@@ -16,6 +17,11 @@ import { activeHeaderHref, headerBrand, headerLinks, sidebarGroups } from "@/lib
  * anywhere. The shell always draws its brand as a link through `linkComponent`,
  * so the brand is given a href no real link uses, and `HeaderLink` swaps in the
  * switcher when it sees it. The mark and name keep the shell's own layout.
+ *
+ * The group row goes in the same slot, straight after the switcher, because
+ * the shell has no slot of its own between the brand and its links. That puts
+ * the groups beside the section they belong to, and "API reference" after
+ * them.
  */
 const SWITCHER = "#switch-section";
 
@@ -25,7 +31,14 @@ function HeaderLink({
   children,
   ...props
 }: React.ComponentProps<typeof NextLink>) {
-  if (href === SWITCHER) return <SectionSwitcher className={className}>{children}</SectionSwitcher>;
+  if (href === SWITCHER) {
+    return (
+      <>
+        <SectionSwitcher className={className}>{children}</SectionSwitcher>
+        <DocsGroupNav />
+      </>
+    );
+  }
   return (
     <NextLink href={href} className={className} {...props}>
       {children}
