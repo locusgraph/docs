@@ -5,11 +5,12 @@ onlyBuiltDependencies:
 
 # pnpm withholds a version published in the last day, which is a good default
 # against a compromised release and a bad one for packages we cut ourselves:
-# the docs here and the code they describe ship in the same hour, so the gate
-# only delays our own work. Scoped to `@spendgraph`, so every other dependency
-# keeps the wait.
+# the docs here, the code they describe and the design packages they are drawn
+# with ship in the same hour, so the gate only delays our own work. Scoped to
+# `@spendgraph` and `@locusgraph`, so every other dependency keeps the wait.
 minimumReleaseAgeExclude:
   - '@spendgraph/*'
+  - '@locusgraph/*'
 
 # Which dependencies may run an install script. `sharp` is the only one that
 # has to: the other two ship prebuilt binaries and their scripts are optional.

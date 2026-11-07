@@ -133,9 +133,10 @@ at the `node_modules` edge, so without it every package page fails with
 
 **pnpm withholds a fresh release.** `minimumReleaseAge` refuses a version
 published in the last day, so a `pnpm update` straight after a publish silently
-resolves the previous one. `pnpm-workspace.yaml` excludes `'@spendgraph/*'`,
-because these docs and the code they describe ship in the same hour; everything
-else keeps the wait. npm's own propagation adds a few minutes on top, and it
+resolves the previous one. `pnpm-workspace.yaml` excludes `'@spendgraph/*'` and
+`'@locusgraph/*'`, because these docs, the code they describe and the design
+packages they are drawn with ship in the same hour; everything else keeps the
+wait. npm's own propagation adds a few minutes on top, and it
 lands on the abbreviated packument last, which is the one pnpm asks for — so a
 404 from pnpm while `curl` on the package URL says 200 is that, not a mistake.
 
