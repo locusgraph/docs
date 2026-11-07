@@ -1,6 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
-  "extends": ["@spendgraph/config/biome/base.json", "@spendgraph/config/biome/next.json"],
+  "extends": ["@locusgraph/config/biome/base.json", "@locusgraph/config/biome/next.json"],
   "files": {
     "includes": [
       "**",
@@ -8,7 +8,6 @@
       "!**/node_modules/**",
       "!**/.wrangler/**",
       "!**/.open-next/**",
-      "!components/ui/**",
       "!next-env.d.ts",
       "!**/*.css",
       "!public/search-index.json"

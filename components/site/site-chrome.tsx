@@ -1,6 +1,8 @@
+import { GitHubMark } from "@locusgraph/brand";
 import Link from "next/link";
 import { DocsSearch } from "@/components/docs/search";
-import { GithubMark, LocusMark, XMark } from "@/components/site/marks";
+import { XMark } from "@/components/site/marks";
+import { ProductMark } from "@/components/site/product-mark";
 import { ThemeSwitch } from "@/components/site/theme-switch";
 
 /**
@@ -27,18 +29,17 @@ import { ThemeSwitch } from "@/components/site/theme-switch";
  */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/60 bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/55">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/70 backdrop-blur-md supports-[backdrop-filter]:bg-background/55">
       <div className="px-4 sm:px-6">
         <div className="mx-auto flex w-full max-w-4xl items-center justify-between gap-3 py-4 sm:gap-4">
           <Link
             href="/"
-            className="flex min-w-0 items-center gap-2 text-base font-semibold tracking-tight"
+            className="flex min-w-0 items-center gap-2 font-brand text-base tracking-tight"
           >
-            <span className="grid size-7 shrink-0 place-items-center rounded-md bg-foreground text-background">
-              <LocusMark className="size-5" />
-            </span>
+            <ProductMark product="locusgraph" className="size-5 shrink-0" />
             <span className="truncate">
-              LocusGraph <span className="text-soft">docs</span>
+              <span className="font-bold">LocusGraph</span>
+              <span className="font-light"> docs</span>
             </span>
           </Link>
           <nav className="flex shrink-0 items-center gap-3 sm:gap-4">
@@ -56,7 +57,7 @@ export function SiteHeader() {
               aria-label="LocusGraph on GitHub"
               className="hidden text-soft hover:text-foreground sm:block"
             >
-              <GithubMark />
+              <GitHubMark className="size-[17px]" />
             </a>
             <a
               href="https://x.com/effortlesslabs"
@@ -77,7 +78,7 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line/60">
+    <footer className="border-t border-border">
       {/* For an agent rather than a reader.
           `sr-only` keeps this out of the layout and in the document: it is a
           real link to a real file, so a screen reader announcing it is correct

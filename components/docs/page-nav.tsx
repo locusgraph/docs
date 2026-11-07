@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { neighbours } from "@/lib/site/docs-nav";
@@ -17,14 +17,14 @@ export function PageNav() {
   if (!prev && !next) return null;
 
   return (
-    <nav className="mt-14 grid gap-3 border-t border-line pt-6 sm:grid-cols-2">
+    <nav className="not-typeset mt-14 grid gap-3 border-t border-border pt-6 sm:grid-cols-2">
       {prev ? (
         <Link
           href={prev.href}
-          className="group rounded-xl border border-line px-4 py-3 transition hover:bg-ghost"
+          className="group border border-border bg-card px-4 py-3 transition-colors hover:bg-muted"
         >
           <span className="flex items-center gap-1.5 text-xs text-faint">
-            <ArrowLeft className="size-3" />
+            <ArrowLeftIcon weight="bold" className="size-3" aria-hidden />
             Previous
           </span>
           <span className="mt-0.5 block text-sm font-medium">{prev.title}</span>
@@ -35,11 +35,11 @@ export function PageNav() {
       {next ? (
         <Link
           href={next.href}
-          className="group rounded-xl border border-line px-4 py-3 text-right transition hover:bg-ghost sm:col-start-2"
+          className="group border border-border bg-card px-4 py-3 text-right transition-colors hover:bg-muted sm:col-start-2"
         >
           <span className="flex items-center justify-end gap-1.5 text-xs text-faint">
             Next
-            <ArrowRight className="size-3" />
+            <ArrowRightIcon weight="bold" className="size-3" aria-hidden />
           </span>
           <span className="mt-0.5 block text-sm font-medium">{next.title}</span>
         </Link>

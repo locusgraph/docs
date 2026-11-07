@@ -1,5 +1,5 @@
 {
-  "extends": "@spendgraph/config/typescript/next.json",
+  "extends": "@locusgraph/config/typescript/next.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./*"]

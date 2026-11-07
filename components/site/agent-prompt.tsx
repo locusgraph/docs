@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, TriangleAlert } from "lucide-react";
+import { CheckIcon, CopyIcon, WarningIcon } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { ClaudeMark, CodexMark, CursorMark, VsCodeMark } from "@/components/docs/client-marks";
 
@@ -66,7 +66,7 @@ export function AgentPrompt() {
     }
   };
 
-  const Icon = { idle: Copy, copying: Copy, done: Check, failed: TriangleAlert }[state];
+  const Icon = { idle: CopyIcon, copying: CopyIcon, done: CheckIcon, failed: WarningIcon }[state];
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -95,6 +95,7 @@ export function AgentPrompt() {
           {LABEL[state]}
         </span>
         <Icon
+          weight="bold"
           className={`size-4 shrink-0 ${state === "done" ? "text-s3" : ""} ${
             state === "failed" ? "text-s2" : "text-faint"
           } ${state === "copying" ? "animate-pulse" : ""}`}

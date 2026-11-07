@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ChevronDown, Code, Copy, TriangleAlert } from "lucide-react";
+import { CaretDownIcon, CheckIcon, CodeIcon, CopyIcon, WarningIcon } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -73,7 +73,7 @@ export function CopyPage() {
     }
   };
 
-  const Icon = { idle: Copy, copying: Copy, done: Check, failed: TriangleAlert }[state];
+  const Icon = { idle: CopyIcon, copying: CopyIcon, done: CheckIcon, failed: WarningIcon }[state];
 
   return (
     <div ref={box} className="not-prose relative shrink-0">
@@ -86,6 +86,7 @@ export function CopyPage() {
           className="flex w-[9.5rem] items-center gap-2 px-3 py-1.5 text-[13px] font-medium text-soft hover:bg-ghost hover:text-foreground disabled:opacity-70"
         >
           <Icon
+            weight="bold"
             className={`size-3.5 shrink-0 ${state === "copying" ? "animate-pulse" : ""} ${
               state === "done" ? "text-s3" : ""
             } ${state === "failed" ? "text-s2" : ""}`}
@@ -99,7 +100,10 @@ export function CopyPage() {
           aria-expanded={open}
           className="border-line border-l px-1.5 text-faint hover:bg-ghost hover:text-foreground"
         >
-          <ChevronDown className={`size-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+          <CaretDownIcon
+            weight="bold"
+            className={`size-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+          />
         </button>
       </div>
 
@@ -110,7 +114,7 @@ export function CopyPage() {
             onClick={copy}
             className="flex w-full items-start gap-2.5 px-3 py-2.5 text-left hover:bg-ghost"
           >
-            <Copy className="mt-0.5 size-3.5 shrink-0 text-faint" />
+            <CopyIcon weight="bold" className="mt-0.5 size-3.5 shrink-0 text-faint" />
             <span>
               <span className="block text-[13px] font-medium text-foreground">Copy page</span>
               <span className="block text-[11.5px] text-faint">Copy this page as Markdown</span>
@@ -120,7 +124,7 @@ export function CopyPage() {
             href={markdown}
             className="flex w-full items-start gap-2.5 border-line border-t px-3 py-2.5 no-underline hover:bg-ghost"
           >
-            <Code className="mt-0.5 size-3.5 shrink-0 text-faint" />
+            <CodeIcon weight="bold" className="mt-0.5 size-3.5 shrink-0 text-faint" />
             <span>
               <span className="block text-[13px] font-medium text-foreground">
                 View as Markdown
