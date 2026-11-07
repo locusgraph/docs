@@ -57,15 +57,15 @@ export function AgentPrompt({ product }: { product: PromptProduct }) {
   const Icon = { idle: CopyIcon, copying: CopyIcon, done: CheckIcon, failed: WarningIcon }[state];
 
   return (
-    <div className="flex flex-col items-start gap-1.5">
+    <div className="flex min-w-0 max-w-full flex-col items-start gap-1.5">
       <button
         type="button"
         onClick={copy}
         disabled={state === "copying"}
         aria-live="polite"
-        className="locus-focus-ring flex items-center gap-3 rounded-full border border-line bg-surface py-1.5 pr-3 pl-2 transition-colors hover:border-soft/40 hover:bg-ghost disabled:opacity-70"
+        className="locus-focus-ring flex max-w-full min-w-0 items-center gap-3 rounded-full border border-line bg-surface py-1.5 pr-3 pl-2 transition-colors hover:border-soft/40 hover:bg-ghost disabled:opacity-70"
       >
-        <span className="flex items-center">
+        <span className="flex shrink-0 items-center">
           {MARKS.map(({ key, Mark }, i) => (
             <span
               key={key}
@@ -79,8 +79,10 @@ export function AgentPrompt({ product }: { product: PromptProduct }) {
             </span>
           ))}
         </span>
-        {/* Fixed width, so the card does not twitch as the label changes. */}
-        <span className="w-[10.5rem] text-left text-sm font-medium text-foreground">
+        {/* Fixed width from `sm` up, so the card does not twitch as the label
+            changes. Below that it gives way instead: at 360px the fixed width
+            plus the card's padding was wider than the screen. */}
+        <span className="min-w-0 truncate text-left text-sm font-medium text-foreground sm:w-[10.5rem]">
           {LABEL[state]}
         </span>
         <Icon

@@ -62,7 +62,7 @@ export default function DocsHome() {
             return (
               <section
                 key={product}
-                className="flex flex-col rounded-2xl border border-line bg-surface p-6"
+                className="flex min-w-0 flex-col rounded-2xl border border-line bg-surface p-5 sm:p-6"
               >
                 <Link href={`/${product}`} className="group no-underline">
                   <span className="flex items-center gap-3">
