@@ -8,7 +8,7 @@
     "node": "^22 || >=24"
   },
   "dependencies": {
-    "@locusgraph/brand": "0.3.1",
+    "@locusgraph/brand": "0.4.0",
     "@locusgraph/components": "0.6.1",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
