@@ -19,9 +19,9 @@ import { pageMeta } from "@/lib/site/seo";
  *
  * Ready sections get a card with a way in: the first few pages of each, pulled
  * from the nav so the links cannot drift, and a button that copies a prompt
- * for that product alone, so the reader picks a product before an agent does. Sections that are not ready are one
- * quiet line at the bottom rather than four dimmed cards competing with the two
- * that work.
+ * for that product alone, so the reader picks a product before an agent does.
+ * Sections that are not ready do not appear here at all; their routes stay
+ * live, and a reader reaches them only by link.
  */
 export const metadata: Metadata = pageMeta({
   title: "Docs | LocusGraph Docs",
@@ -31,7 +31,6 @@ export const metadata: Metadata = pageMeta({
 });
 
 const live = PRODUCTS.filter((product) => PRODUCT_INFO[product].ready);
-const soon = PRODUCTS.filter((product) => !PRODUCT_INFO[product].ready);
 
 export default function DocsHome() {
   return (
@@ -110,25 +109,6 @@ export default function DocsHome() {
             );
           })}
         </div>
-
-        {soon.length > 0 ? (
-          <p className="mx-auto mt-8 max-w-4xl text-center text-sm text-faint">
-            {soon.map((product, i) => (
-              <span key={product}>
-                {i > 0 ? " · " : null}
-                {PRODUCT_INFO[product].title}
-              </span>
-            ))}{" "}
-            are on the way.{" "}
-            <a
-              href="mailto:nasim@effortlesslabs.xyz?subject=Early%20access"
-              className="text-soft hover:text-foreground"
-            >
-              ask for early access
-            </a>
-            .
-          </p>
-        ) : null}
       </main>
 
       <SiteFooter />
