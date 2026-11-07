@@ -5,6 +5,7 @@ import {
   apiHref,
   headerBrand,
   headerLinks,
+  sectionChoices,
   sidebarGroups,
   trailFor,
 } from "../lib/site/docs-shell";
@@ -101,6 +102,32 @@ describe("headerBrand", () => {
 
   it("keeps the host brand outside a known section", () => {
     expect(headerBrand("nowhere")).toEqual({ name: "LocusGraph", href: "/" });
+  });
+});
+
+describe("sectionChoices", () => {
+  it("lists only the sections with ready: true", () => {
+    const listed = sectionChoices("locusgraph").map((choice) => choice.product);
+    expect(listed).toEqual(PRODUCTS.filter((product) => PRODUCT_INFO[product].ready));
+    expect(listed).toEqual(["locusgraph", "spendgraph"]);
+  });
+
+  it("marks the section being read, and only that one", () => {
+    for (const product of ["locusgraph", "spendgraph"]) {
+      const current = sectionChoices(product).filter((choice) => choice.current);
+      expect(current.map((choice) => choice.product)).toEqual([product]);
+    }
+  });
+
+  it("carries each section's title, blurb and root", () => {
+    const [locus] = sectionChoices("spendgraph");
+    expect(locus).toEqual({
+      product: "locusgraph",
+      title: PRODUCT_INFO.locusgraph.title,
+      blurb: PRODUCT_INFO.locusgraph.blurb,
+      href: "/locusgraph",
+      current: false,
+    });
   });
 });
 
