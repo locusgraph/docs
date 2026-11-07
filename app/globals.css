@@ -86,8 +86,10 @@
  * diagrams, so recolouring the token alone left most pages identical. These
  * two rules put it on something every page has: prose links, and the current
  * page wherever a nav lists it (the sidebar, and the section in the header).
- * Any `aria-current`, not only "page": a header group link is "true" on the
- * group's other pages, and the reader is still in that group.
+ * Both "page" and "true": a header group link is "true" on the group's other
+ * pages, and the reader is still in that group. Not any `aria-current`: the
+ * outline marks the heading in view with its own value, and that link keeps
+ * the foreground colour the outline gives it.
  *
  * Heading anchors are excluded. Every heading wraps its text in a link for the
  * `#` permalink, so colouring links blind turns every `h2` on the site into an
@@ -105,7 +107,7 @@
   color: var(--locus-s1);
 }
 
-[data-section] nav a[aria-current] {
+[data-section] nav a:is([aria-current="page"], [aria-current="true"]) {
   color: var(--locus-s1);
 }
 
