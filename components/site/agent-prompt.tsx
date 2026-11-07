@@ -3,37 +3,25 @@
 import { CheckIcon, CopyIcon, WarningIcon } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { ClaudeMark, CodexMark, CursorMark, VsCodeMark } from "@/components/docs/client-marks";
+import { AGENT_PROMPTS, type PromptProduct } from "@/lib/site/agent-prompts";
+import { PRODUCT_INFO } from "@/lib/site/products";
 
 /**
- * One pill on the landing page: the prompt that points an agent at these docs.
+ * A card's "Start with an agent" button: copies the prompt for that card's
+ * product, from `lib/site/agent-prompts.ts`.
  *
- * Everything it names already exists. `/llms.txt` maps all 118 pages, and every
- * page has a `.md` twin, so an agent handed this can fetch what it needs rather
- * than being told about documentation it cannot read.
+ * It sits inside the card but outside the card's links, so it is a button on
+ * its own and never a button inside an anchor.
  *
  * The logos are decoration. At 14px inside a button with one obvious action
  * nobody tries to click them, and they say "your editor" faster than a longer
- * label would — which is why the label does not repeat it.
+ * label would, which is why the label does not repeat it.
  */
-const PROMPT = `Use LocusGraph for durable memory in this project, and Spendgraph to know what each model call costs.
-
-Documentation index for models: https://docs.locusgraph.com/llms.txt
-Any page as markdown: append .md to its URL
-Whole corpus in one request: https://docs.locusgraph.com/llms-full.txt
-
-Start here:
-  https://docs.locusgraph.com/locusgraph/quickstart.md
-  https://docs.locusgraph.com/spendgraph/getting-started.md
-
-LocusGraph also speaks MCP at https://api.locusgraph.com/mcp, which is the
-better route if this editor can connect to a remote MCP server:
-  https://docs.locusgraph.com/locusgraph/mcp/connecting.md`;
-
 type State = "idle" | "copying" | "done" | "failed";
 
 const LABEL: Record<State, string> = {
   idle: "Start with an agent",
-  copying: "Copying…",
+  copying: "Copying",
   done: "Copied",
   failed: "Could not copy",
 };
@@ -45,7 +33,7 @@ const MARKS = [
   { key: "codex", Mark: CodexMark },
 ];
 
-export function AgentPrompt() {
+export function AgentPrompt({ product }: { product: PromptProduct }) {
   const [state, setState] = useState<State>("idle");
 
   useEffect(() => {
@@ -57,7 +45,7 @@ export function AgentPrompt() {
   const copy = async () => {
     setState("copying");
     try {
-      await navigator.clipboard.writeText(PROMPT);
+      await navigator.clipboard.writeText(AGENT_PROMPTS[product]);
       setState("done");
     } catch {
       // Throws outside a secure context and in some embedded webviews. Saying
@@ -69,12 +57,13 @@ export function AgentPrompt() {
   const Icon = { idle: CopyIcon, copying: CopyIcon, done: CheckIcon, failed: WarningIcon }[state];
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-start gap-1.5">
       <button
         type="button"
         onClick={copy}
         disabled={state === "copying"}
-        className="flex items-center gap-3 rounded-full border border-line bg-surface py-1.5 pr-3 pl-2 transition-colors hover:border-soft/40 hover:bg-ghost disabled:opacity-70"
+        aria-live="polite"
+        className="locus-focus-ring flex items-center gap-3 rounded-full border border-line bg-surface py-1.5 pr-3 pl-2 transition-colors hover:border-soft/40 hover:bg-ghost disabled:opacity-70"
       >
         <span className="flex items-center">
           {MARKS.map(({ key, Mark }, i) => (
@@ -90,7 +79,7 @@ export function AgentPrompt() {
             </span>
           ))}
         </span>
-        {/* Fixed width, so the hero does not twitch as the label changes. */}
+        {/* Fixed width, so the card does not twitch as the label changes. */}
         <span className="w-[10.5rem] text-left text-sm font-medium text-foreground">
           {LABEL[state]}
         </span>
@@ -101,7 +90,9 @@ export function AgentPrompt() {
           } ${state === "copying" ? "animate-pulse" : ""}`}
         />
       </button>
-      <p className="m-0 text-xs text-faint">Copies a prompt that points your agent at the docs</p>
+      <p className="m-0 text-xs text-faint">
+        Copies a prompt that points your agent at the {PRODUCT_INFO[product].title} docs
+      </p>
     </div>
   );
 }
