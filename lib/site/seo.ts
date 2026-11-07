@@ -9,6 +9,13 @@ import type { Metadata } from "next";
  * Pointing a canonical at either would hand Google a URL it is being told not
  * to index.
  */
+/**
+ * The one sitemap for every LocusGraph host, these docs included. It lives on
+ * the landing site; `app/robots.ts` names it, since a crawler only takes a
+ * sitemap's URLs for this host when this host's `robots.txt` points at it.
+ */
+export const SITEMAP_URL = "https://www.locusgraph.com/sitemap.xml";
+
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docs.locusgraph.com";
 
 /**
