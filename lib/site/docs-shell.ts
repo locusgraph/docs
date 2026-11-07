@@ -1,6 +1,6 @@
 import { endpointBySlug, endpointsFor, groupsFor } from "@/lib/api/endpoints";
 import { pagesOf, productOf, treeFor, treesFor } from "@/lib/site/docs-nav";
-import { isProduct, PRODUCT_INFO, type Product } from "@/lib/site/products";
+import { isProduct, PRODUCT_INFO, PRODUCTS, type Product } from "@/lib/site/products";
 
 /**
  * What the LocusGraph docs shell is handed, worked out from the path.
@@ -50,6 +50,30 @@ export interface HeaderBrand {
 export function headerBrand(product: string): HeaderBrand {
   if (!isProduct(product)) return { name: "LocusGraph", href: "/" };
   return { name: PRODUCT_INFO[product].title, href: `/${product}`, product };
+}
+
+/** One row of the section switcher the header brand opens. */
+export interface SectionChoice {
+  product: Product;
+  title: string;
+  blurb: string;
+  href: string;
+  current: boolean;
+}
+
+/**
+ * What the header brand offers to switch to: every section with `ready: true`,
+ * in the order `PRODUCTS` lists them, with the one being read marked. A section
+ * that is not ready stays out, the same as it stays off the host index.
+ */
+export function sectionChoices(current: string): SectionChoice[] {
+  return PRODUCTS.filter((key) => PRODUCT_INFO[key].ready).map((key) => ({
+    product: key,
+    title: PRODUCT_INFO[key].title,
+    blurb: PRODUCT_INFO[key].blurb,
+    href: `/${key}`,
+    current: key === current,
+  }));
 }
 
 /**

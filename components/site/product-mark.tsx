@@ -9,8 +9,10 @@ type Mark = (props: { className?: string }) => React.ReactElement;
 /**
  * The glyph each section wears.
  *
+ * Every mark on the host is looked up here, so a new one is a one-line change.
+ *
  * Spendgraph's is a trend-up arrow because that is the mark its own dashboard
- * and landing page already use. A docs host that invents a second logo for a
+ * and landing page already use, until `@locusgraph/brand` ships its own. A docs host that invents a second logo for a
  * product teaches readers the wrong one. LocusGraph and BrainStorm have real
  * artwork, so they get it; Locus Skill has none yet and borrows a Phosphor glyph
  * until it does.
