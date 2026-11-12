@@ -54,14 +54,14 @@ Every LocusGraph product uses the **same four surfaces**. Do not invent a fifth 
 |---|---|---|
 | `www.locusgraph.com` | Company + all product pages + all product articles | **Yes** |
 | `locusgraph.com` (apex) | Redirect → www | Redirect only |
-| `doc.locusgraph.com` | Shared product docs | **Yes** (own sitemap) |
+| `docs.locusgraph.com` | Shared product docs | **Yes** (listed in the www sitemap) |
 | `app.locusgraph.com` | Shared IDE | **No** |
 | `pressroom.locusgraph.com` | Shell today | **No** |
 | `api.locusgraph.com` | API | **No** |
 
 ---
 
-## 3. Sitemap structure (Framer + docs)
+## 3. Sitemap structure (one www sitemap)
 
 ### www (Framer) — one auto sitemap
 
@@ -69,7 +69,7 @@ Framer builds and updates **one** file on Publish:
 
 `https://www.locusgraph.com/sitemap.xml`
 
-It already includes company pages, product pages (`/brainstorm`), and product articles (`/brainstorm-articles/*`). That is the plan. Do not hand-edit it. Do not split it.
+It already includes company pages, product pages (`/brainstorm`), and product articles (`/brainstorm-articles/*`). It is also the sitemap for the docs host: there is no second one. Do not split it.
 
 **Operator steps**
 
@@ -86,16 +86,17 @@ It already includes company pages, product pages (`/brainstorm`), and product ar
 | Company pages | `/`, `/pricing`, legal, `/blog/*` if indexed |
 | Product pages | `/brainstorm`, `/spendgraph` |
 | Product articles | `/brainstorm-articles/{slug}`, … |
+| Docs pages | `https://docs.locusgraph.com/{section}/{page}` |
 
-**Keep out of the Framer sitemap** (by not hosting them on www, or noindex)
+**Keep out of the sitemap** (by not hosting them on www, or noindex)
 
 - App / login hosts (`brainstorm.locusgraph.com`, etc.)
 - `app.*`, `api.*`, `pressroom.*`
-- `doc.locusgraph.com` URLs (separate host)
+- Docs pages that are not ready (BrainStorm, Locus Skill) and the docs 404
 
-### Docs host — its own sitemap
+### Docs host: no sitemap of its own
 
-`https://doc.locusgraph.com/sitemap.xml` (Vocs/docs stack, not Framer). Submit separately in GSC.
+`docs.locusgraph.com` builds no sitemap. Its pages are listed in the www sitemap, and its `robots.txt` names that file, which is what lets a crawler accept the www sitemap's docs URLs. The old `doc.locusgraph.com/sitemap.xml` redirects (308) to `https://www.locusgraph.com/sitemap.xml`.
 
 ### App / login hosts
 
@@ -112,13 +113,14 @@ Allow: /
 Sitemap: https://www.locusgraph.com/sitemap.xml
 ```
 
-**doc:**
+**docs:**
 
 ```text
 User-agent: *
 Allow: /
 
-Sitemap: https://doc.locusgraph.com/sitemap.xml
+Sitemap: https://www.locusgraph.com/sitemap.xml
+Host: https://docs.locusgraph.com
 ```
 
 **App example:**
@@ -132,7 +134,7 @@ Disallow: /
 
 www GSC is already in use (exports exist under `growthos/seoos/output/25thAug/`). No “set up GSC from scratch” task.
 
-When docs sitemap from §3 / Sl 6 is live: submit `https://doc.locusgraph.com/sitemap.xml` in the existing property. Do not submit app/login sitemaps.
+Submit only `https://www.locusgraph.com/sitemap.xml`. Docs pages reach Google through it, so there is no docs sitemap to submit. Do not submit app/login sitemaps.
 
 ---
 
@@ -147,9 +149,9 @@ Present execution only (live hosts / live gaps).
 | 3 | Pressroom (`pressroom.locusgraph.com`) is a thin indexable shell | Indexation | Hide from Google now | 1) `noindex` (+ header) on all routes. 2) Optional `Disallow: /`. 3) `/sitemap.xml` = real XML or 404 (not SPA HTML). |
 | 4 | API (`api.locusgraph.com`) is crawlable | Indexation | Block crawling | 1) `robots.txt` → `Disallow: /`. 2) `X-Robots-Tag: noindex`. |
 | 5 | Spendgraph has **two** public stories: `www/spendgraph` and `spendgraph.locusgraph.com` | Duplicate / IA | www = marketing; subdomain = login only | 1) Index only `www…/spendgraph`. 2) App subdomain **noindex**. 3) Move or 301 subdomain marketing → www `/spendgraph`. 4) Homepage: marketing → www; login → subdomain. |
-| 6 | Docs (`doc.locusgraph.com`) hard for Google to crawl | Docs SEO | Proper docs crawl setup | 1) `robots.txt` Allow. 2) `sitemap.xml`. 3) Root **301/308** to intro (not JS). 4) Canonicals + meta descriptions. |
+| 6 | Docs (`docs.locusgraph.com`) hard for Google to crawl | Docs SEO | Proper docs crawl setup | 1) `robots.txt` Allow, with `Sitemap:` pointing at the www sitemap. 2) Docs pages listed in the www `sitemap.xml`. 3) Root **301/308** to intro (not JS). 4) Canonicals + meta descriptions. |
 | 7 | `brainstorm.locusgraph.com/sitemap.xml` and `pressroom.locusgraph.com/sitemap.xml` return **200 + HTML** (SPA shell), not XML | Technical | Stop fake sitemaps on those two app hosts | 1) Open both URLs and confirm `Content-Type` is HTML today. 2) Change hosting so `/sitemap.xml` returns **404** (preferred for noindex apps) **or** a real empty/minimal XML sitemap. 3) Never serve the React/Vite app HTML for `/sitemap.xml`. 4) `app.locusgraph.com/sitemap.xml` already 404s — leave it. |
-| 8 | Homepage (`https://www.locusgraph.com/`) CTAs incomplete vs model | IA | Marketing → www path; Login → product subdomain | **Where today:** homepage links `./brainstorm`, `./spendgraph`, `doc.locusgraph.com`, `app.locusgraph.com`. **Gap:** no Open app / Login to `https://brainstorm.locusgraph.com` or `https://spendgraph.locusgraph.com`. **Fix:** 1) Keep marketing links on www paths. 2) Add login/app CTAs to those two subdomains. 3) Do not point marketing CTAs at app hosts. |
+| 8 | Homepage (`https://www.locusgraph.com/`) CTAs incomplete vs model | IA | Marketing → www path; Login → product subdomain | **Where today:** homepage links `./brainstorm`, `./spendgraph`, `docs.locusgraph.com`, `app.locusgraph.com`. **Gap:** no Open app / Login to `https://brainstorm.locusgraph.com` or `https://spendgraph.locusgraph.com`. **Fix:** 1) Keep marketing links on www paths. 2) Add login/app CTAs to those two subdomains. 3) Do not point marketing CTAs at app hosts. |
 | 9 | BrainStorm product page does not link into articles | Content IA | Wire `/brainstorm` → `/brainstorm-articles/*` | **Where:** `https://www.locusgraph.com/brainstorm` has **0** links to `/brainstorm-articles/`. Articles themselves are already on www (13 URLs in sitemap). **Fix:** 1) Add natural links/section from `/brainstorm` into `/brainstorm-articles/…`. 2) Re-publish Framer. 3) Spot-check one article URL still only on www (not on `brainstorm.locusgraph.com`). |
 | 10 | `www…/spendgraph` missing from Framer sitemap | Sitemap | Indexable product pages must appear in `sitemap.xml` | **Where:** `https://www.locusgraph.com/sitemap.xml` has `/brainstorm` + 13 `/brainstorm-articles/*`, but **no** `/spendgraph`. Cause: `https://www.locusgraph.com/spendgraph` is `noindex`. **Fix:** 1) After Sl 5 makes www Spendgraph the marketing page, turn indexing **on** for that page. 2) Publish. 3) Confirm `https://www.locusgraph.com/spendgraph` appears in sitemap. 4) Re-check sitemap in existing GSC after publish (www property already active). |
 | 11 | Doc titles noisy | On-page | Clean title template | Vocs/theme: `{Page} \| LocusGraph Docs`. |
@@ -161,7 +163,7 @@ Present execution only (live hosts / live gaps).
 
 1. **Sl 1–4** — noindex apps / IDE / pressroom / API  
 2. **Sl 5 + 8 + 9** — Spendgraph dual URL + homepage CTAs + BrainStorm articles check  
-3. **Sl 6–7 + 10** — docs + SPA sitemaps + spendgraph in www sitemap  
+3. **Sl 6–7 + 10** — docs pages in the www sitemap + SPA sitemaps + spendgraph in www sitemap  
 4. **Sl 11–12** — polish  
 
 ---
@@ -171,9 +173,9 @@ Present execution only (live hosts / live gaps).
 - [ ] Live app hosts (`brainstorm`, `app`, `pressroom`, `api`) are **noindex** (or Disallow)
 - [ ] Spendgraph: one indexed marketing URL on www; subdomain is login/noindex
 - [ ] BrainStorm articles only on `www…/brainstorm-articles/*` and in www sitemap
-- [ ] Doc robots + sitemap + root 301 + canonicals
+- [ ] Docs robots (pointing at the www sitemap) + docs pages in the www sitemap + root 301 + canonicals
 - [ ] Homepage CTAs match marketing vs login
-- [ ] After docs sitemap exists (Sl 6): submit it in existing GSC; do not submit app sitemaps
+- [ ] Only the www sitemap is submitted in GSC; no docs or app sitemaps
 
 ## Out of scope
 
@@ -182,4 +184,4 @@ Present execution only (live hosts / live gaps).
 
 ## One-line summary
 
-Each product = www page + www `/{product}-articles` + noindex app subdomain. **www sitemap** lists marketing + articles; **doc sitemap** lists docs; **apps never get a sitemap in GSC**.
+Each product = www page + www `/{product}-articles` + noindex app subdomain. **www sitemap** lists marketing, articles and docs (the only sitemap); **apps never get a sitemap in GSC**.

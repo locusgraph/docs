@@ -23,9 +23,9 @@ export interface ProductInfo {
    * Whether the section is finished enough to send a reader into.
    *
    * The routes exist either way. This decides whether the section is offered
-   * anywhere: a card on the host index, the header switcher, the sitemap and
-   * the model index. A section with a handful of placeholder pages is worse
-   * than one nobody is sent to yet.
+   * anywhere: a card on the host index, the header switcher and the model
+   * index. A section with a handful of placeholder pages is worse than one
+   * nobody is sent to yet.
    */
   ready: boolean;
 }

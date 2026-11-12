@@ -28,7 +28,7 @@ execFileSync("node", ["scripts/build-docs-artifacts.mjs"], { stdio: "ignore" });
  * that silently failed to load is a page missing from the map, and nothing else
  * would notice.
  *
- * Only ready sections are listed, the same rule the sitemap follows.
+ * Only ready sections are listed, the same rule the host index follows.
  */
 const READY = SECTIONS.filter((section) => section === "locusgraph" || section === "spendgraph");
 

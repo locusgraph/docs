@@ -1,7 +1,7 @@
 import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 import { LEGACY_FALLBACK, LEGACY_HOST, LEGACY_REDIRECTS } from "./lib/site/legacy";
-import { SITE_URL } from "./lib/site/seo";
+import { SITE_URL, SITEMAP_URL } from "./lib/site/seo";
 
 /**
  * The old docs host, answered from here.
@@ -30,6 +30,14 @@ const nextConfig: NextConfig = {
         destination: `${SITE_URL}${to}`,
         permanent: true,
       })),
+      // Not in `LEGACY_REDIRECTS`, whose targets are paths on this host: the
+      // sitemap moved to the landing site, so the old URL goes there.
+      {
+        source: "/sitemap.xml",
+        has: [legacy],
+        destination: SITEMAP_URL,
+        permanent: true,
+      },
       {
         source: "/:path*",
         has: [legacy],
